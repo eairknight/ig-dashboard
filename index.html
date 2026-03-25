@@ -475,7 +475,8 @@ function renderCards(accounts) {
         : '');
 
     return `
-      <div class="bg-gray-900 border-2 ${border} rounded-xl p-3 fade-in flex flex-col gap-2">
+      <div class="bg-gray-900 border-2 ${border} rounded-xl p-3 fade-in flex flex-col gap-2 ${a.ig_handle ? 'cursor-pointer hover:bg-gray-800 transition-colors' : ''}"
+           ${a.ig_handle ? `onclick="window.open('https://www.instagram.com/${a.ig_handle}/', '_blank')"` : ''}>
         <div class="flex items-start gap-2">
           ${pic}
           <div class="min-w-0 flex-1">
