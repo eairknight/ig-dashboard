@@ -131,9 +131,6 @@ def check_account(session, profile, url_map):
         "followers": 0,
         "reach_7d": 0,
         "reach_28d": 0,
-        "live_reels": 0,
-        "avg_views_per_reel": None,
-        "avg_reach_per_reel": None,
         "daily_series": [],
     }
 
@@ -179,7 +176,7 @@ def check_account(session, profile, url_map):
     return base
 
 
-def enrich_with_analytics(session, account, live_reels_per_account):
+def enrich_with_analytics(session, account, live_reels_per_account=0):
     """
     Fetch analytics timeseries and compute per-account stats.
     live_reels_per_account: global total posts / num active accounts.
@@ -205,14 +202,6 @@ def enrich_with_analytics(session, account, live_reels_per_account):
     recent = [d for d in daily_series if d["date"] >= cutoff_7d]
     account["reach_7d"] = int(sum(d["reach"] for d in recent))
     account["reach_28d"] = int(sum(d["reach"] for d in daily_series))
-
-    # Avg views/reach per reel using global live_reels count (per account)
-    account["live_reels"] = live_reels_per_account
-    if live_reels_per_account > 0:
-        if account["total_views"] > 0:
-            account["avg_views_per_reel"] = round(account["total_views"] / live_reels_per_account, 1)
-        if account["total_reach"] > 0:
-            account["avg_reach_per_reel"] = round(account["total_reach"] / live_reels_per_account, 1)
 
     return account
 
@@ -248,13 +237,6 @@ def main():
     profiles = resp.json().get("profiles", [])
     print(f"Found {len(profiles)} profiles.")
 
-    # Fetch global live post count (one API call, not per-account)
-    # Use any profile username to satisfy the required param
-    any_username = profiles[0]["username"] if profiles else "001"
-    print("Fetching global live post count...")
-    global_post_total = fetch_global_live_post_count(session, any_username)
-    print(f"  Total live posts across all accounts: {global_post_total}")
-
     # Phase 1: status checks (deep token) in parallel
     print("Running deep token checks in parallel...")
     accounts = []
@@ -269,16 +251,13 @@ def main():
     active_accounts = [a for a in accounts if a["status"] == "ACTIVE"]
     inactive_accounts = [a for a in accounts if a["status"] != "ACTIVE"]
 
-    # Compute live reels per account from the global total
     num_active = len(active_accounts) or 1
-    live_reels_per_account = round(global_post_total / num_active) if global_post_total > 0 else 0
-    print(f"  Live reels per account: ~{live_reels_per_account} ({global_post_total} total / {num_active} active)")
 
     # Phase 2: analytics enrichment in parallel
     print(f"Fetching analytics for {num_active} active accounts...")
     with ThreadPoolExecutor(max_workers=min(num_active, 15)) as pool:
         futures = {
-            pool.submit(enrich_with_analytics, session, a, live_reels_per_account): a
+            pool.submit(enrich_with_analytics, session, a): a
             for a in active_accounts
         }
         for future in as_completed(futures):
@@ -305,12 +284,6 @@ def main():
     prior_reach_7d = int(sum(d["reach"] for d in prior_global))
     trend = "up" if global_reach_7d > prior_reach_7d else ("down" if global_reach_7d < prior_reach_7d else "flat")
 
-    global_avg_views_per_reel = (
-        round(global_total_views / global_post_total, 1) if global_post_total > 0 else None
-    )
-    global_avg_reach_per_reel = (
-        round(global_reach_28d / global_post_total, 1) if global_post_total > 0 else None
-    )
 
     summary = {s: 0 for s in ("ACTIVE", "REAUTH", "CHECKPOINT", "BROKEN", "NO_IG", "BLOCKED")}
     for a in all_accounts:
@@ -331,12 +304,8 @@ def main():
         "summary": summary,
         "global": {
             "total_views": global_total_views,
-            "live_reels_total": global_post_total,
-            "live_reels_per_account": live_reels_per_account,
             "reach_7d": global_reach_7d,
             "reach_28d": global_reach_28d,
-            "avg_views_per_reel": global_avg_views_per_reel,
-            "avg_reach_per_reel": global_avg_reach_per_reel,
             "trend": trend,
             "trend_pct": round((global_reach_7d - prior_reach_7d) / prior_reach_7d * 100, 1) if prior_reach_7d > 0 else None,
             "series": global_series,
@@ -349,8 +318,7 @@ def main():
 
     print(f"Wrote {DATA_FILE}")
     print(f"Summary: {summary}")
-    print(f"Global 7d reach: {global_reach_7d:,} | avg views/reel: {global_avg_views_per_reel} | trend: {trend}")
-    print(f"Live reels: {global_post_total} total / {live_reels_per_account} per account")
+    print(f"Global 7d reach: {global_reach_7d:,} | trend: {trend}")
     print(f"Updated at: {updated_at_display}")
 
 

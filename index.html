@@ -112,7 +112,7 @@
         Sort:
         <button id="sort-7d"   onclick="setSort('7d')"   class="sort-btn px-2.5 py-1 rounded border border-gray-700 text-gray-400 hover:text-white transition sort-active">7d reach</button>
         <button id="sort-tot"  onclick="setSort('tot')"  class="sort-btn px-2.5 py-1 rounded border border-gray-700 text-gray-400 hover:text-white transition">Total views</button>
-        <button id="sort-avg"  onclick="setSort('avg')"  class="sort-btn px-2.5 py-1 rounded border border-gray-700 text-gray-400 hover:text-white transition">Avg/reel</button>
+        <button id="sort-flw"  onclick="setSort('flw')"  class="sort-btn px-2.5 py-1 rounded border border-gray-700 text-gray-400 hover:text-white transition">Followers</button>
         <button id="sort-abc"  onclick="setSort('abc')"  class="sort-btn px-2.5 py-1 rounded border border-gray-700 text-gray-400 hover:text-white transition">A–Z</button>
       </div>
     </div>
@@ -219,11 +219,9 @@ function renderGlobalStats(g, updatedAt) {
   }
 
   const stats = [
-    { label: 'Total Views (28d)',      value: fmt(g.total_views),          sub: 'all accounts' },
-    { label: '7-Day Reach',            value: fmt(g.reach_7d),             sub: trendPct ? `${trendArrow} ${trendPct} vs prior 7d` : 'all accounts', subColor: trendColor },
-    { label: '28-Day Reach',           value: fmt(g.reach_28d),            sub: 'all accounts' },
-    { label: 'Avg Views / Reel',       value: g.avg_views_per_reel != null ? fmt(g.avg_views_per_reel) : '—', sub: `${g.live_reels_total || 0} live reels total` },
-    { label: 'Live Reels / Account',   value: fmt(g.live_reels_per_account), sub: 'avg across accounts' },
+    { label: 'Total Views (28d)',  value: fmt(g.total_views), sub: 'all accounts' },
+    { label: '7-Day Reach',        value: fmt(g.reach_7d),    sub: trendPct ? `${trendArrow} ${trendPct} vs prior 7d` : 'all accounts', subColor: trendColor },
+    { label: '28-Day Reach',       value: fmt(g.reach_28d),   sub: 'all accounts' },
   ];
 
   document.getElementById('global-stats').innerHTML = stats.map(s => `
@@ -298,7 +296,6 @@ function renderGlobalChart(series) {
 function leaderboardRow(acc, rank, isTop) {
   const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `#${rank}`;
   const reach = fmt(acc.reach_7d);
-    const avg = acc.avg_views_per_reel != null ? fmt(acc.avg_views_per_reel) : '—';
   const handle = acc.ig_handle || acc.username;
   const url = acc.assigned_url || '—';
   const rowBg = isTop ? 'bg-emerald-950 border-emerald-900' : 'bg-red-950 border-red-900';
@@ -311,7 +308,7 @@ function leaderboardRow(acc, rank, isTop) {
       </div>
       <div class="text-right shrink-0">
         <div class="font-semibold ${isTop ? 'text-emerald-400' : 'text-red-400'}">${reach}</div>
-        <div class="text-xs text-gray-500">${avg}/reel</div>
+        <div class="text-xs text-gray-500">7d reach</div>
       </div>
     </div>`;
 }
@@ -369,7 +366,8 @@ function buildSummary(accounts) {
 function setSort(s) {
   currentSort = s;
   document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('sort-active'));
-  document.getElementById(`sort-${s}`).classList.add('sort-active');
+  const btn = document.getElementById(`sort-${s}`);
+  if (btn) btn.classList.add('sort-active');
   renderCards(allAccounts);
 }
 
@@ -377,7 +375,7 @@ function sortedAccounts(accounts) {
   const a = [...accounts];
   if (currentSort === '7d')  a.sort((x,y) => (y.reach_7d||0) - (x.reach_7d||0));
   if (currentSort === 'tot') a.sort((x,y) => (y.total_views||0) - (x.total_views||0));
-  if (currentSort === 'avg') a.sort((x,y) => (y.avg_views_per_reel||0) - (x.avg_views_per_reel||0));
+  if (currentSort === 'flw') a.sort((x,y) => (y.followers||0) - (x.followers||0));
   if (currentSort === 'abc') a.sort((x,y) => x.username.localeCompare(y.username));
   return a;
 }
@@ -463,12 +461,11 @@ function renderCards(accounts) {
           <div class="text-xs text-gray-600">total views</div>
         </div>
         <div>
-          <div class="text-sm font-bold ${a.avg_views_per_reel ? 'text-emerald-400' : 'text-gray-600'}">${a.avg_views_per_reel != null ? fmt(a.avg_views_per_reel) : '—'}</div>
-          <div class="text-xs text-gray-600">views/reel</div>
+          <div class="text-sm font-bold text-white">${fmt(a.followers)}</div>
+          <div class="text-xs text-gray-600">followers</div>
         </div>
       </div>
-      <div class="flex items-center justify-between mt-2">
-        <div class="text-xs text-gray-600">~${a.live_reels || 0} live reels total</div>
+      <div class="flex justify-end mt-2">
         ${sparkline(a.daily_series)}
       </div>` : (a.error_msg
         ? `<div class="mt-2 text-xs text-gray-600 truncate" title="${a.error_msg}">${a.error_msg}</div>`
