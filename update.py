@@ -3,12 +3,16 @@ IG Status Dashboard updater.
 Reads API_KEY and DASH_PASSWORD from environment variables.
 Writes data.json with current account statuses, analytics, and performance metrics.
 Run by GitHub Actions daily.
+
+NOTE on reels counting: the Upload-Post history API ignores the user param and returns
+global post history for the whole API key. We therefore fetch it once to get the
+total live post count, then compute per-account avg as:
+  avg_views_per_reel = account_total_views / (total_global_posts / num_active_accounts)
 """
 
 import hashlib
 import json
 import os
-import re
 import sys
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -26,7 +30,6 @@ HISTORY_URL = f"{API_BASE}/api/uploadposts/history"
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(BASE_DIR, "data.json")
-# account_url_map.json lives one level up (project root)
 URL_MAP_FILE = os.path.join(BASE_DIR, "..", "account_url_map.json")
 
 
@@ -61,6 +64,25 @@ def classify_status(ig, deep_ok, deep_error):
     return "ACTIVE"
 
 
+def fetch_global_live_post_count(session, any_username):
+    """
+    Fetch total live post count across the whole API key.
+    The history API ignores the user param and returns global totals, but the param
+    is required. We pass any valid username just to satisfy the API requirement.
+    """
+    try:
+        r = session.get(
+            HISTORY_URL,
+            params={"user": any_username, "platform": "instagram", "page": 1},
+            timeout=30,
+        )
+        if r.status_code == 200:
+            return r.json().get("total", 0)
+    except Exception:
+        pass
+    return 0
+
+
 def fetch_analytics(session, username):
     """Fetch 28-day reach timeseries + aggregate metrics for one account."""
     try:
@@ -77,7 +99,6 @@ def fetch_analytics(session, username):
             "total_views": ig.get("views", 0) or 0,
             "total_reach": ig.get("reach", 0) or 0,
             "total_likes": ig.get("likes", 0) or 0,
-            "total_comments": ig.get("comments", 0) or 0,
             "followers": ig.get("followers", 0) or 0,
             "timeseries": [
                 {"date": d["date"], "reach": d["value"]}
@@ -86,61 +107,6 @@ def fetch_analytics(session, username):
         }
     except Exception:
         return None
-
-
-def fetch_history_posts(session, username, pages=3):
-    """Fetch recent post history (up to pages*50 posts) and return list of {date, url}."""
-    posts = []
-    for page in range(1, pages + 1):
-        try:
-            r = session.get(
-                HISTORY_URL,
-                params={"user": username, "platform": "instagram", "page": page, "limit": 50},
-                timeout=30,
-            )
-            if r.status_code != 200:
-                break
-            data = r.json()
-            batch = data.get("history", [])
-            if not batch:
-                break
-            for post in batch:
-                ts = (post.get("upload_timestamp") or "")[:10]
-                caption = post.get("post_title") or post.get("post_caption") or ""
-                found = re.findall(r"([A-Za-z0-9-]+\.com)", caption, re.IGNORECASE)
-                url = found[0] if found else None
-                if ts:
-                    posts.append({"date": ts, "url": url})
-            # Stop if we've collected enough (covers ~15 days at 10/day)
-            if len(posts) >= 150:
-                break
-        except Exception:
-            break
-    return posts
-
-
-def compute_reels_per_day(history_posts):
-    """Returns {date_str: count} from history."""
-    counts = defaultdict(int)
-    for p in history_posts:
-        if p["date"]:
-            counts[p["date"]] += 1
-    return dict(counts)
-
-
-def compute_avg_reach_per_reel(timeseries, reels_per_day):
-    """
-    For each day in timeseries, compute avg_reach_per_reel = daily_reach / reels_posted.
-    Returns list of {date, reach, reels, avg} — None avg when reels=0.
-    """
-    result = []
-    for entry in timeseries:
-        d = entry["date"]
-        reach = entry["reach"]
-        reels = reels_per_day.get(d, 0)
-        avg = round(reach / reels, 1) if reels > 0 and reach > 0 else None
-        result.append({"date": d, "reach": reach, "reels": reels, "avg": avg})
-    return result
 
 
 def check_account(session, profile, url_map):
@@ -159,16 +125,16 @@ def check_account(session, profile, url_map):
         "blocked": blocked,
         "error_msg": None,
         "assigned_url": assigned_url,
-        # Analytics fields (filled in separately)
         "total_views": 0,
         "total_reach": 0,
         "total_likes": 0,
         "followers": 0,
         "reach_7d": 0,
         "reach_28d": 0,
-        "reels_7d": 0,
-        "avg_reach_per_reel_7d": None,
-        "daily_series": [],  # [{date, reach, reels, avg}]
+        "live_reels": 0,
+        "avg_views_per_reel": None,
+        "avg_reach_per_reel": None,
+        "daily_series": [],
     }
 
     if blocked or not ig:
@@ -213,8 +179,11 @@ def check_account(session, profile, url_map):
     return base
 
 
-def enrich_with_analytics(session, account):
-    """Fetch analytics + history and add computed stats to account dict."""
+def enrich_with_analytics(session, account, live_reels_per_account):
+    """
+    Fetch analytics timeseries and compute per-account stats.
+    live_reels_per_account: global total posts / num active accounts.
+    """
     username = account["username"]
 
     analytics = fetch_analytics(session, username)
@@ -227,10 +196,7 @@ def enrich_with_analytics(session, account):
     else:
         timeseries = []
 
-    history = fetch_history_posts(session, username, pages=3)
-    reels_per_day = compute_reels_per_day(history)
-
-    daily_series = compute_avg_reach_per_reel(timeseries, reels_per_day)
+    daily_series = [{"date": d["date"], "reach": d["reach"]} for d in timeseries]
     account["daily_series"] = daily_series
 
     # 7-day window
@@ -238,35 +204,35 @@ def enrich_with_analytics(session, account):
     cutoff_7d = (today - timedelta(days=7)).isoformat()
     recent = [d for d in daily_series if d["date"] >= cutoff_7d]
     account["reach_7d"] = int(sum(d["reach"] for d in recent))
-    account["reels_7d"] = sum(d["reels"] for d in recent)
     account["reach_28d"] = int(sum(d["reach"] for d in daily_series))
 
-    avgs = [d["avg"] for d in recent if d["avg"] is not None]
-    account["avg_reach_per_reel_7d"] = round(sum(avgs) / len(avgs), 1) if avgs else None
+    # Avg views/reach per reel using global live_reels count (per account)
+    account["live_reels"] = live_reels_per_account
+    if live_reels_per_account > 0:
+        if account["total_views"] > 0:
+            account["avg_views_per_reel"] = round(account["total_views"] / live_reels_per_account, 1)
+        if account["total_reach"] > 0:
+            account["avg_reach_per_reel"] = round(account["total_reach"] / live_reels_per_account, 1)
 
     return account
 
 
 def compute_global_series(accounts):
     """Sum daily reach across all accounts to produce a global timeseries."""
-    totals = defaultdict(lambda: {"reach": 0, "reels": 0})
+    totals = defaultdict(int)
     for acc in accounts:
         for d in acc.get("daily_series", []):
-            totals[d["date"]]["reach"] += d["reach"]
-            totals[d["date"]]["reels"] += d["reels"]
+            totals[d["date"]] += d["reach"]
 
-    result = []
-    for date_str in sorted(totals.keys()):
-        reach = totals[date_str]["reach"]
-        reels = totals[date_str]["reels"]
-        avg = round(reach / reels, 1) if reels > 0 and reach > 0 else None
-        result.append({"date": date_str, "reach": reach, "reels": reels, "avg": avg})
-    return result
+    return [
+        {"date": date_str, "reach": totals[date_str]}
+        for date_str in sorted(totals.keys())
+    ]
 
 
 def main():
     api_key = os.environ.get("API_KEY", "")
-    dash_password = os.environ.get("DASH_PASSWORD", "IGdash2026!")
+    dash_password = os.environ.get("DASH_PASSWORD", "igdash2026")
 
     if not api_key:
         print("ERROR: API_KEY environment variable not set.", file=sys.stderr)
@@ -280,9 +246,17 @@ def main():
     resp = session.get(USERS_URL, timeout=30)
     resp.raise_for_status()
     profiles = resp.json().get("profiles", [])
-    print(f"Found {len(profiles)} profiles. Running deep token checks + analytics in parallel...")
+    print(f"Found {len(profiles)} profiles.")
+
+    # Fetch global live post count (one API call, not per-account)
+    # Use any profile username to satisfy the required param
+    any_username = profiles[0]["username"] if profiles else "001"
+    print("Fetching global live post count...")
+    global_post_total = fetch_global_live_post_count(session, any_username)
+    print(f"  Total live posts across all accounts: {global_post_total}")
 
     # Phase 1: status checks (deep token) in parallel
+    print("Running deep token checks in parallel...")
     accounts = []
     with ThreadPoolExecutor(max_workers=min(len(profiles), 20)) as pool:
         futures = {pool.submit(check_account, session, p, url_map): p for p in profiles}
@@ -292,16 +266,24 @@ def main():
             except Exception as e:
                 print(f"Error checking account: {e}", file=sys.stderr)
 
-    # Phase 2: analytics + history enrichment for active accounts in parallel
     active_accounts = [a for a in accounts if a["status"] == "ACTIVE"]
     inactive_accounts = [a for a in accounts if a["status"] != "ACTIVE"]
 
-    print(f"Fetching analytics for {len(active_accounts)} active accounts...")
-    with ThreadPoolExecutor(max_workers=min(len(active_accounts), 15)) as pool:
-        futures = {pool.submit(enrich_with_analytics, session, a): a for a in active_accounts}
+    # Compute live reels per account from the global total
+    num_active = len(active_accounts) or 1
+    live_reels_per_account = round(global_post_total / num_active) if global_post_total > 0 else 0
+    print(f"  Live reels per account: ~{live_reels_per_account} ({global_post_total} total / {num_active} active)")
+
+    # Phase 2: analytics enrichment in parallel
+    print(f"Fetching analytics for {num_active} active accounts...")
+    with ThreadPoolExecutor(max_workers=min(num_active, 15)) as pool:
+        futures = {
+            pool.submit(enrich_with_analytics, session, a, live_reels_per_account): a
+            for a in active_accounts
+        }
         for future in as_completed(futures):
             try:
-                future.result()  # enrichment mutates in place
+                future.result()
             except Exception as e:
                 print(f"Error enriching account: {e}", file=sys.stderr)
 
@@ -312,19 +294,23 @@ def main():
     global_series = compute_global_series(active_accounts)
     today = datetime.now(timezone.utc).date()
     cutoff_7d = (today - timedelta(days=7)).isoformat()
+    cutoff_14d = (today - timedelta(days=14)).isoformat()
+
     recent_global = [d for d in global_series if d["date"] >= cutoff_7d]
+    prior_global = [d for d in global_series if cutoff_14d <= d["date"] < cutoff_7d]
+
     global_reach_7d = int(sum(d["reach"] for d in recent_global))
     global_reach_28d = int(sum(d["reach"] for d in global_series))
     global_total_views = sum(a.get("total_views", 0) for a in active_accounts)
-    global_reels_7d = sum(d["reels"] for d in recent_global)
-    global_avgs = [d["avg"] for d in recent_global if d["avg"] is not None]
-    global_avg_per_reel_7d = round(sum(global_avgs) / len(global_avgs), 1) if global_avgs else None
-
-    # Prior 7 days for trend comparison
-    cutoff_14d = (today - timedelta(days=14)).isoformat()
-    prior_global = [d for d in global_series if cutoff_14d <= d["date"] < cutoff_7d]
     prior_reach_7d = int(sum(d["reach"] for d in prior_global))
     trend = "up" if global_reach_7d > prior_reach_7d else ("down" if global_reach_7d < prior_reach_7d else "flat")
+
+    global_avg_views_per_reel = (
+        round(global_total_views / global_post_total, 1) if global_post_total > 0 else None
+    )
+    global_avg_reach_per_reel = (
+        round(global_reach_28d / global_post_total, 1) if global_post_total > 0 else None
+    )
 
     summary = {s: 0 for s in ("ACTIVE", "REAUTH", "CHECKPOINT", "BROKEN", "NO_IG", "BLOCKED")}
     for a in all_accounts:
@@ -345,10 +331,12 @@ def main():
         "summary": summary,
         "global": {
             "total_views": global_total_views,
+            "live_reels_total": global_post_total,
+            "live_reels_per_account": live_reels_per_account,
             "reach_7d": global_reach_7d,
             "reach_28d": global_reach_28d,
-            "reels_7d": global_reels_7d,
-            "avg_reach_per_reel_7d": global_avg_per_reel_7d,
+            "avg_views_per_reel": global_avg_views_per_reel,
+            "avg_reach_per_reel": global_avg_reach_per_reel,
             "trend": trend,
             "trend_pct": round((global_reach_7d - prior_reach_7d) / prior_reach_7d * 100, 1) if prior_reach_7d > 0 else None,
             "series": global_series,
@@ -361,7 +349,8 @@ def main():
 
     print(f"Wrote {DATA_FILE}")
     print(f"Summary: {summary}")
-    print(f"Global 7d reach: {global_reach_7d:,} | avg/reel: {global_avg_per_reel_7d} | trend: {trend}")
+    print(f"Global 7d reach: {global_reach_7d:,} | avg views/reel: {global_avg_views_per_reel} | trend: {trend}")
+    print(f"Live reels: {global_post_total} total / {live_reels_per_account} per account")
     print(f"Updated at: {updated_at_display}")
 
 

@@ -219,11 +219,11 @@ function renderGlobalStats(g, updatedAt) {
   }
 
   const stats = [
-    { label: 'Total Views (all-time)', value: fmt(g.total_views), sub: 'all accounts' },
-    { label: '7-Day Reach',            value: fmt(g.reach_7d),    sub: trendPct ? `${trendArrow} ${trendPct} vs prior 7d` : 'all accounts', subColor: trendColor },
-    { label: '28-Day Reach',           value: fmt(g.reach_28d),   sub: 'all accounts' },
-    { label: 'Avg Reach / Reel',       value: g.avg_reach_per_reel_7d != null ? fmt(g.avg_reach_per_reel_7d) : '—', sub: '7-day window' },
-    { label: 'Reels (7 days)',         value: fmt(g.reels_7d),    sub: 'all accounts' },
+    { label: 'Total Views (28d)',      value: fmt(g.total_views),          sub: 'all accounts' },
+    { label: '7-Day Reach',            value: fmt(g.reach_7d),             sub: trendPct ? `${trendArrow} ${trendPct} vs prior 7d` : 'all accounts', subColor: trendColor },
+    { label: '28-Day Reach',           value: fmt(g.reach_28d),            sub: 'all accounts' },
+    { label: 'Avg Views / Reel',       value: g.avg_views_per_reel != null ? fmt(g.avg_views_per_reel) : '—', sub: `${g.live_reels_total || 0} live reels total` },
+    { label: 'Live Reels / Account',   value: fmt(g.live_reels_per_account), sub: 'avg across accounts' },
   ];
 
   document.getElementById('global-stats').innerHTML = stats.map(s => `
@@ -298,7 +298,7 @@ function renderGlobalChart(series) {
 function leaderboardRow(acc, rank, isTop) {
   const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `#${rank}`;
   const reach = fmt(acc.reach_7d);
-  const avg = acc.avg_reach_per_reel_7d != null ? fmt(acc.avg_reach_per_reel_7d) : '—';
+    const avg = acc.avg_views_per_reel != null ? fmt(acc.avg_views_per_reel) : '—';
   const handle = acc.ig_handle || acc.username;
   const url = acc.assigned_url || '—';
   const rowBg = isTop ? 'bg-emerald-950 border-emerald-900' : 'bg-red-950 border-red-900';
@@ -377,7 +377,7 @@ function sortedAccounts(accounts) {
   const a = [...accounts];
   if (currentSort === '7d')  a.sort((x,y) => (y.reach_7d||0) - (x.reach_7d||0));
   if (currentSort === 'tot') a.sort((x,y) => (y.total_views||0) - (x.total_views||0));
-  if (currentSort === 'avg') a.sort((x,y) => (y.avg_reach_per_reel_7d||0) - (x.avg_reach_per_reel_7d||0));
+  if (currentSort === 'avg') a.sort((x,y) => (y.avg_views_per_reel||0) - (x.avg_views_per_reel||0));
   if (currentSort === 'abc') a.sort((x,y) => x.username.localeCompare(y.username));
   return a;
 }
@@ -463,12 +463,12 @@ function renderCards(accounts) {
           <div class="text-xs text-gray-600">total views</div>
         </div>
         <div>
-          <div class="text-sm font-bold ${a.avg_reach_per_reel_7d ? 'text-emerald-400' : 'text-gray-600'}">${a.avg_reach_per_reel_7d != null ? fmt(a.avg_reach_per_reel_7d) : '—'}</div>
-          <div class="text-xs text-gray-600">avg/reel</div>
+          <div class="text-sm font-bold ${a.avg_views_per_reel ? 'text-emerald-400' : 'text-gray-600'}">${a.avg_views_per_reel != null ? fmt(a.avg_views_per_reel) : '—'}</div>
+          <div class="text-xs text-gray-600">views/reel</div>
         </div>
       </div>
       <div class="flex items-center justify-between mt-2">
-        <div class="text-xs text-gray-600">${a.reels_7d} reels this week</div>
+        <div class="text-xs text-gray-600">~${a.live_reels || 0} live reels total</div>
         ${sparkline(a.daily_series)}
       </div>` : (a.error_msg
         ? `<div class="mt-2 text-xs text-gray-600 truncate" title="${a.error_msg}">${a.error_msg}</div>`
