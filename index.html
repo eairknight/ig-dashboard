@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IG Account Status</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .fade-in { animation: fadeIn 0.4s ease-in; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .pulse-dot { animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen">
+
+  <!-- Password Gate -->
+  <div id="auth-gate" class="fixed inset-0 bg-gray-950 flex items-center justify-center z-50">
+    <div class="bg-gray-900 border border-gray-700 rounded-2xl p-8 w-full max-w-sm shadow-2xl">
+      <div class="text-center mb-6">
+        <div class="text-3xl mb-2">🔐</div>
+        <h1 class="text-xl font-bold text-white">IG Dashboard</h1>
+        <p class="text-gray-400 text-sm mt-1">Enter your team password</p>
+      </div>
+      <input id="pass-input" type="password" placeholder="Password"
+        class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 mb-3"
+        onkeydown="if(event.key==='Enter') tryAuth()" />
+      <div id="auth-error" class="text-red-400 text-sm text-center mb-3 hidden">Incorrect password</div>
+      <button onclick="tryAuth()"
+        class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg py-3 transition">
+        Unlock
+      </button>
+    </div>
+  </div>
+
+  <!-- Main App (hidden until auth) -->
+  <div id="app" class="hidden">
+
+    <!-- Header -->
+    <div class="border-b border-gray-800 bg-gray-900 sticky top-0 z-10">
+      <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between flex-wrap gap-3">
+        <div>
+          <h1 class="text-lg font-bold text-white tracking-tight">IG Account Status</h1>
+          <p id="last-updated" class="text-xs text-gray-500 mt-0.5">Loading...</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <button onclick="refreshData()"
+            class="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white text-sm px-4 py-2 rounded-lg transition border border-gray-700">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            Refresh
+          </button>
+          <button onclick="logout()"
+            class="text-xs text-gray-600 hover:text-gray-400 transition">
+            Lock
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary Bar -->
+    <div class="max-w-7xl mx-auto px-4 pt-5 pb-3">
+      <div id="summary-bar" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3"></div>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="max-w-7xl mx-auto px-4 pb-4">
+      <div class="flex flex-wrap gap-2" id="filter-tabs"></div>
+    </div>
+
+    <!-- Account Cards -->
+    <div class="max-w-7xl mx-auto px-4 pb-12">
+      <div id="cards-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"></div>
+      <div id="empty-msg" class="hidden text-center text-gray-600 py-16">No accounts match this filter.</div>
+    </div>
+
+  </div>
+
+  <script>
+    // ---------- Auth ----------
+    const STORAGE_KEY = 'ig_dash_auth';
+
+    async function sha256(msg) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function tryAuth() {
+      const input = document.getElementById('pass-input').value;
+      if (!input) return;
+      const hash = await sha256(input);
+      if (hash === window._passHash) {
+        localStorage.setItem(STORAGE_KEY, hash);
+        document.getElementById('auth-gate').classList.add('hidden');
+        document.getElementById('app').classList.remove('hidden');
+        document.getElementById('auth-error').classList.add('hidden');
+        loadData();
+      } else {
+        document.getElementById('auth-error').classList.remove('hidden');
+        document.getElementById('pass-input').focus();
+        document.getElementById('pass-input').select();
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    }
+
+    // ---------- Data ----------
+    let allAccounts = [];
+    let activeFilter = 'ALL';
+
+    async function refreshData() {
+      await loadData(true);
+    }
+
+    async function loadData(forceRefresh = false) {
+      const url = forceRefresh ? `data.json?t=${Date.now()}` : 'data.json';
+      try {
+        const r = await fetch(url);
+        const data = await r.json();
+
+        // Verify pass hash matches (in case password changed)
+        window._passHash = data.pass_hash;
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored !== data.pass_hash) {
+          logout();
+          return;
+        }
+
+        allAccounts = data.accounts || [];
+        renderSummary(data.summary, data.updated_at_display);
+        renderCards(allAccounts);
+        renderFilterTabs(data.summary);
+      } catch (e) {
+        document.getElementById('last-updated').textContent = 'Error loading data — ' + e.message;
+      }
+    }
+
+    // ---------- Status config ----------
+    const STATUS_CONFIG = {
+      ACTIVE:      { label: 'Active',         color: 'bg-emerald-500',   text: 'text-emerald-400',   border: 'border-emerald-900',  dot: 'bg-emerald-400' },
+      REAUTH:      { label: 'Reauth Needed',  color: 'bg-amber-500',     text: 'text-amber-400',     border: 'border-amber-900',    dot: 'bg-amber-400' },
+      CHECKPOINT:  { label: 'Checkpoint',     color: 'bg-orange-500',    text: 'text-orange-400',    border: 'border-orange-900',   dot: 'bg-orange-400' },
+      BROKEN:      { label: 'Broken Token',   color: 'bg-red-600',       text: 'text-red-400',       border: 'border-red-900',      dot: 'bg-red-500' },
+      NO_IG:       { label: 'No IG Linked',   color: 'bg-gray-600',      text: 'text-gray-400',      border: 'border-gray-700',     dot: 'bg-gray-500' },
+      BLOCKED:     { label: 'Blocked',        color: 'bg-rose-900',      text: 'text-rose-400',      border: 'border-rose-950',     dot: 'bg-rose-700' },
+    };
+
+    // ---------- Render ----------
+    function renderSummary(summary, updatedAt) {
+      document.getElementById('last-updated').textContent = `Last updated: ${updatedAt || 'unknown'}`;
+      const bar = document.getElementById('summary-bar');
+      bar.innerHTML = '';
+      for (const [status, count] of Object.entries(summary)) {
+        if (count === 0) continue;
+        const cfg = STATUS_CONFIG[status] || { label: status, color: 'bg-gray-600', text: 'text-gray-400' };
+        bar.innerHTML += `
+          <div class="bg-gray-900 border border-gray-800 rounded-xl p-4 text-center cursor-pointer hover:border-gray-600 transition"
+               onclick="setFilter('${status}')">
+            <div class="text-2xl font-bold text-white">${count}</div>
+            <div class="text-xs ${cfg.text} font-medium mt-1">${cfg.label}</div>
+          </div>`;
+      }
+      // Total
+      const total = Object.values(summary).reduce((a,b) => a+b, 0);
+      bar.innerHTML += `
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-4 text-center cursor-pointer hover:border-gray-600 transition"
+             onclick="setFilter('ALL')">
+          <div class="text-2xl font-bold text-white">${total}</div>
+          <div class="text-xs text-gray-400 font-medium mt-1">Total</div>
+        </div>`;
+    }
+
+    function renderFilterTabs(summary) {
+      const tabs = document.getElementById('filter-tabs');
+      tabs.innerHTML = '';
+      const allBtn = `<button onclick="setFilter('ALL')" id="tab-ALL"
+        class="text-sm px-4 py-1.5 rounded-full border transition font-medium ${activeFilter==='ALL' ? 'bg-white text-gray-900 border-white' : 'text-gray-400 border-gray-700 hover:border-gray-500'}">
+        All
+      </button>`;
+      tabs.innerHTML = allBtn;
+      for (const [status, count] of Object.entries(summary)) {
+        if (count === 0) continue;
+        const cfg = STATUS_CONFIG[status] || { label: status, text: 'text-gray-400', dot: 'bg-gray-500' };
+        const active = activeFilter === status;
+        tabs.innerHTML += `
+          <button onclick="setFilter('${status}')" id="tab-${status}"
+            class="flex items-center gap-1.5 text-sm px-4 py-1.5 rounded-full border transition font-medium
+              ${active ? 'bg-white text-gray-900 border-white' : `${cfg.text} border-gray-700 hover:border-gray-500`}">
+            <span class="w-2 h-2 rounded-full ${cfg.dot} ${status === 'ACTIVE' ? 'pulse-dot' : ''}"></span>
+            ${cfg.label}
+          </button>`;
+      }
+    }
+
+    function setFilter(f) {
+      activeFilter = f;
+      renderCards(allAccounts);
+      document.querySelectorAll('[id^="tab-"]').forEach(el => {
+        const isActive = el.id === `tab-${f}`;
+        el.className = el.className.replace(/(bg-white text-gray-900 border-white|text-gray-[0-9]+ border-gray-700 hover:border-gray-500|text-\w+-[0-9]+ border-gray-700 hover:border-gray-500)/g, '');
+        if (isActive) {
+          el.classList.add('bg-white', 'text-gray-900', 'border-white');
+        } else {
+          el.classList.add('text-gray-400', 'border-gray-700', 'hover:border-gray-500');
+        }
+      });
+    }
+
+    function renderCards(accounts) {
+      const grid = document.getElementById('cards-grid');
+      const empty = document.getElementById('empty-msg');
+      const filtered = activeFilter === 'ALL' ? accounts : accounts.filter(a => a.status === activeFilter);
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        empty.classList.remove('hidden');
+        return;
+      }
+      empty.classList.add('hidden');
+
+      grid.innerHTML = filtered.map(a => {
+        const cfg = STATUS_CONFIG[a.status] || STATUS_CONFIG['NO_IG'];
+        const pic = a.profile_pic
+          ? `<img src="${a.profile_pic}" class="w-14 h-14 rounded-full object-cover border-2 border-gray-700" onerror="this.style.display='none'" />`
+          : `<div class="w-14 h-14 rounded-full bg-gray-700 flex items-center justify-center text-gray-400 text-xl font-bold border-2 border-gray-600">${(a.ig_handle||a.username||'?')[0].toUpperCase()}</div>`;
+
+        const handle = a.ig_handle ? `<span class="text-xs text-gray-500">@${a.ig_handle}</span>` : `<span class="text-xs text-gray-600 italic">no handle</span>`;
+        const err = a.error_msg ? `<div class="mt-2 text-xs text-gray-600 truncate" title="${a.error_msg}">${a.error_msg}</div>` : '';
+
+        return `
+          <div class="bg-gray-900 border ${cfg.border} rounded-xl p-4 fade-in hover:border-gray-600 transition flex flex-col gap-3">
+            <div class="flex items-center gap-3">
+              ${pic}
+              <div class="min-w-0 flex-1">
+                <div class="font-semibold text-white text-sm truncate">${a.display_name || a.ig_handle || a.username}</div>
+                ${handle}
+                <div class="text-xs text-gray-600 mt-0.5">slot ${a.username}</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full ${cfg.color} bg-opacity-20 ${cfg.text}">
+                <span class="w-1.5 h-1.5 rounded-full ${cfg.dot} ${a.status === 'ACTIVE' ? 'pulse-dot' : ''}"></span>
+                ${cfg.label}
+              </span>
+            </div>
+            ${err}
+          </div>`;
+      }).join('');
+    }
+
+    // ---------- Boot ----------
+    async function boot() {
+      // Load data.json first to get pass_hash
+      let passHash = null;
+      try {
+        const r = await fetch('data.json');
+        const data = await r.json();
+        passHash = data.pass_hash;
+        window._passHash = passHash;
+      } catch (e) {
+        window._passHash = null;
+      }
+
+      // Check stored auth
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored && stored === passHash) {
+        document.getElementById('auth-gate').classList.add('hidden');
+        document.getElementById('app').classList.remove('hidden');
+        loadData();
+      }
+      // else password gate stays visible
+    }
+
+    boot();
+  </script>
+</body>
+</html>
