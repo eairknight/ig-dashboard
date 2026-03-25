@@ -5,279 +5,515 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>IG Account Status</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     body { font-family: 'Inter', system-ui, sans-serif; }
-    .fade-in { animation: fadeIn 0.4s ease-in; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { animation: fadeIn 0.35s ease-in; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
     .pulse-dot { animation: pulse 2s infinite; }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+    .sort-active { background: rgba(99,102,241,.18); color: #a5b4fc; border-color: #6366f1; }
   </style>
 </head>
 <body class="bg-gray-950 text-gray-100 min-h-screen">
 
-  <!-- Password Gate -->
-  <div id="auth-gate" class="fixed inset-0 bg-gray-950 flex items-center justify-center z-50">
-    <div class="bg-gray-900 border border-gray-700 rounded-2xl p-8 w-full max-w-sm shadow-2xl">
-      <div class="text-center mb-6">
-        <div class="text-3xl mb-2">🔐</div>
-        <h1 class="text-xl font-bold text-white">IG Dashboard</h1>
-        <p class="text-gray-400 text-sm mt-1">Enter your team password</p>
+<!-- ─── Password Gate ─────────────────────────────────────────────────── -->
+<div id="auth-gate" class="fixed inset-0 bg-gray-950 flex items-center justify-center z-50">
+  <div class="bg-gray-900 border border-gray-700 rounded-2xl p-8 w-full max-w-sm shadow-2xl">
+    <div class="text-center mb-6">
+      <div class="text-3xl mb-2">🔐</div>
+      <h1 class="text-xl font-bold text-white">IG Dashboard</h1>
+      <p class="text-gray-400 text-sm mt-1">Enter your team password</p>
+    </div>
+    <input id="pass-input" type="password" placeholder="Password"
+      class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 mb-3"
+      onkeydown="if(event.key==='Enter') tryAuth()" />
+    <div id="auth-error" class="text-red-400 text-sm text-center mb-3 hidden">Incorrect password</div>
+    <button onclick="tryAuth()"
+      class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg py-3 transition">
+      Unlock
+    </button>
+  </div>
+</div>
+
+<!-- ─── Main App ──────────────────────────────────────────────────────── -->
+<div id="app" class="hidden">
+
+  <!-- Header -->
+  <div class="border-b border-gray-800 bg-gray-900 sticky top-0 z-10">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between flex-wrap gap-3">
+      <div>
+        <h1 class="text-base font-bold text-white tracking-tight">IG Account Status</h1>
+        <p id="last-updated" class="text-xs text-gray-500 mt-0.5">Loading...</p>
       </div>
-      <input id="pass-input" type="password" placeholder="Password"
-        class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 mb-3"
-        onkeydown="if(event.key==='Enter') tryAuth()" />
-      <div id="auth-error" class="text-red-400 text-sm text-center mb-3 hidden">Incorrect password</div>
-      <button onclick="tryAuth()"
-        class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg py-3 transition">
-        Unlock
-      </button>
+      <div class="flex items-center gap-3">
+        <button onclick="refreshData()"
+          class="flex items-center gap-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white text-xs px-3 py-1.5 rounded-lg transition border border-gray-700">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+          </svg>
+          Refresh cache
+        </button>
+        <a href="https://github.com/eairknight/ig-dashboard/actions" target="_blank"
+          class="flex items-center gap-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white text-xs px-3 py-1.5 rounded-lg transition border border-gray-700">
+          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          Trigger update
+        </a>
+        <button onclick="logout()" class="text-xs text-gray-600 hover:text-gray-400 transition">Lock</button>
+      </div>
     </div>
   </div>
 
-  <!-- Main App (hidden until auth) -->
-  <div id="app" class="hidden">
+  <!-- Global Stats -->
+  <div class="max-w-7xl mx-auto px-4 pt-5">
+    <div id="global-stats" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-5"></div>
+  </div>
 
-    <!-- Header -->
-    <div class="border-b border-gray-800 bg-gray-900 sticky top-0 z-10">
-      <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between flex-wrap gap-3">
+  <!-- Global Trend Chart -->
+  <div class="max-w-7xl mx-auto px-4 mb-5">
+    <div class="bg-gray-900 border border-gray-800 rounded-xl p-4">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-sm font-semibold text-white">All Accounts — Daily Reach & Avg Reach/Reel (28 days)</h2>
+        <span id="trend-badge" class="text-xs font-medium px-2.5 py-1 rounded-full hidden"></span>
+      </div>
+      <div class="relative" style="height:180px">
+        <canvas id="global-chart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaderboard -->
+  <div class="max-w-7xl mx-auto px-4 mb-5">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-4">
+        <h2 class="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+          <span class="text-green-400">↑</span> Top 5 Performers <span class="text-xs text-gray-500 font-normal">(7-day reach)</span>
+        </h2>
+        <div id="top5" class="space-y-2"></div>
+      </div>
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-4">
+        <h2 class="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+          <span class="text-red-400">↓</span> Bottom 5 Performers <span class="text-xs text-gray-500 font-normal">(7-day reach)</span>
+        </h2>
+        <div id="bottom5" class="space-y-2"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter + Sort Bar -->
+  <div class="max-w-7xl mx-auto px-4 mb-4">
+    <div class="flex flex-wrap items-center gap-3">
+      <div id="filter-tabs" class="flex flex-wrap gap-2"></div>
+      <div class="flex-1"></div>
+      <div class="flex items-center gap-1 text-xs text-gray-500">
+        Sort:
+        <button id="sort-7d"   onclick="setSort('7d')"   class="sort-btn px-2.5 py-1 rounded border border-gray-700 text-gray-400 hover:text-white transition sort-active">7d reach</button>
+        <button id="sort-tot"  onclick="setSort('tot')"  class="sort-btn px-2.5 py-1 rounded border border-gray-700 text-gray-400 hover:text-white transition">Total views</button>
+        <button id="sort-avg"  onclick="setSort('avg')"  class="sort-btn px-2.5 py-1 rounded border border-gray-700 text-gray-400 hover:text-white transition">Avg/reel</button>
+        <button id="sort-abc"  onclick="setSort('abc')"  class="sort-btn px-2.5 py-1 rounded border border-gray-700 text-gray-400 hover:text-white transition">A–Z</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Account Cards -->
+  <div class="max-w-7xl mx-auto px-4 pb-12">
+    <div id="cards-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"></div>
+    <div id="empty-msg" class="hidden text-center text-gray-600 py-16">No accounts match this filter.</div>
+  </div>
+
+</div><!-- /app -->
+
+<script>
+// ─── Auth ─────────────────────────────────────────────────────────────
+const STORAGE_KEY = 'ig_dash_auth';
+
+async function sha256(msg) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+async function tryAuth() {
+  const input = document.getElementById('pass-input').value;
+  if (!input) return;
+  const hash = await sha256(input);
+  if (hash === window._passHash) {
+    localStorage.setItem(STORAGE_KEY, hash);
+    document.getElementById('auth-gate').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+    document.getElementById('auth-error').classList.add('hidden');
+    loadData();
+  } else {
+    document.getElementById('auth-error').classList.remove('hidden');
+    document.getElementById('pass-input').focus();
+    document.getElementById('pass-input').select();
+  }
+}
+
+function logout() {
+  localStorage.removeItem(STORAGE_KEY);
+  location.reload();
+}
+
+// ─── Data ─────────────────────────────────────────────────────────────
+let allAccounts = [];
+let activeFilter = 'ALL';
+let currentSort = '7d';
+let globalChart = null;
+
+async function refreshData() { await loadData(true); }
+
+async function loadData(forceRefresh = false) {
+  const url = forceRefresh ? `data.json?t=${Date.now()}` : 'data.json';
+  try {
+    const r = await fetch(url);
+    const data = await r.json();
+    window._passHash = data.pass_hash;
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored !== data.pass_hash) { logout(); return; }
+
+    allAccounts = data.accounts || [];
+    renderGlobalStats(data.global || {}, data.updated_at_display);
+    renderGlobalChart(data.global?.series || []);
+    renderLeaderboard(allAccounts);
+    renderFilterTabs(data.summary || {});
+    renderCards(allAccounts);
+  } catch(e) {
+    document.getElementById('last-updated').textContent = 'Error loading data — ' + e.message;
+  }
+}
+
+// ─── Status config ─────────────────────────────────────────────────────
+const SC = {
+  ACTIVE:     { label:'Active',        color:'bg-emerald-500', text:'text-emerald-400', border:'border-emerald-900', dot:'bg-emerald-400' },
+  REAUTH:     { label:'Reauth Needed', color:'bg-amber-500',   text:'text-amber-400',   border:'border-amber-900',  dot:'bg-amber-400' },
+  CHECKPOINT: { label:'Checkpoint',    color:'bg-orange-500',  text:'text-orange-400',  border:'border-orange-900', dot:'bg-orange-400' },
+  BROKEN:     { label:'Broken Token',  color:'bg-red-600',     text:'text-red-400',     border:'border-red-900',    dot:'bg-red-500' },
+  NO_IG:      { label:'No IG Linked',  color:'bg-gray-600',    text:'text-gray-400',    border:'border-gray-700',   dot:'bg-gray-500' },
+  BLOCKED:    { label:'Blocked',       color:'bg-rose-900',    text:'text-rose-400',    border:'border-rose-950',   dot:'bg-rose-700' },
+};
+
+function fmt(n) {
+  if (n == null) return '—';
+  if (n >= 1000000) return (n/1000000).toFixed(1)+'M';
+  if (n >= 1000) return (n/1000).toFixed(1)+'K';
+  return String(Math.round(n));
+}
+
+// ─── Global Stats Bar ──────────────────────────────────────────────────
+function renderGlobalStats(g, updatedAt) {
+  document.getElementById('last-updated').textContent =
+    `Last updated: ${updatedAt || 'unknown'} · Updates daily at 9 AM EST`;
+
+  const trendColor = g.trend === 'up' ? 'text-emerald-400' : g.trend === 'down' ? 'text-red-400' : 'text-gray-400';
+  const trendArrow = g.trend === 'up' ? '↑' : g.trend === 'down' ? '↓' : '→';
+  const trendPct = g.trend_pct != null ? `${g.trend_pct > 0 ? '+' : ''}${g.trend_pct}%` : '';
+
+  const badge = document.getElementById('trend-badge');
+  if (g.trend) {
+    badge.className = `text-xs font-medium px-2.5 py-1 rounded-full ${trendColor} bg-gray-800`;
+    badge.textContent = `${trendArrow} ${trendPct} vs prior 7 days`;
+    badge.classList.remove('hidden');
+  }
+
+  const stats = [
+    { label: 'Total Views (all-time)', value: fmt(g.total_views), sub: 'all accounts' },
+    { label: '7-Day Reach',            value: fmt(g.reach_7d),    sub: trendPct ? `${trendArrow} ${trendPct} vs prior 7d` : 'all accounts', subColor: trendColor },
+    { label: '28-Day Reach',           value: fmt(g.reach_28d),   sub: 'all accounts' },
+    { label: 'Avg Reach / Reel',       value: g.avg_reach_per_reel_7d != null ? fmt(g.avg_reach_per_reel_7d) : '—', sub: '7-day window' },
+    { label: 'Reels (7 days)',         value: fmt(g.reels_7d),    sub: 'all accounts' },
+  ];
+
+  document.getElementById('global-stats').innerHTML = stats.map(s => `
+    <div class="bg-gray-900 border border-gray-800 rounded-xl p-4">
+      <div class="text-xl font-bold text-white">${s.value}</div>
+      <div class="text-xs text-gray-400 font-medium mt-0.5">${s.label}</div>
+      <div class="text-xs ${s.subColor || 'text-gray-600'} mt-0.5">${s.sub}</div>
+    </div>`).join('');
+}
+
+// ─── Global Chart ──────────────────────────────────────────────────────
+function renderGlobalChart(series) {
+  const ctx = document.getElementById('global-chart').getContext('2d');
+  if (globalChart) { globalChart.destroy(); globalChart = null; }
+
+  const labels = series.map(d => d.date.slice(5));  // MM-DD
+  const reachData = series.map(d => d.reach);
+  const avgData = series.map(d => d.avg);
+
+  globalChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Daily Reach',
+          data: reachData,
+          backgroundColor: 'rgba(99,102,241,0.35)',
+          borderColor: 'rgba(99,102,241,0.7)',
+          borderWidth: 1,
+          borderRadius: 2,
+          yAxisID: 'y',
+        },
+        {
+          label: 'Avg Reach / Reel',
+          data: avgData,
+          type: 'line',
+          borderColor: '#34d399',
+          backgroundColor: 'rgba(52,211,153,0.12)',
+          borderWidth: 2,
+          pointRadius: 2,
+          tension: 0.35,
+          yAxisID: 'y2',
+          spanGaps: true,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { labels: { color: '#9ca3af', font: { size: 11 }, boxWidth: 12 } },
+        tooltip: {
+          backgroundColor: '#1f2937',
+          borderColor: '#374151',
+          borderWidth: 1,
+          titleColor: '#e5e7eb',
+          bodyColor: '#9ca3af',
+        },
+      },
+      scales: {
+        x: { ticks: { color: '#6b7280', font: { size: 10 }, maxTicksLimit: 14 }, grid: { color: '#1f2937' } },
+        y: { ticks: { color: '#6b7280', font: { size: 10 } }, grid: { color: '#1f2937' }, title: { display: true, text: 'Reach', color: '#6b7280', font: { size: 10 } } },
+        y2: { position: 'right', ticks: { color: '#34d399', font: { size: 10 } }, grid: { drawOnChartArea: false }, title: { display: true, text: 'Avg/Reel', color: '#34d399', font: { size: 10 } } },
+      },
+    },
+  });
+}
+
+// ─── Leaderboard ───────────────────────────────────────────────────────
+function leaderboardRow(acc, rank, isTop) {
+  const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `#${rank}`;
+  const reach = fmt(acc.reach_7d);
+  const avg = acc.avg_reach_per_reel_7d != null ? fmt(acc.avg_reach_per_reel_7d) : '—';
+  const handle = acc.ig_handle || acc.username;
+  const url = acc.assigned_url || '—';
+  const rowBg = isTop ? 'bg-emerald-950 border-emerald-900' : 'bg-red-950 border-red-900';
+  return `
+    <div class="flex items-center gap-3 ${rowBg} border rounded-lg px-3 py-2 text-sm">
+      <span class="text-base w-7 text-center shrink-0">${medal}</span>
+      <div class="min-w-0 flex-1">
+        <div class="font-medium text-white truncate">${handle}</div>
+        <div class="text-xs text-gray-500">${url}</div>
+      </div>
+      <div class="text-right shrink-0">
+        <div class="font-semibold ${isTop ? 'text-emerald-400' : 'text-red-400'}">${reach}</div>
+        <div class="text-xs text-gray-500">${avg}/reel</div>
+      </div>
+    </div>`;
+}
+
+function renderLeaderboard(accounts) {
+  const active = accounts.filter(a => a.status === 'ACTIVE' && a.reach_7d > 0);
+  active.sort((a,b) => b.reach_7d - a.reach_7d);
+  const top = active.slice(0, 5);
+  const bottom = active.slice(-5).reverse();
+
+  document.getElementById('top5').innerHTML = top.length
+    ? top.map((a,i) => leaderboardRow(a, i+1, true)).join('')
+    : '<p class="text-gray-600 text-sm text-center py-4">No data yet</p>';
+
+  document.getElementById('bottom5').innerHTML = bottom.length
+    ? bottom.map((a,i) => leaderboardRow(a, active.length - i, false)).join('')
+    : '<p class="text-gray-600 text-sm text-center py-4">No data yet</p>';
+}
+
+// ─── Filter Tabs ───────────────────────────────────────────────────────
+function renderFilterTabs(summary) {
+  const tabs = document.getElementById('filter-tabs');
+  const total = Object.values(summary).reduce((a,b)=>a+b,0);
+  let html = tabBtn('ALL', `All (${total})`, activeFilter === 'ALL');
+  for (const [status, count] of Object.entries(summary)) {
+    if (!count) continue;
+    const cfg = SC[status] || SC.NO_IG;
+    html += tabBtn(status, `${cfg.label} (${count})`, activeFilter === status, cfg.dot);
+  }
+  tabs.innerHTML = html;
+}
+
+function tabBtn(id, label, active, dotClass='') {
+  const base = 'flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border transition font-medium cursor-pointer';
+  const cls = active
+    ? `${base} bg-white text-gray-900 border-white`
+    : `${base} text-gray-400 border-gray-700 hover:border-gray-500`;
+  const dot = dotClass ? `<span class="w-1.5 h-1.5 rounded-full ${dotClass}"></span>` : '';
+  return `<button class="${cls}" onclick="setFilter('${id}')">${dot}${label}</button>`;
+}
+
+function setFilter(f) {
+  activeFilter = f;
+  renderFilterTabs(buildSummary(allAccounts));
+  renderCards(allAccounts);
+}
+
+function buildSummary(accounts) {
+  const s = { ACTIVE:0, REAUTH:0, CHECKPOINT:0, BROKEN:0, NO_IG:0, BLOCKED:0 };
+  accounts.forEach(a => { if (s[a.status] !== undefined) s[a.status]++; });
+  return s;
+}
+
+// ─── Sort ──────────────────────────────────────────────────────────────
+function setSort(s) {
+  currentSort = s;
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('sort-active'));
+  document.getElementById(`sort-${s}`).classList.add('sort-active');
+  renderCards(allAccounts);
+}
+
+function sortedAccounts(accounts) {
+  const a = [...accounts];
+  if (currentSort === '7d')  a.sort((x,y) => (y.reach_7d||0) - (x.reach_7d||0));
+  if (currentSort === 'tot') a.sort((x,y) => (y.total_views||0) - (x.total_views||0));
+  if (currentSort === 'avg') a.sort((x,y) => (y.avg_reach_per_reel_7d||0) - (x.avg_reach_per_reel_7d||0));
+  if (currentSort === 'abc') a.sort((x,y) => x.username.localeCompare(y.username));
+  return a;
+}
+
+// ─── Performance color ─────────────────────────────────────────────────
+function perfBorder(account, allActive) {
+  if (account.status !== 'ACTIVE') return SC[account.status]?.border || 'border-gray-700';
+  const vals = allActive.map(a => a.reach_7d).filter(v => v > 0).sort((a,b)=>a-b);
+  if (!vals.length) return 'border-indigo-900';
+  const p33 = vals[Math.floor(vals.length * 0.33)];
+  const p66 = vals[Math.floor(vals.length * 0.66)];
+  if (account.reach_7d >= p66) return 'border-emerald-600';
+  if (account.reach_7d >= p33) return 'border-amber-700';
+  return 'border-red-800';
+}
+
+// ─── Sparkline (7-day inline SVG bars) ────────────────────────────────
+function sparkline(dailySeries) {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const days = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(today); d.setDate(d.getDate() - i);
+    const key = d.toISOString().slice(0,10);
+    days.push(key);
+  }
+  const vals = days.map(k => {
+    const entry = (dailySeries||[]).find(d => d.date === k);
+    return entry ? (entry.reach||0) : 0;
+  });
+  const maxV = Math.max(...vals, 1);
+  const w = 56, h = 24, bw = 6, gap = 2;
+  const bars = vals.map((v, i) => {
+    const bh = Math.max(2, Math.round((v / maxV) * h));
+    const x = i * (bw + gap);
+    const y = h - bh;
+    const fill = v > 0 ? '#6366f1' : '#374151';
+    return `<rect x="${x}" y="${y}" width="${bw}" height="${bh}" rx="1" fill="${fill}"/>`;
+  }).join('');
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">${bars}</svg>`;
+}
+
+// ─── Account Cards ─────────────────────────────────────────────────────
+function renderCards(accounts) {
+  const grid = document.getElementById('cards-grid');
+  const empty = document.getElementById('empty-msg');
+  const filtered = activeFilter === 'ALL' ? accounts : accounts.filter(a => a.status === activeFilter);
+  const sorted = sortedAccounts(filtered);
+  const activeAccounts = accounts.filter(a => a.status === 'ACTIVE');
+
+  if (!sorted.length) {
+    grid.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+
+  grid.innerHTML = sorted.map(a => {
+    const cfg = SC[a.status] || SC.NO_IG;
+    const border = perfBorder(a, activeAccounts);
+    const pic = a.profile_pic
+      ? `<img src="${a.profile_pic}" class="w-12 h-12 rounded-full object-cover border-2 border-gray-700 shrink-0" onerror="this.style.display='none'">`
+      : `<div class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center text-gray-400 text-lg font-bold border-2 border-gray-600 shrink-0">${(a.ig_handle||a.username||'?')[0].toUpperCase()}</div>`;
+
+    const handle = a.ig_handle
+      ? `<div class="text-xs text-gray-500 truncate">@${a.ig_handle}</div>`
+      : `<div class="text-xs text-gray-600 italic">no handle</div>`;
+
+    const urlTag = a.assigned_url
+      ? `<div class="flex items-center gap-1 mt-1">
+           <svg class="w-3 h-3 text-indigo-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+           <span class="text-xs text-indigo-300 truncate">${a.assigned_url}</span>
+         </div>`
+      : '';
+
+    const statsRow = a.status === 'ACTIVE' ? `
+      <div class="grid grid-cols-3 gap-1 mt-2 pt-2 border-t border-gray-800 text-center">
         <div>
-          <h1 class="text-lg font-bold text-white tracking-tight">IG Account Status</h1>
-          <p id="last-updated" class="text-xs text-gray-500 mt-0.5">Loading...</p>
+          <div class="text-sm font-bold text-white">${fmt(a.reach_7d)}</div>
+          <div class="text-xs text-gray-600">7d reach</div>
         </div>
-        <div class="flex items-center gap-3">
-          <button onclick="refreshData()"
-            class="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white text-sm px-4 py-2 rounded-lg transition border border-gray-700">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-            Refresh
-          </button>
-          <button onclick="logout()"
-            class="text-xs text-gray-600 hover:text-gray-400 transition">
-            Lock
-          </button>
+        <div>
+          <div class="text-sm font-bold text-white">${fmt(a.total_views)}</div>
+          <div class="text-xs text-gray-600">total views</div>
+        </div>
+        <div>
+          <div class="text-sm font-bold ${a.avg_reach_per_reel_7d ? 'text-emerald-400' : 'text-gray-600'}">${a.avg_reach_per_reel_7d != null ? fmt(a.avg_reach_per_reel_7d) : '—'}</div>
+          <div class="text-xs text-gray-600">avg/reel</div>
         </div>
       </div>
-    </div>
+      <div class="flex items-center justify-between mt-2">
+        <div class="text-xs text-gray-600">${a.reels_7d} reels this week</div>
+        ${sparkline(a.daily_series)}
+      </div>` : (a.error_msg
+        ? `<div class="mt-2 text-xs text-gray-600 truncate" title="${a.error_msg}">${a.error_msg}</div>`
+        : '');
 
-    <!-- Summary Bar -->
-    <div class="max-w-7xl mx-auto px-4 pt-5 pb-3">
-      <div id="summary-bar" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3"></div>
-    </div>
-
-    <!-- Filter Tabs -->
-    <div class="max-w-7xl mx-auto px-4 pb-4">
-      <div class="flex flex-wrap gap-2" id="filter-tabs"></div>
-    </div>
-
-    <!-- Account Cards -->
-    <div class="max-w-7xl mx-auto px-4 pb-12">
-      <div id="cards-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"></div>
-      <div id="empty-msg" class="hidden text-center text-gray-600 py-16">No accounts match this filter.</div>
-    </div>
-
-  </div>
-
-  <script>
-    // ---------- Auth ----------
-    const STORAGE_KEY = 'ig_dash_auth';
-
-    async function sha256(msg) {
-      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
-      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-
-    async function tryAuth() {
-      const input = document.getElementById('pass-input').value;
-      if (!input) return;
-      const hash = await sha256(input);
-      if (hash === window._passHash) {
-        localStorage.setItem(STORAGE_KEY, hash);
-        document.getElementById('auth-gate').classList.add('hidden');
-        document.getElementById('app').classList.remove('hidden');
-        document.getElementById('auth-error').classList.add('hidden');
-        loadData();
-      } else {
-        document.getElementById('auth-error').classList.remove('hidden');
-        document.getElementById('pass-input').focus();
-        document.getElementById('pass-input').select();
-      }
-    }
-
-    function logout() {
-      localStorage.removeItem(STORAGE_KEY);
-      location.reload();
-    }
-
-    // ---------- Data ----------
-    let allAccounts = [];
-    let activeFilter = 'ALL';
-
-    async function refreshData() {
-      await loadData(true);
-    }
-
-    async function loadData(forceRefresh = false) {
-      const url = forceRefresh ? `data.json?t=${Date.now()}` : 'data.json';
-      try {
-        const r = await fetch(url);
-        const data = await r.json();
-
-        // Verify pass hash matches (in case password changed)
-        window._passHash = data.pass_hash;
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored !== data.pass_hash) {
-          logout();
-          return;
-        }
-
-        allAccounts = data.accounts || [];
-        renderSummary(data.summary, data.updated_at_display);
-        renderCards(allAccounts);
-        renderFilterTabs(data.summary);
-      } catch (e) {
-        document.getElementById('last-updated').textContent = 'Error loading data — ' + e.message;
-      }
-    }
-
-    // ---------- Status config ----------
-    const STATUS_CONFIG = {
-      ACTIVE:      { label: 'Active',         color: 'bg-emerald-500',   text: 'text-emerald-400',   border: 'border-emerald-900',  dot: 'bg-emerald-400' },
-      REAUTH:      { label: 'Reauth Needed',  color: 'bg-amber-500',     text: 'text-amber-400',     border: 'border-amber-900',    dot: 'bg-amber-400' },
-      CHECKPOINT:  { label: 'Checkpoint',     color: 'bg-orange-500',    text: 'text-orange-400',    border: 'border-orange-900',   dot: 'bg-orange-400' },
-      BROKEN:      { label: 'Broken Token',   color: 'bg-red-600',       text: 'text-red-400',       border: 'border-red-900',      dot: 'bg-red-500' },
-      NO_IG:       { label: 'No IG Linked',   color: 'bg-gray-600',      text: 'text-gray-400',      border: 'border-gray-700',     dot: 'bg-gray-500' },
-      BLOCKED:     { label: 'Blocked',        color: 'bg-rose-900',      text: 'text-rose-400',      border: 'border-rose-950',     dot: 'bg-rose-700' },
-    };
-
-    // ---------- Render ----------
-    function renderSummary(summary, updatedAt) {
-      document.getElementById('last-updated').textContent = `Last updated: ${updatedAt || 'unknown'}`;
-      const bar = document.getElementById('summary-bar');
-      bar.innerHTML = '';
-      for (const [status, count] of Object.entries(summary)) {
-        if (count === 0) continue;
-        const cfg = STATUS_CONFIG[status] || { label: status, color: 'bg-gray-600', text: 'text-gray-400' };
-        bar.innerHTML += `
-          <div class="bg-gray-900 border border-gray-800 rounded-xl p-4 text-center cursor-pointer hover:border-gray-600 transition"
-               onclick="setFilter('${status}')">
-            <div class="text-2xl font-bold text-white">${count}</div>
-            <div class="text-xs ${cfg.text} font-medium mt-1">${cfg.label}</div>
-          </div>`;
-      }
-      // Total
-      const total = Object.values(summary).reduce((a,b) => a+b, 0);
-      bar.innerHTML += `
-        <div class="bg-gray-900 border border-gray-800 rounded-xl p-4 text-center cursor-pointer hover:border-gray-600 transition"
-             onclick="setFilter('ALL')">
-          <div class="text-2xl font-bold text-white">${total}</div>
-          <div class="text-xs text-gray-400 font-medium mt-1">Total</div>
-        </div>`;
-    }
-
-    function renderFilterTabs(summary) {
-      const tabs = document.getElementById('filter-tabs');
-      tabs.innerHTML = '';
-      const allBtn = `<button onclick="setFilter('ALL')" id="tab-ALL"
-        class="text-sm px-4 py-1.5 rounded-full border transition font-medium ${activeFilter==='ALL' ? 'bg-white text-gray-900 border-white' : 'text-gray-400 border-gray-700 hover:border-gray-500'}">
-        All
-      </button>`;
-      tabs.innerHTML = allBtn;
-      for (const [status, count] of Object.entries(summary)) {
-        if (count === 0) continue;
-        const cfg = STATUS_CONFIG[status] || { label: status, text: 'text-gray-400', dot: 'bg-gray-500' };
-        const active = activeFilter === status;
-        tabs.innerHTML += `
-          <button onclick="setFilter('${status}')" id="tab-${status}"
-            class="flex items-center gap-1.5 text-sm px-4 py-1.5 rounded-full border transition font-medium
-              ${active ? 'bg-white text-gray-900 border-white' : `${cfg.text} border-gray-700 hover:border-gray-500`}">
-            <span class="w-2 h-2 rounded-full ${cfg.dot} ${status === 'ACTIVE' ? 'pulse-dot' : ''}"></span>
+    return `
+      <div class="bg-gray-900 border-2 ${border} rounded-xl p-3 fade-in flex flex-col gap-2">
+        <div class="flex items-start gap-2">
+          ${pic}
+          <div class="min-w-0 flex-1">
+            <div class="font-semibold text-white text-sm truncate">${a.display_name || a.ig_handle || a.username}</div>
+            ${handle}
+            <div class="text-xs text-gray-700">slot ${a.username}</div>
+            ${urlTag}
+          </div>
+        </div>
+        <div>
+          <span class="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full ${cfg.color} bg-opacity-20 ${cfg.text}">
+            <span class="w-1.5 h-1.5 rounded-full ${cfg.dot} ${a.status==='ACTIVE'?'pulse-dot':''}"></span>
             ${cfg.label}
-          </button>`;
-      }
+          </span>
+        </div>
+        ${statsRow}
+      </div>`;
+  }).join('');
+}
+
+// ─── Boot ──────────────────────────────────────────────────────────────
+async function boot() {
+  try {
+    const r = await fetch('data.json');
+    const data = await r.json();
+    window._passHash = data.pass_hash;
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored && stored === window._passHash) {
+      document.getElementById('auth-gate').classList.add('hidden');
+      document.getElementById('app').classList.remove('hidden');
+      loadData();
     }
+  } catch(e) {
+    window._passHash = null;
+  }
+}
 
-    function setFilter(f) {
-      activeFilter = f;
-      renderCards(allAccounts);
-      document.querySelectorAll('[id^="tab-"]').forEach(el => {
-        const isActive = el.id === `tab-${f}`;
-        el.className = el.className.replace(/(bg-white text-gray-900 border-white|text-gray-[0-9]+ border-gray-700 hover:border-gray-500|text-\w+-[0-9]+ border-gray-700 hover:border-gray-500)/g, '');
-        if (isActive) {
-          el.classList.add('bg-white', 'text-gray-900', 'border-white');
-        } else {
-          el.classList.add('text-gray-400', 'border-gray-700', 'hover:border-gray-500');
-        }
-      });
-    }
-
-    function renderCards(accounts) {
-      const grid = document.getElementById('cards-grid');
-      const empty = document.getElementById('empty-msg');
-      const filtered = activeFilter === 'ALL' ? accounts : accounts.filter(a => a.status === activeFilter);
-
-      if (filtered.length === 0) {
-        grid.innerHTML = '';
-        empty.classList.remove('hidden');
-        return;
-      }
-      empty.classList.add('hidden');
-
-      grid.innerHTML = filtered.map(a => {
-        const cfg = STATUS_CONFIG[a.status] || STATUS_CONFIG['NO_IG'];
-        const pic = a.profile_pic
-          ? `<img src="${a.profile_pic}" class="w-14 h-14 rounded-full object-cover border-2 border-gray-700" onerror="this.style.display='none'" />`
-          : `<div class="w-14 h-14 rounded-full bg-gray-700 flex items-center justify-center text-gray-400 text-xl font-bold border-2 border-gray-600">${(a.ig_handle||a.username||'?')[0].toUpperCase()}</div>`;
-
-        const handle = a.ig_handle ? `<span class="text-xs text-gray-500">@${a.ig_handle}</span>` : `<span class="text-xs text-gray-600 italic">no handle</span>`;
-        const err = a.error_msg ? `<div class="mt-2 text-xs text-gray-600 truncate" title="${a.error_msg}">${a.error_msg}</div>` : '';
-
-        return `
-          <div class="bg-gray-900 border ${cfg.border} rounded-xl p-4 fade-in hover:border-gray-600 transition flex flex-col gap-3">
-            <div class="flex items-center gap-3">
-              ${pic}
-              <div class="min-w-0 flex-1">
-                <div class="font-semibold text-white text-sm truncate">${a.display_name || a.ig_handle || a.username}</div>
-                ${handle}
-                <div class="text-xs text-gray-600 mt-0.5">slot ${a.username}</div>
-              </div>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full ${cfg.color} bg-opacity-20 ${cfg.text}">
-                <span class="w-1.5 h-1.5 rounded-full ${cfg.dot} ${a.status === 'ACTIVE' ? 'pulse-dot' : ''}"></span>
-                ${cfg.label}
-              </span>
-            </div>
-            ${err}
-          </div>`;
-      }).join('');
-    }
-
-    // ---------- Boot ----------
-    async function boot() {
-      // Load data.json first to get pass_hash
-      let passHash = null;
-      try {
-        const r = await fetch('data.json');
-        const data = await r.json();
-        passHash = data.pass_hash;
-        window._passHash = passHash;
-      } catch (e) {
-        window._passHash = null;
-      }
-
-      // Check stored auth
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored && stored === passHash) {
-        document.getElementById('auth-gate').classList.add('hidden');
-        document.getElementById('app').classList.remove('hidden');
-        loadData();
-      }
-      // else password gate stays visible
-    }
-
-    boot();
-  </script>
+boot();
+</script>
 </body>
 </html>
