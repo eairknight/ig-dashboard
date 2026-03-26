@@ -1,29 +1,25 @@
 {
-  "updated_at": "2026-03-25T19:03:39Z",
-  "updated_at_display": "Wednesday, Mar 25 at 3:03 PM EST",
+  "updated_at": "2026-03-26T15:05:32Z",
+  "updated_at_display": "Thursday, Mar 26 at 11:05 AM EST",
   "pass_hash": "4daac52a5dd9881c2ee3d507bb82b536dd268d0257142270748a82458dfb8c04",
   "summary": {
-    "ACTIVE": 23,
+    "ACTIVE": 24,
     "REAUTH": 0,
     "CHECKPOINT": 0,
     "BROKEN": 0,
-    "NO_IG": 0,
+    "NO_IG": 1,
     "BLOCKED": 0
   },
   "global": {
-    "total_views": 12687,
-    "reach_7d": 9850,
-    "reach_28d": 9874,
+    "total_views": 13276,
+    "reach_7d": 10188,
+    "reach_28d": 10214,
     "trend": "up",
-    "trend_pct": 89445.5,
+    "trend_pct": 67820.0,
     "series": [
       {
-        "date": "2026-02-25",
-        "reach": 1.0
-      },
-      {
         "date": "2026-02-26",
-        "reach": 1.0
+        "reach": 0.0
       },
       {
         "date": "2026-02-27",
@@ -119,157 +115,44 @@
       },
       {
         "date": "2026-03-22",
-        "reach": 133.0
+        "reach": 1.0
       },
       {
         "date": "2026-03-23",
-        "reach": 2049.0
+        "reach": 1847.0
       },
       {
         "date": "2026-03-24",
-        "reach": 3924.0
+        "reach": 3589.0
       },
       {
         "date": "2026-03-25",
-        "reach": 3740.0
+        "reach": 4567.0
+      },
+      {
+        "date": "2026-03-26",
+        "reach": 184.0
       }
     ]
   },
   "accounts": [
     {
       "username": "002",
-      "ig_handle": "rollenzurich",
-      "display_name": "rollenzurich",
-      "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post/0718fec1e28c48358325e6d044140e3e.jpg",
-      "status": "ACTIVE",
+      "ig_handle": "",
+      "display_name": "",
+      "profile_pic": "",
+      "status": "NO_IG",
       "reauth_required": false,
       "blocked": false,
       "error_msg": null,
-      "assigned_url": "ClaimTreat.com",
-      "total_views": 975,
-      "total_reach": 781,
-      "total_likes": 4,
-      "followers": 1,
-      "reach_7d": 780,
-      "reach_28d": 781,
-      "daily_series": [
-        {
-          "date": "2026-02-25",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-02-26",
-          "reach": 1.0
-        },
-        {
-          "date": "2026-02-27",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-02-28",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-01",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-02",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-03",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-04",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-05",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-06",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-07",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-08",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-09",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-10",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-11",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-12",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-13",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-14",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-15",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-16",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-17",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-18",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-19",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-20",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-21",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-22",
-          "reach": 132.0
-        },
-        {
-          "date": "2026-03-23",
-          "reach": 202.0
-        },
-        {
-          "date": "2026-03-24",
-          "reach": 335.0
-        },
-        {
-          "date": "2026-03-25",
-          "reach": 111.0
-        }
-      ]
+      "assigned_url": "",
+      "total_views": 0,
+      "total_reach": 0,
+      "total_likes": 0,
+      "followers": 0,
+      "reach_7d": 0,
+      "reach_28d": 0,
+      "daily_series": []
     },
     {
       "username": "005",
@@ -280,18 +163,14 @@
       "reauth_required": false,
       "blocked": false,
       "error_msg": null,
-      "assigned_url": "EatsVerify.com",
-      "total_views": 1238,
-      "total_reach": 1006,
+      "assigned_url": "",
+      "total_views": 1353,
+      "total_reach": 1080,
       "total_likes": 4,
       "followers": 0,
-      "reach_7d": 1006,
-      "reach_28d": 1006,
+      "reach_7d": 1080,
+      "reach_28d": 1080,
       "daily_series": [
-        {
-          "date": "2026-02-25",
-          "reach": 0.0
-        },
         {
           "date": "2026-02-26",
           "reach": 0.0
@@ -402,7 +281,11 @@
         },
         {
           "date": "2026-03-25",
-          "reach": 235.0
+          "reach": 309.0
+        },
+        {
+          "date": "2026-03-26",
+          "reach": 0.0
         }
       ]
     },
@@ -415,18 +298,14 @@
       "reauth_required": false,
       "blocked": false,
       "error_msg": null,
-      "assigned_url": "GetFoodPerk.com",
-      "total_views": 635,
-      "total_reach": 514,
+      "assigned_url": "",
+      "total_views": 902,
+      "total_reach": 708,
       "total_likes": 2,
       "followers": 0,
-      "reach_7d": 514,
-      "reach_28d": 514,
+      "reach_7d": 708,
+      "reach_28d": 708,
       "daily_series": [
-        {
-          "date": "2026-02-25",
-          "reach": 0.0
-        },
         {
           "date": "2026-02-26",
           "reach": 0.0
@@ -537,7 +416,11 @@
         },
         {
           "date": "2026-03-25",
-          "reach": 146.0
+          "reach": 340.0
+        },
+        {
+          "date": "2026-03-26",
+          "reach": 0.0
         }
       ]
     },
@@ -550,18 +433,14 @@
       "reauth_required": false,
       "blocked": false,
       "error_msg": null,
-      "assigned_url": "McdForm.com",
-      "total_views": 958,
-      "total_reach": 749,
+      "assigned_url": "",
+      "total_views": 963,
+      "total_reach": 752,
       "total_likes": 6,
       "followers": 3,
-      "reach_7d": 749,
-      "reach_28d": 749,
+      "reach_7d": 752,
+      "reach_28d": 752,
       "daily_series": [
-        {
-          "date": "2026-02-25",
-          "reach": 0.0
-        },
         {
           "date": "2026-02-26",
           "reach": 0.0
@@ -672,7 +551,11 @@
         },
         {
           "date": "2026-03-25",
-          "reach": 320.0
+          "reach": 323.0
+        },
+        {
+          "date": "2026-03-26",
+          "reach": 0.0
         }
       ]
     },
@@ -685,18 +568,14 @@
       "reauth_required": false,
       "blocked": false,
       "error_msg": null,
-      "assigned_url": "EatVerify.com",
-      "total_views": 515,
-      "total_reach": 394,
+      "assigned_url": "",
+      "total_views": 571,
+      "total_reach": 440,
       "total_likes": 1,
       "followers": 0,
-      "reach_7d": 394,
-      "reach_28d": 394,
+      "reach_7d": 440,
+      "reach_28d": 440,
       "daily_series": [
-        {
-          "date": "2026-02-25",
-          "reach": 0.0
-        },
         {
           "date": "2026-02-26",
           "reach": 0.0
@@ -807,7 +686,11 @@
         },
         {
           "date": "2026-03-25",
-          "reach": 21.0
+          "reach": 58.0
+        },
+        {
+          "date": "2026-03-26",
+          "reach": 9.0
         }
       ]
     },
@@ -820,18 +703,14 @@
       "reauth_required": false,
       "blocked": false,
       "error_msg": null,
-      "assigned_url": "FryPerk.com",
-      "total_views": 1103,
-      "total_reach": 865,
-      "total_likes": 10,
-      "followers": 0,
-      "reach_7d": 865,
-      "reach_28d": 865,
+      "assigned_url": "",
+      "total_views": 1146,
+      "total_reach": 901,
+      "total_likes": 11,
+      "followers": 1,
+      "reach_7d": 901,
+      "reach_28d": 901,
       "daily_series": [
-        {
-          "date": "2026-02-25",
-          "reach": 0.0
-        },
         {
           "date": "2026-02-26",
           "reach": 0.0
@@ -942,7 +821,11 @@
         },
         {
           "date": "2026-03-25",
-          "reach": 315.0
+          "reach": 344.0
+        },
+        {
+          "date": "2026-03-26",
+          "reach": 7.0
         }
       ]
     },
@@ -955,18 +838,14 @@
       "reauth_required": false,
       "blocked": false,
       "error_msg": null,
-      "assigned_url": "ClaimTreat.com",
-      "total_views": 711,
-      "total_reach": 522,
-      "total_likes": 9,
-      "followers": 12,
-      "reach_7d": 522,
-      "reach_28d": 522,
+      "assigned_url": "",
+      "total_views": 726,
+      "total_reach": 525,
+      "total_likes": 15,
+      "followers": 11,
+      "reach_7d": 525,
+      "reach_28d": 525,
       "daily_series": [
-        {
-          "date": "2026-02-25",
-          "reach": 0.0
-        },
         {
           "date": "2026-02-26",
           "reach": 0.0
@@ -1077,7 +956,11 @@
         },
         {
           "date": "2026-03-25",
-          "reach": 92.0
+          "reach": 93.0
+        },
+        {
+          "date": "2026-03-26",
+          "reach": 2.0
         }
       ]
     },
@@ -1090,18 +973,14 @@
       "reauth_required": false,
       "blocked": false,
       "error_msg": null,
-      "assigned_url": "EatsVerify.com",
-      "total_views": 785,
-      "total_reach": 609,
+      "assigned_url": "",
+      "total_views": 787,
+      "total_reach": 610,
       "total_likes": 2,
       "followers": 0,
-      "reach_7d": 609,
-      "reach_28d": 609,
+      "reach_7d": 610,
+      "reach_28d": 610,
       "daily_series": [
-        {
-          "date": "2026-02-25",
-          "reach": 0.0
-        },
         {
           "date": "2026-02-26",
           "reach": 0.0
@@ -1212,7 +1091,11 @@
         },
         {
           "date": "2026-03-25",
-          "reach": 218.0
+          "reach": 219.0
+        },
+        {
+          "date": "2026-03-26",
+          "reach": 0.0
         }
       ]
     },
@@ -1225,18 +1108,14 @@
       "reauth_required": false,
       "blocked": false,
       "error_msg": null,
-      "assigned_url": "GetFoodPerk.com",
-      "total_views": 1768,
-      "total_reach": 1257,
-      "total_likes": 12,
+      "assigned_url": "",
+      "total_views": 1979,
+      "total_reach": 1353,
+      "total_likes": 15,
       "followers": 82,
-      "reach_7d": 1254,
-      "reach_28d": 1257,
+      "reach_7d": 1350,
+      "reach_28d": 1353,
       "daily_series": [
-        {
-          "date": "2026-02-25",
-          "reach": 0.0
-        },
         {
           "date": "2026-02-26",
           "reach": 0.0
@@ -1347,7 +1226,11 @@
         },
         {
           "date": "2026-03-25",
-          "reach": 414.0
+          "reach": 506.0
+        },
+        {
+          "date": "2026-03-26",
+          "reach": 4.0
         }
       ]
     },
@@ -1360,18 +1243,14 @@
       "reauth_required": false,
       "blocked": false,
       "error_msg": null,
-      "assigned_url": "McdForm.com",
-      "total_views": 1855,
-      "total_reach": 1431,
-      "total_likes": 6,
-      "followers": 2,
-      "reach_7d": 1431,
-      "reach_28d": 1431,
+      "assigned_url": "",
+      "total_views": 2166,
+      "total_reach": 1678,
+      "total_likes": 7,
+      "followers": 4,
+      "reach_7d": 1678,
+      "reach_28d": 1678,
       "daily_series": [
-        {
-          "date": "2026-02-25",
-          "reach": 0.0
-        },
         {
           "date": "2026-02-26",
           "reach": 0.0
@@ -1482,7 +1361,11 @@
         },
         {
           "date": "2026-03-25",
-          "reach": 560.0
+          "reach": 806.0
+        },
+        {
+          "date": "2026-03-26",
+          "reach": 1.0
         }
       ]
     },
@@ -1495,7 +1378,7 @@
       "reauth_required": false,
       "blocked": false,
       "error_msg": null,
-      "assigned_url": "EatVerify.com",
+      "assigned_url": "",
       "total_views": 518,
       "total_reach": 414,
       "total_likes": 0,
@@ -1503,10 +1386,6 @@
       "reach_7d": 414,
       "reach_28d": 414,
       "daily_series": [
-        {
-          "date": "2026-02-25",
-          "reach": 0.0
-        },
         {
           "date": "2026-02-26",
           "reach": 0.0
@@ -1618,6 +1497,10 @@
         {
           "date": "2026-03-25",
           "reach": 0.0
+        },
+        {
+          "date": "2026-03-26",
+          "reach": 0.0
         }
       ]
     },
@@ -1630,18 +1513,14 @@
       "reauth_required": false,
       "blocked": false,
       "error_msg": null,
-      "assigned_url": "FryPerk.com",
-      "total_views": 121,
-      "total_reach": 97,
+      "assigned_url": "",
+      "total_views": 136,
+      "total_reach": 108,
       "total_likes": 0,
-      "followers": 1,
-      "reach_7d": 97,
-      "reach_28d": 97,
+      "followers": 2,
+      "reach_7d": 108,
+      "reach_28d": 108,
       "daily_series": [
-        {
-          "date": "2026-02-25",
-          "reach": 0.0
-        },
         {
           "date": "2026-02-26",
           "reach": 0.0
@@ -1752,7 +1631,11 @@
         },
         {
           "date": "2026-03-25",
-          "reach": 97.0
+          "reach": 107.0
+        },
+        {
+          "date": "2026-03-26",
+          "reach": 1.0
         }
       ]
     },
@@ -1765,18 +1648,14 @@
       "reauth_required": false,
       "blocked": false,
       "error_msg": null,
-      "assigned_url": "ClaimTreat.com",
-      "total_views": 124,
-      "total_reach": 99,
+      "assigned_url": "",
+      "total_views": 234,
+      "total_reach": 189,
       "total_likes": 0,
-      "followers": 0,
-      "reach_7d": 99,
-      "reach_28d": 99,
+      "followers": 1,
+      "reach_7d": 189,
+      "reach_28d": 189,
       "daily_series": [
-        {
-          "date": "2026-02-25",
-          "reach": 0.0
-        },
         {
           "date": "2026-02-26",
           "reach": 0.0
@@ -1888,6 +1767,10 @@
         {
           "date": "2026-03-25",
           "reach": 99.0
+        },
+        {
+          "date": "2026-03-26",
+          "reach": 90.0
         }
       ]
     },
@@ -1900,18 +1783,14 @@
       "reauth_required": false,
       "blocked": false,
       "error_msg": null,
-      "assigned_url": "EatsVerify.com",
-      "total_views": 75,
-      "total_reach": 61,
-      "total_likes": 0,
+      "assigned_url": "",
+      "total_views": 170,
+      "total_reach": 141,
+      "total_likes": 2,
       "followers": 0,
-      "reach_7d": 61,
-      "reach_28d": 61,
+      "reach_7d": 141,
+      "reach_28d": 141,
       "daily_series": [
-        {
-          "date": "2026-02-25",
-          "reach": 0.0
-        },
         {
           "date": "2026-02-26",
           "reach": 0.0
@@ -2022,7 +1901,11 @@
         },
         {
           "date": "2026-03-25",
-          "reach": 61.0
+          "reach": 141.0
+        },
+        {
+          "date": "2026-03-26",
+          "reach": 0.0
         }
       ]
     },
@@ -2035,18 +1918,14 @@
       "reauth_required": false,
       "blocked": false,
       "error_msg": null,
-      "assigned_url": "GetFoodPerk.com",
-      "total_views": 121,
-      "total_reach": 104,
+      "assigned_url": "",
+      "total_views": 126,
+      "total_reach": 108,
       "total_likes": 0,
       "followers": 2,
-      "reach_7d": 103,
-      "reach_28d": 104,
+      "reach_7d": 106,
+      "reach_28d": 108,
       "daily_series": [
-        {
-          "date": "2026-02-25",
-          "reach": 0.0
-        },
         {
           "date": "2026-02-26",
           "reach": 0.0
@@ -2157,7 +2036,11 @@
         },
         {
           "date": "2026-03-25",
-          "reach": 102.0
+          "reach": 103.0
+        },
+        {
+          "date": "2026-03-26",
+          "reach": 3.0
         }
       ]
     },
@@ -2170,18 +2053,14 @@
       "reauth_required": false,
       "blocked": false,
       "error_msg": null,
-      "assigned_url": "McdForm.com",
-      "total_views": 216,
-      "total_reach": 172,
+      "assigned_url": "",
+      "total_views": 245,
+      "total_reach": 195,
       "total_likes": 2,
-      "followers": 12,
-      "reach_7d": 157,
-      "reach_28d": 172,
+      "followers": 13,
+      "reach_7d": 178,
+      "reach_28d": 195,
       "daily_series": [
-        {
-          "date": "2026-02-25",
-          "reach": 0.0
-        },
         {
           "date": "2026-02-26",
           "reach": 0.0
@@ -2292,7 +2171,11 @@
         },
         {
           "date": "2026-03-25",
-          "reach": 155.0
+          "reach": 173.0
+        },
+        {
+          "date": "2026-03-26",
+          "reach": 5.0
         }
       ]
     },
@@ -2305,558 +2188,14 @@
       "reauth_required": false,
       "blocked": false,
       "error_msg": null,
-      "assigned_url": "EatVerify.com",
-      "total_views": 86,
-      "total_reach": 70,
+      "assigned_url": "",
+      "total_views": 125,
+      "total_reach": 101,
       "total_likes": 0,
       "followers": 1,
-      "reach_7d": 70,
-      "reach_28d": 70,
+      "reach_7d": 101,
+      "reach_28d": 101,
       "daily_series": [
-        {
-          "date": "2026-02-25",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-02-26",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-02-27",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-02-28",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-01",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-02",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-03",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-04",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-05",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-06",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-07",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-08",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-09",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-10",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-11",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-12",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-13",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-14",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-15",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-16",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-17",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-18",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-19",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-20",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-21",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-22",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-23",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-24",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-25",
-          "reach": 70.0
-        }
-      ]
-    },
-    {
-      "username": "034",
-      "ig_handle": "_inipash",
-      "display_name": "_inipash",
-      "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post/78ceff5e0f514ec9a81f52d93707c965.jpg",
-      "status": "ACTIVE",
-      "reauth_required": false,
-      "blocked": false,
-      "error_msg": null,
-      "assigned_url": "FryPerk.com",
-      "total_views": 131,
-      "total_reach": 110,
-      "total_likes": 0,
-      "followers": 2,
-      "reach_7d": 109,
-      "reach_28d": 110,
-      "daily_series": [
-        {
-          "date": "2026-02-25",
-          "reach": 1.0
-        },
-        {
-          "date": "2026-02-26",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-02-27",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-02-28",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-01",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-02",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-03",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-04",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-05",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-06",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-07",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-08",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-09",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-10",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-11",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-12",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-13",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-14",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-15",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-16",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-17",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-18",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-19",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-20",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-21",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-22",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-23",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-24",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-25",
-          "reach": 109.0
-        }
-      ]
-    },
-    {
-      "username": "035",
-      "ig_handle": "bollywkoodstar.in",
-      "display_name": "bollywkoodstar.in",
-      "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post/f1952a10a0e445a7a619b3d5c3d0f656.jpg",
-      "status": "ACTIVE",
-      "reauth_required": false,
-      "blocked": false,
-      "error_msg": null,
-      "assigned_url": "ClaimTreat.com",
-      "total_views": 132,
-      "total_reach": 120,
-      "total_likes": 0,
-      "followers": 3,
-      "reach_7d": 120,
-      "reach_28d": 120,
-      "daily_series": [
-        {
-          "date": "2026-02-25",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-02-26",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-02-27",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-02-28",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-01",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-02",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-03",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-04",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-05",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-06",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-07",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-08",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-09",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-10",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-11",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-12",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-13",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-14",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-15",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-16",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-17",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-18",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-19",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-20",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-21",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-22",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-23",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-24",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-25",
-          "reach": 120.0
-        }
-      ]
-    },
-    {
-      "username": "036",
-      "ig_handle": "olivier_vries355",
-      "display_name": "olivier_vries355",
-      "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post/7134aa2bdd54431cbb56f314c627c1fb.jpg",
-      "status": "ACTIVE",
-      "reauth_required": false,
-      "blocked": false,
-      "error_msg": null,
-      "assigned_url": "EatsVerify.com",
-      "total_views": 342,
-      "total_reach": 272,
-      "total_likes": 2,
-      "followers": 0,
-      "reach_7d": 272,
-      "reach_28d": 272,
-      "daily_series": [
-        {
-          "date": "2026-02-25",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-02-26",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-02-27",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-02-28",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-01",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-02",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-03",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-04",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-05",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-06",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-07",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-08",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-09",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-10",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-11",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-12",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-13",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-14",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-15",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-16",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-17",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-18",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-19",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-20",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-21",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-22",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-23",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-24",
-          "reach": 0.0
-        },
-        {
-          "date": "2026-03-25",
-          "reach": 272.0
-        }
-      ]
-    },
-    {
-      "username": "037",
-      "ig_handle": "gelsominoltesoro",
-      "display_name": "gelsominoltesoro",
-      "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post/70806859f7d646d9aa731bd8c280f585.jpg",
-      "status": "ACTIVE",
-      "reauth_required": false,
-      "blocked": false,
-      "error_msg": null,
-      "assigned_url": "GetFoodPerk.com",
-      "total_views": 120,
-      "total_reach": 100,
-      "total_likes": 0,
-      "followers": 5,
-      "reach_7d": 100,
-      "reach_28d": 100,
-      "daily_series": [
-        {
-          "date": "2026-02-25",
-          "reach": 0.0
-        },
         {
           "date": "2026-02-26",
           "reach": 0.0
@@ -2968,6 +2307,550 @@
         {
           "date": "2026-03-25",
           "reach": 100.0
+        },
+        {
+          "date": "2026-03-26",
+          "reach": 1.0
+        }
+      ]
+    },
+    {
+      "username": "034",
+      "ig_handle": "_inipash",
+      "display_name": "_inipash",
+      "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post/78ceff5e0f514ec9a81f52d93707c965.jpg",
+      "status": "ACTIVE",
+      "reauth_required": false,
+      "blocked": false,
+      "error_msg": null,
+      "assigned_url": "",
+      "total_views": 133,
+      "total_reach": 110,
+      "total_likes": 0,
+      "followers": 2,
+      "reach_7d": 110,
+      "reach_28d": 110,
+      "daily_series": [
+        {
+          "date": "2026-02-26",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-02-27",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-02-28",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-01",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-02",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-03",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-04",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-05",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-06",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-07",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-08",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-09",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-10",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-11",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-12",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-13",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-14",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-15",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-16",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-17",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-18",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-19",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-20",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-21",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-22",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-23",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-24",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-25",
+          "reach": 110.0
+        },
+        {
+          "date": "2026-03-26",
+          "reach": 0.0
+        }
+      ]
+    },
+    {
+      "username": "035",
+      "ig_handle": "bollywkoodstar.in",
+      "display_name": "bollywkoodstar.in",
+      "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post/f1952a10a0e445a7a619b3d5c3d0f656.jpg",
+      "status": "ACTIVE",
+      "reauth_required": false,
+      "blocked": false,
+      "error_msg": null,
+      "assigned_url": "",
+      "total_views": 132,
+      "total_reach": 120,
+      "total_likes": 0,
+      "followers": 3,
+      "reach_7d": 120,
+      "reach_28d": 120,
+      "daily_series": [
+        {
+          "date": "2026-02-26",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-02-27",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-02-28",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-01",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-02",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-03",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-04",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-05",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-06",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-07",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-08",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-09",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-10",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-11",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-12",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-13",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-14",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-15",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-16",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-17",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-18",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-19",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-20",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-21",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-22",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-23",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-24",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-25",
+          "reach": 120.0
+        },
+        {
+          "date": "2026-03-26",
+          "reach": 0.0
+        }
+      ]
+    },
+    {
+      "username": "036",
+      "ig_handle": "olivier_vries355",
+      "display_name": "olivier_vries355",
+      "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post/7134aa2bdd54431cbb56f314c627c1fb.jpg",
+      "status": "ACTIVE",
+      "reauth_required": false,
+      "blocked": false,
+      "error_msg": null,
+      "assigned_url": "",
+      "total_views": 473,
+      "total_reach": 371,
+      "total_likes": 2,
+      "followers": 0,
+      "reach_7d": 371,
+      "reach_28d": 371,
+      "daily_series": [
+        {
+          "date": "2026-02-26",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-02-27",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-02-28",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-01",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-02",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-03",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-04",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-05",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-06",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-07",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-08",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-09",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-10",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-11",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-12",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-13",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-14",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-15",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-16",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-17",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-18",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-19",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-20",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-21",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-22",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-23",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-24",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-25",
+          "reach": 347.0
+        },
+        {
+          "date": "2026-03-26",
+          "reach": 24.0
+        }
+      ]
+    },
+    {
+      "username": "037",
+      "ig_handle": "gelsominoltesoro",
+      "display_name": "gelsominoltesoro",
+      "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post/70806859f7d646d9aa731bd8c280f585.jpg",
+      "status": "ACTIVE",
+      "reauth_required": false,
+      "blocked": false,
+      "error_msg": null,
+      "assigned_url": "",
+      "total_views": 120,
+      "total_reach": 100,
+      "total_likes": 0,
+      "followers": 5,
+      "reach_7d": 100,
+      "reach_28d": 100,
+      "daily_series": [
+        {
+          "date": "2026-02-26",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-02-27",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-02-28",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-01",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-02",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-03",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-04",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-05",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-06",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-07",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-08",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-09",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-10",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-11",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-12",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-13",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-14",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-15",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-16",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-17",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-18",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-19",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-20",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-21",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-22",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-23",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-24",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-25",
+          "reach": 100.0
+        },
+        {
+          "date": "2026-03-26",
+          "reach": 0.0
         }
       ]
     },
@@ -2980,18 +2863,14 @@
       "reauth_required": false,
       "blocked": false,
       "error_msg": null,
-      "assigned_url": "McdForm.com",
+      "assigned_url": "",
       "total_views": 0,
       "total_reach": 2,
       "total_likes": 0,
-      "followers": 11,
+      "followers": 14,
       "reach_7d": 0,
       "reach_28d": 2,
       "daily_series": [
-        {
-          "date": "2026-02-25",
-          "reach": 0.0
-        },
         {
           "date": "2026-02-26",
           "reach": 0.0
@@ -3102,6 +2981,10 @@
         },
         {
           "date": "2026-03-25",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-26",
           "reach": 0.0
         }
       ]
@@ -3115,18 +2998,14 @@
       "reauth_required": false,
       "blocked": false,
       "error_msg": null,
-      "assigned_url": "EatVerify.com",
-      "total_views": 158,
-      "total_reach": 125,
+      "assigned_url": "",
+      "total_views": 271,
+      "total_reach": 208,
       "total_likes": 0,
       "followers": 2,
-      "reach_7d": 124,
-      "reach_28d": 125,
+      "reach_7d": 206,
+      "reach_28d": 208,
       "daily_series": [
-        {
-          "date": "2026-02-25",
-          "reach": 0.0
-        },
         {
           "date": "2026-02-26",
           "reach": 0.0
@@ -3237,7 +3116,281 @@
         },
         {
           "date": "2026-03-25",
-          "reach": 123.0
+          "reach": 169.0
+        },
+        {
+          "date": "2026-03-26",
+          "reach": 37.0
+        }
+      ]
+    },
+    {
+      "username": "040",
+      "ig_handle": "cacngo_man",
+      "display_name": "cacngo_man",
+      "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post/8609aeaa4734455a9dbf52c357b6cadb.jpg",
+      "status": "ACTIVE",
+      "reauth_required": false,
+      "blocked": false,
+      "error_msg": null,
+      "assigned_url": "",
+      "total_views": 0,
+      "total_reach": 0,
+      "total_likes": 0,
+      "followers": 0,
+      "reach_7d": 0,
+      "reach_28d": 0,
+      "daily_series": [
+        {
+          "date": "2026-02-26",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-02-27",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-02-28",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-01",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-02",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-03",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-04",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-05",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-06",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-07",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-08",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-09",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-10",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-11",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-12",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-13",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-14",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-15",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-16",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-17",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-18",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-19",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-20",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-21",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-22",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-23",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-24",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-25",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-26",
+          "reach": 0.0
+        }
+      ]
+    },
+    {
+      "username": "041",
+      "ig_handle": "guillermo.ro63810",
+      "display_name": "guillermo.ro63810",
+      "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post/a08d85b533854526b0225e4686eed4b2.jpg",
+      "status": "ACTIVE",
+      "reauth_required": false,
+      "blocked": false,
+      "error_msg": null,
+      "assigned_url": "",
+      "total_views": 0,
+      "total_reach": 0,
+      "total_likes": 0,
+      "followers": 1,
+      "reach_7d": 0,
+      "reach_28d": 0,
+      "daily_series": [
+        {
+          "date": "2026-02-26",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-02-27",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-02-28",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-01",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-02",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-03",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-04",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-05",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-06",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-07",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-08",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-09",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-10",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-11",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-12",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-13",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-14",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-15",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-16",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-17",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-18",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-19",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-20",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-21",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-22",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-23",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-24",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-25",
+          "reach": 0.0
+        },
+        {
+          "date": "2026-03-26",
+          "reach": 0.0
         }
       ]
     }
