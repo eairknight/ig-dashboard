@@ -594,12 +594,13 @@ def main():
         summary[a["status"]] = summary.get(a["status"], 0) + 1
 
     now_utc = datetime.now(timezone.utc)
-    est = pytz.timezone("US/Eastern")
-    now_est = now_utc.astimezone(est)
-    day = now_est.day
-    hour = now_est.hour % 12 or 12
-    ampm = "AM" if now_est.hour < 12 else "PM"
-    updated_at_display = now_est.strftime(f"%A, %b {day} at {hour}:{now_est.strftime('%M')} {ampm} EST")
+    bratislava = pytz.timezone("Europe/Bratislava")
+    now_local = now_utc.astimezone(bratislava)
+    day = now_local.day
+    hour = now_local.hour % 12 or 12
+    ampm = "AM" if now_local.hour < 12 else "PM"
+    tz_abbr = now_local.tzname() or "CET"
+    updated_at_display = now_local.strftime(f"%A, %b {day} at {hour}:{now_local.strftime('%M')} {ampm} {tz_abbr}")
 
     data = {
         "updated_at": now_utc.strftime("%Y-%m-%dT%H:%M:%SZ"),
