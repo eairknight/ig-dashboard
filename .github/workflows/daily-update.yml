@@ -33,6 +33,6 @@ jobs:
         run: |
           git config user.email "dashboard-bot@noreply.github.com"
           git config user.name "Dashboard Bot"
-          git add data.json
+          git add data.json auth.json
           git diff --staged --quiet || git commit -m "chore: daily status update $(date -u '+%Y-%m-%d')"
           git push

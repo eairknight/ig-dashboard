@@ -3,11 +3,6 @@ IG Status Dashboard updater.
 Reads API_KEY and DASH_PASSWORD from environment variables.
 Writes data.json with current account statuses, analytics, and performance metrics.
 Run by GitHub Actions daily.
-
-NOTE on reels counting: the Upload-Post history API ignores the user param and returns
-global post history for the whole API key. We therefore fetch it once to get the
-total live post count, then compute per-account avg as:
-  avg_views_per_reel = account_total_views / (total_global_posts / num_active_accounts)
 """
 
 import hashlib
@@ -26,11 +21,13 @@ API_BASE = "https://api.upload-post.com"
 USERS_URL = f"{API_BASE}/api/uploadposts/users"
 MEDIA_URL = f"{API_BASE}/api/uploadposts/media"
 ANALYTICS_URL = f"{API_BASE}/api/analytics"
-HISTORY_URL = f"{API_BASE}/api/uploadposts/history"
-
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(BASE_DIR, "data.json")
-URL_MAP_FILE = os.path.join(BASE_DIR, "..", "account_url_map.json")
+AUTH_FILE = os.path.join(BASE_DIR, "auth.json")
+URL_MAP_FILES = [
+    os.path.join(BASE_DIR, "account_url_map.json"),
+    os.path.join(BASE_DIR, "..", "account_url_map.json"),
+]
 
 
 def make_session(api_key):
@@ -43,10 +40,11 @@ def make_session(api_key):
 
 
 def load_url_map():
-    path = os.path.normpath(URL_MAP_FILE)
-    if os.path.exists(path):
-        with open(path, encoding="utf-8") as f:
-            return json.load(f)
+    for candidate in URL_MAP_FILES:
+        path = os.path.normpath(candidate)
+        if os.path.exists(path):
+            with open(path, encoding="utf-8") as f:
+                return json.load(f)
     return {}
 
 
@@ -62,25 +60,6 @@ def classify_status(ig, deep_ok, deep_error):
             return "CHECKPOINT"
         return "BROKEN"
     return "ACTIVE"
-
-
-def fetch_global_live_post_count(session, any_username):
-    """
-    Fetch total live post count across the whole API key.
-    The history API ignores the user param and returns global totals, but the param
-    is required. We pass any valid username just to satisfy the API requirement.
-    """
-    try:
-        r = session.get(
-            HISTORY_URL,
-            params={"user": any_username, "platform": "instagram", "page": 1},
-            timeout=30,
-        )
-        if r.status_code == 200:
-            return r.json().get("total", 0)
-    except Exception:
-        pass
-    return 0
 
 
 def fetch_analytics(session, username):
@@ -176,11 +155,8 @@ def check_account(session, profile, url_map):
     return base
 
 
-def enrich_with_analytics(session, account, live_reels_per_account=0):
-    """
-    Fetch analytics timeseries and compute per-account stats.
-    live_reels_per_account: global total posts / num active accounts.
-    """
+def enrich_with_analytics(session, account):
+    """Fetch analytics timeseries and compute per-account stats."""
     username = account["username"]
 
     analytics = fetch_analytics(session, username)
@@ -207,24 +183,35 @@ def enrich_with_analytics(session, account, live_reels_per_account=0):
 
 
 def compute_global_series(accounts):
-    """Sum daily reach across all accounts to produce a global timeseries."""
+    """
+    Sum daily reach across all active accounts and add a derived average line.
+    avg = daily_reach / number_of_active_accounts
+    """
     totals = defaultdict(int)
     for acc in accounts:
         for d in acc.get("daily_series", []):
             totals[d["date"]] += d["reach"]
 
+    active_count = max(len(accounts), 1)
     return [
-        {"date": date_str, "reach": totals[date_str]}
+        {
+            "date": date_str,
+            "reach": totals[date_str],
+            "avg": round(totals[date_str] / active_count, 2),
+        }
         for date_str in sorted(totals.keys())
     ]
 
 
 def main():
     api_key = os.environ.get("API_KEY", "")
-    dash_password = os.environ.get("DASH_PASSWORD", "igdash2026")
+    dash_password = os.environ.get("DASH_PASSWORD", "")
 
     if not api_key:
         print("ERROR: API_KEY environment variable not set.", file=sys.stderr)
+        sys.exit(1)
+    if not dash_password:
+        print("ERROR: DASH_PASSWORD environment variable not set.", file=sys.stderr)
         sys.exit(1)
 
     pass_hash = hashlib.sha256(dash_password.encode()).hexdigest()
@@ -300,7 +287,6 @@ def main():
     data = {
         "updated_at": now_utc.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "updated_at_display": updated_at_display,
-        "pass_hash": pass_hash,
         "summary": summary,
         "global": {
             "total_views": global_total_views,
@@ -315,8 +301,11 @@ def main():
 
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
+    with open(AUTH_FILE, "w", encoding="utf-8") as f:
+        json.dump({"pass_hash": pass_hash}, f, indent=2, ensure_ascii=False)
 
     print(f"Wrote {DATA_FILE}")
+    print(f"Wrote {AUTH_FILE}")
     print(f"Summary: {summary}")
     print(f"Global 7d reach: {global_reach_7d:,} | trend: {trend}")
     print(f"Updated at: {updated_at_display}")

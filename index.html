@@ -76,7 +76,7 @@
   <div class="max-w-7xl mx-auto px-4 mb-5">
     <div class="bg-gray-900 border border-gray-800 rounded-xl p-4">
       <div class="flex items-center justify-between mb-3">
-        <h2 class="text-sm font-semibold text-white">All Accounts — Daily Reach & Avg Reach/Reel (28 days)</h2>
+        <h2 class="text-sm font-semibold text-white">All Accounts — Daily Reach & Avg Reach/Active Account (28 days)</h2>
         <span id="trend-badge" class="text-xs font-medium px-2.5 py-1 rounded-full hidden"></span>
       </div>
       <div class="relative" style="height:180px">
@@ -138,6 +138,11 @@ async function sha256(msg) {
 async function tryAuth() {
   const input = document.getElementById('pass-input').value;
   if (!input) return;
+  if (!window._passHash) {
+    document.getElementById('auth-error').textContent = 'Auth not initialized';
+    document.getElementById('auth-error').classList.remove('hidden');
+    return;
+  }
   const hash = await sha256(input);
   if (hash === window._passHash) {
     localStorage.setItem(STORAGE_KEY, hash);
@@ -165,14 +170,13 @@ let globalChart = null;
 
 async function refreshData() { await loadData(true); }
 
-async function loadData(forceRefresh = false) {
+async function loadData(forceRefresh = false, preloadedData = null) {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (!stored || stored !== window._passHash) { logout(); return; }
+
   const url = forceRefresh ? `data.json?t=${Date.now()}` : 'data.json';
   try {
-    const r = await fetch(url);
-    const data = await r.json();
-    window._passHash = data.pass_hash;
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored !== data.pass_hash) { logout(); return; }
+    const data = preloadedData || await fetch(url).then(r => r.json());
 
     allAccounts = data.accounts || [];
     renderGlobalStats(data.global || {}, data.updated_at_display);
@@ -202,6 +206,31 @@ function fmt(n) {
   return String(Math.round(n));
 }
 
+function esc(v) {
+  return String(v ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function fmtTrendPct(v) {
+  if (v == null) return '';
+  const n = Number(v);
+  if (!Number.isFinite(n)) return '';
+  const sign = n > 0 ? '+' : '';
+  if (Math.abs(n) >= 999) return `${sign}${n > 0 ? '999+' : '-999+'}%`;
+  return `${sign}${n.toFixed(1)}%`;
+}
+
+function localDateKey(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
 // ─── Global Stats Bar ──────────────────────────────────────────────────
 function renderGlobalStats(g, updatedAt) {
   document.getElementById('last-updated').textContent =
@@ -209,13 +238,15 @@ function renderGlobalStats(g, updatedAt) {
 
   const trendColor = g.trend === 'up' ? 'text-emerald-400' : g.trend === 'down' ? 'text-red-400' : 'text-gray-400';
   const trendArrow = g.trend === 'up' ? '↑' : g.trend === 'down' ? '↓' : '→';
-  const trendPct = g.trend_pct != null ? `${g.trend_pct > 0 ? '+' : ''}${g.trend_pct}%` : '';
+  const trendPct = fmtTrendPct(g.trend_pct);
 
   const badge = document.getElementById('trend-badge');
-  if (g.trend) {
+  if (g.trend && trendPct) {
     badge.className = `text-xs font-medium px-2.5 py-1 rounded-full ${trendColor} bg-gray-800`;
     badge.textContent = `${trendArrow} ${trendPct} vs prior 7 days`;
     badge.classList.remove('hidden');
+  } else {
+    badge.classList.add('hidden');
   }
 
   const stats = [
@@ -239,7 +270,11 @@ function renderGlobalChart(series) {
 
   const labels = series.map(d => d.date.slice(5));  // MM-DD
   const reachData = series.map(d => d.reach);
-  const avgData = series.map(d => d.avg);
+  const activeCount = Math.max(allAccounts.filter(a => a.status === 'ACTIVE').length, 1);
+  const avgData = series.map(d => {
+    if (typeof d.avg === 'number') return d.avg;
+    return Number(((d.reach || 0) / activeCount).toFixed(2));
+  });
 
   globalChart = new Chart(ctx, {
     type: 'bar',
@@ -256,7 +291,7 @@ function renderGlobalChart(series) {
           yAxisID: 'y',
         },
         {
-          label: 'Avg Reach / Reel',
+          label: 'Avg Reach / Active Account',
           data: avgData,
           type: 'line',
           borderColor: '#34d399',
@@ -286,7 +321,7 @@ function renderGlobalChart(series) {
       scales: {
         x: { ticks: { color: '#6b7280', font: { size: 10 }, maxTicksLimit: 14 }, grid: { color: '#1f2937' } },
         y: { ticks: { color: '#6b7280', font: { size: 10 } }, grid: { color: '#1f2937' }, title: { display: true, text: 'Reach', color: '#6b7280', font: { size: 10 } } },
-        y2: { position: 'right', ticks: { color: '#34d399', font: { size: 10 } }, grid: { drawOnChartArea: false }, title: { display: true, text: 'Avg/Reel', color: '#34d399', font: { size: 10 } } },
+        y2: { position: 'right', ticks: { color: '#34d399', font: { size: 10 } }, grid: { drawOnChartArea: false }, title: { display: true, text: 'Avg/Active', color: '#34d399', font: { size: 10 } } },
       },
     },
   });
@@ -296,8 +331,8 @@ function renderGlobalChart(series) {
 function leaderboardRow(acc, rank, isTop) {
   const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `#${rank}`;
   const reach = fmt(acc.reach_7d);
-  const handle = acc.ig_handle || acc.username;
-  const url = acc.assigned_url || '—';
+  const handle = esc(acc.ig_handle || acc.username);
+  const url = esc(acc.assigned_url || '—');
   const rowBg = isTop ? 'bg-emerald-950 border-emerald-900' : 'bg-red-950 border-red-900';
   return `
     <div class="flex items-center gap-3 ${rowBg} border rounded-lg px-3 py-2 text-sm">
@@ -398,7 +433,7 @@ function sparkline(dailySeries) {
   const days = [];
   for (let i = 6; i >= 0; i--) {
     const d = new Date(today); d.setDate(d.getDate() - i);
-    const key = d.toISOString().slice(0,10);
+    const key = localDateKey(d);
     days.push(key);
   }
   const vals = days.map(k => {
@@ -435,18 +470,24 @@ function renderCards(accounts) {
   grid.innerHTML = sorted.map(a => {
     const cfg = SC[a.status] || SC.NO_IG;
     const border = perfBorder(a, activeAccounts);
+    const displayName = esc(a.display_name || a.ig_handle || a.username);
+    const username = esc(a.username);
+    const igHandle = esc(a.ig_handle || '');
+    const assignedUrl = esc(a.assigned_url || '');
+    const errorMsg = esc(a.error_msg || '');
+    const profilePic = esc(a.profile_pic || '');
     const pic = a.profile_pic
-      ? `<img src="${a.profile_pic}" class="w-12 h-12 rounded-full object-cover border-2 border-gray-700 shrink-0" onerror="this.style.display='none'">`
+      ? `<img src="${profilePic}" class="w-12 h-12 rounded-full object-cover border-2 border-gray-700 shrink-0" onerror="this.style.display='none'">`
       : `<div class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center text-gray-400 text-lg font-bold border-2 border-gray-600 shrink-0">${(a.ig_handle||a.username||'?')[0].toUpperCase()}</div>`;
 
     const handle = a.ig_handle
-      ? `<div class="text-xs text-gray-500 truncate">@${a.ig_handle}</div>`
+      ? `<div class="text-xs text-gray-500 truncate">@${igHandle}</div>`
       : `<div class="text-xs text-gray-600 italic">no handle</div>`;
 
     const urlTag = a.assigned_url
       ? `<div class="flex items-center gap-1 mt-1">
            <svg class="w-3 h-3 text-indigo-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
-           <span class="text-xs text-indigo-300 truncate">${a.assigned_url}</span>
+           <span class="text-xs text-indigo-300 truncate">${assignedUrl}</span>
          </div>`
       : '';
 
@@ -468,11 +509,11 @@ function renderCards(accounts) {
       <div class="flex justify-end mt-2">
         ${sparkline(a.daily_series)}
       </div>` : (a.error_msg
-        ? `<div class="mt-2 text-xs text-gray-600 truncate" title="${a.error_msg}">${a.error_msg}</div>`
+        ? `<div class="mt-2 text-xs text-gray-600 truncate" title="${errorMsg}">${errorMsg}</div>`
         : '');
 
     const igLink = a.ig_handle
-      ? `<a href="https://www.instagram.com/${a.ig_handle}/" target="_blank" rel="noopener noreferrer"
+      ? `<a href="https://www.instagram.com/${encodeURIComponent(a.ig_handle)}/" target="_blank" rel="noopener noreferrer"
            onclick="event.stopPropagation()"
            class="flex items-center justify-center gap-1.5 mt-1 w-full text-xs font-medium text-pink-400 hover:text-pink-300 bg-pink-950 hover:bg-pink-900 border border-pink-900 rounded-lg py-1.5 transition">
            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
@@ -485,9 +526,9 @@ function renderCards(accounts) {
         <div class="flex items-start gap-2">
           ${pic}
           <div class="min-w-0 flex-1">
-            <div class="font-semibold text-white text-sm truncate">${a.display_name || a.ig_handle || a.username}</div>
+            <div class="font-semibold text-white text-sm truncate">${displayName}</div>
             ${handle}
-            <div class="text-xs text-gray-700">slot ${a.username}</div>
+            <div class="text-xs text-gray-700">slot ${username}</div>
             ${urlTag}
           </div>
         </div>
@@ -506,9 +547,8 @@ function renderCards(accounts) {
 // ─── Boot ──────────────────────────────────────────────────────────────
 async function boot() {
   try {
-    const r = await fetch('data.json');
-    const data = await r.json();
-    window._passHash = data.pass_hash;
+    const authData = await fetch('auth.json').then(r => r.json());
+    window._passHash = authData.pass_hash;
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored && stored === window._passHash) {
       document.getElementById('auth-gate').classList.add('hidden');
