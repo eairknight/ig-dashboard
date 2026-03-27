@@ -85,6 +85,9 @@
       <div class="relative" style="height:180px">
         <canvas id="global-chart"></canvas>
       </div>
+      <div id="daily-health-summary" class="mt-3 text-sm text-gray-200">Loading daily diagnostics...</div>
+      <div id="daily-health-meta" class="mt-1 text-xs text-gray-500"></div>
+      <div id="daily-health-chips" class="mt-2 flex flex-wrap gap-2"></div>
     </div>
   </div>
 
@@ -171,6 +174,7 @@ let allAccounts = [];
 let activeFilter = 'ALL';
 let currentSort = '7d';
 let globalChart = null;
+let globalDailyInsights = {};
 
 async function refreshData() { await loadData(true); }
 
@@ -184,7 +188,8 @@ async function loadData(forceRefresh = false, preloadedData = null) {
 
     allAccounts = data.accounts || [];
     renderGlobalStats(data.global || {}, data.updated_at_display);
-    renderGlobalChart(data.global?.daily_views_series || []);
+    globalDailyInsights = data.global?.daily_health_insights || {};
+    renderGlobalChart(data.global?.daily_views_series || [], globalDailyInsights);
     renderLeaderboard(allAccounts);
     renderFilterTabs(data.summary || {}, allAccounts);
     renderCards(allAccounts);
@@ -222,6 +227,13 @@ function fmtAvg(n) {
   return Number(n).toFixed(1);
 }
 
+function fmtRoundedK(n) {
+  const v = Number(n || 0);
+  if (!Number.isFinite(v)) return '0';
+  if (v < 1000) return String(Math.round(v));
+  return `${Math.round(v / 1000)}k`;
+}
+
 function esc(v) {
   return String(v ?? '')
     .replaceAll('&', '&amp;')
@@ -252,6 +264,54 @@ function fmtTs(ts) {
   const d = new Date(ts);
   if (Number.isNaN(d.getTime())) return '—';
   return d.toLocaleString(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+}
+
+function inferDailyCauses(row) {
+  const causes = [];
+  const reels = Number(row?.posted_reels || 0);
+  const zero = Number(row?.zero_view_reels || 0);
+  const missing = Number(row?.estimated_unavailable_analytics_posts || 0);
+  const noPost = Number(row?.estimated_no_post_active_accounts || 0);
+  if (reels < 20) causes.push('Low Posting Volume');
+  if (reels > 0 && zero / reels >= 0.25) causes.push('Zero-View Spike');
+  if (missing > 0) causes.push('Missing Analytics');
+  if (noPost >= 3) causes.push('Active Accounts Not Posting');
+  if (!causes.length) causes.push('Stable');
+  return causes;
+}
+
+function updateDailyHealthPanel(series, insights, idx) {
+  const summaryEl = document.getElementById('daily-health-summary');
+  const metaEl = document.getElementById('daily-health-meta');
+  const chipsEl = document.getElementById('daily-health-chips');
+  if (!summaryEl || !metaEl || !chipsEl) return;
+  if (!series.length) {
+    summaryEl.textContent = 'No daily reel diagnostics available yet.';
+    metaEl.textContent = '';
+    chipsEl.innerHTML = '';
+    return;
+  }
+
+  const safeIdx = Math.max(0, Math.min(idx, series.length - 1));
+  const row = series[safeIdx] || {};
+  const insight = insights?.[row.date] || {};
+  const avg = Number.isFinite(Number(row.avg_views_per_reel)) ? Math.round(Number(row.avg_views_per_reel)) : '—';
+  const fallbackSummary = `${fmtRoundedK(row.views)} total views across ${row.posted_reels || 0} posted reels, ${avg} avg/reel.`;
+  summaryEl.textContent = insight.summary_line || fallbackSummary;
+
+  const healthScore = Number.isFinite(Number(insight.health_score)) ? Math.round(Number(insight.health_score)) : null;
+  const scoreText = healthScore == null ? 'health score: —' : `health score: ${healthScore}/100`;
+  const sourceText = (insight.source || row.source || 'estimated').toLowerCase();
+  metaEl.textContent = `${row.date || 'unknown'} · ${scoreText} · source: ${sourceText}`;
+
+  const chipCauses = (Array.isArray(insight.top_causes) && insight.top_causes.length)
+    ? insight.top_causes
+    : inferDailyCauses(row);
+  chipsEl.innerHTML = chipCauses.map(c => `
+    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium border border-gray-700 text-gray-300 bg-gray-900">
+      ${esc(c)}
+    </span>
+  `).join('');
 }
 
 // ─── Global Stats Bar ──────────────────────────────────────────────────
@@ -293,13 +353,34 @@ function renderGlobalStats(g, updatedAt) {
 }
 
 // ─── Global Chart ──────────────────────────────────────────────────────
-function renderGlobalChart(series) {
+function renderGlobalChart(series, insights = {}) {
   const ctx = document.getElementById('global-chart').getContext('2d');
   if (globalChart) { globalChart.destroy(); globalChart = null; }
 
   const labels = series.map(d => d.date.slice(5));  // MM-DD
   const viewsData = series.map(d => d.views || 0);
   const avgData = series.map(d => Number.isFinite(Number(d.avg_views_per_reel)) ? Number(d.avg_views_per_reel) : null);
+  const barLabelPlugin = {
+    id: 'barLabelPlugin',
+    afterDatasetsDraw(chart) {
+      const { ctx: c } = chart;
+      const dataset = chart.data.datasets?.[0];
+      const meta = chart.getDatasetMeta(0);
+      if (!dataset || !meta?.data) return;
+      c.save();
+      c.font = '10px Inter, sans-serif';
+      c.fillStyle = '#c7d2fe';
+      c.textAlign = 'center';
+      c.textBaseline = 'bottom';
+      meta.data.forEach((bar, i) => {
+        const raw = Number(dataset.data?.[i] || 0);
+        if (!Number.isFinite(raw) || raw <= 0) return;
+        const label = fmtRoundedK(raw);
+        c.fillText(label, bar.x, bar.y - 4);
+      });
+      c.restore();
+    },
+  };
 
   globalChart = new Chart(ctx, {
     type: 'bar',
@@ -333,6 +414,16 @@ function renderGlobalChart(series) {
       responsive: true,
       maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
+      onHover: (_evt, activeEls) => {
+        if (activeEls && activeEls.length) {
+          updateDailyHealthPanel(series, insights, activeEls[0].index);
+        }
+      },
+      onClick: (_evt, activeEls) => {
+        if (activeEls && activeEls.length) {
+          updateDailyHealthPanel(series, insights, activeEls[0].index);
+        }
+      },
       plugins: {
         legend: { labels: { color: '#9ca3af', font: { size: 11 }, boxWidth: 12 } },
         tooltip: {
@@ -341,6 +432,14 @@ function renderGlobalChart(series) {
           borderWidth: 1,
           titleColor: '#e5e7eb',
           bodyColor: '#9ca3af',
+          callbacks: {
+            afterBody(items) {
+              if (!items?.length) return '';
+              const row = series[items[0].dataIndex] || {};
+              const causes = (insights?.[row.date]?.top_causes || inferDailyCauses(row)).slice(0, 2);
+              return [`Posted reels: ${row.posted_reels || 0}`, `Main causes: ${causes.join(' + ')}`];
+            },
+          },
         },
       },
       scales: {
@@ -349,7 +448,9 @@ function renderGlobalChart(series) {
         y2: { position: 'right', ticks: { color: '#34d399', font: { size: 10 } }, grid: { drawOnChartArea: false }, title: { display: true, text: 'Avg/Reel', color: '#34d399', font: { size: 10 } } },
       },
     },
+    plugins: [barLabelPlugin],
   });
+  updateDailyHealthPanel(series, insights, Math.max(series.length - 1, 0));
 }
 
 // ─── Leaderboard ───────────────────────────────────────────────────────

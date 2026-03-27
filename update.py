@@ -26,6 +26,7 @@ POST_ANALYTICS_URL = f"{API_BASE}/api/uploadposts/post-analytics"
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(BASE_DIR, "data.json")
 AUTH_FILE = os.path.join(BASE_DIR, "auth.json")
+DIAGNOSTICS_LOG_FILE = os.path.join(BASE_DIR, "diagnostics_log.json")
 URL_MAP_FILES = [
     os.path.join(BASE_DIR, "account_url_map.json"),
     os.path.join(BASE_DIR, "..", "account_url_map.json"),
@@ -142,6 +143,101 @@ def parse_iso_utc(raw):
     else:
         dt = dt.astimezone(timezone.utc)
     return dt
+
+
+def compact_views_k(value):
+    n = int(value or 0)
+    if n < 1000:
+        return str(n)
+    return f"{int(round(n / 1000.0))}k"
+
+
+def build_daily_insight(row, expected_daily_reels, baseline_avg):
+    posted = int(row.get("posted_reels", 0) or 0)
+    views = int(row.get("views", 0) or 0)
+    zero_reels = int(row.get("zero_view_reels", 0) or 0)
+    unavailable = int(row.get("estimated_unavailable_analytics_posts", 0) or 0)
+    no_post_active = int(row.get("estimated_no_post_active_accounts", 0) or 0)
+    avg_per_reel = row.get("avg_views_per_reel")
+    avg_num = float(avg_per_reel) if isinstance(avg_per_reel, (int, float)) else None
+
+    posting_ratio = posted / max(expected_daily_reels, 1)
+    zero_rate = (zero_reels / posted) if posted else 0.0
+    unavailable_rate = (unavailable / posted) if posted else 0.0
+    avg_ratio = (avg_num / baseline_avg) if (avg_num is not None and baseline_avg > 0) else 1.0
+
+    causes = []
+    if posted < max(1, int(round(expected_daily_reels * 0.65))):
+        causes.append("Low posting volume")
+    if zero_rate >= 0.25 and posted >= 4:
+        causes.append("Zero-view spike")
+    if no_post_active >= 3:
+        causes.append("Many active accounts did not post")
+    if unavailable_rate >= 0.2 and posted >= 3:
+        causes.append("Missing post analytics")
+    if avg_num is not None and baseline_avg > 0 and avg_ratio < 0.55:
+        causes.append("Low avg views per reel")
+    if not causes:
+        causes.append("Stable posting and view quality")
+
+    score = 100
+    if posting_ratio < 1:
+        score -= min(35, int(round((1 - posting_ratio) * 35)))
+    score -= min(35, int(round(zero_rate * 45)))
+    score -= min(20, int(round(unavailable_rate * 35)))
+    if avg_ratio < 1:
+        score -= min(20, int(round((1 - avg_ratio) * 25)))
+    score = max(0, min(100, score))
+
+    avg_txt = "—"
+    if avg_num is not None:
+        avg_txt = str(int(round(avg_num)))
+    summary_line = (
+        f"{compact_views_k(views)} total views across {posted} posted reels, "
+        f"{avg_txt} avg/reel. Main drag: {' + '.join(causes[:2]).lower()}."
+    )
+
+    return {
+        "top_causes": causes[:4],
+        "health_score": score,
+        "summary_line": summary_line,
+        "source": row.get("source", "estimated"),
+    }
+
+
+def load_diagnostics_log():
+    if not os.path.exists(DIAGNOSTICS_LOG_FILE):
+        return {"version": 1, "updated_at": None, "days": {}}
+    try:
+        with open(DIAGNOSTICS_LOG_FILE, encoding="utf-8") as f:
+            parsed = json.load(f)
+        if not isinstance(parsed, dict):
+            return {"version": 1, "updated_at": None, "days": {}}
+        days = parsed.get("days", {})
+        if not isinstance(days, dict):
+            days = {}
+        return {
+            "version": int(parsed.get("version", 1)),
+            "updated_at": parsed.get("updated_at"),
+            "days": days,
+        }
+    except Exception:
+        return {"version": 1, "updated_at": None, "days": {}}
+
+
+def save_diagnostics_log(payload):
+    with open(DIAGNOSTICS_LOG_FILE, "w", encoding="utf-8") as f:
+        json.dump(payload, f, indent=2, ensure_ascii=False)
+
+
+def add_logged_day_snapshot(log_payload, day_key, entry, updated_at, max_days=180):
+    days = log_payload.setdefault("days", {})
+    days[day_key] = entry
+    if len(days) > max_days:
+        for old_key in sorted(days.keys())[:-max_days]:
+            days.pop(old_key, None)
+    log_payload["updated_at"] = updated_at
+    return log_payload
 
 
 def extract_post_views(payload):
@@ -329,7 +425,14 @@ def compute_reel_views_kpis(session, active_accounts):
     cutoff_14d = now_utc - timedelta(days=14)
     cutoff_28d = now_utc - timedelta(days=28)
 
-    daily_views = defaultdict(lambda: {"views": 0, "reels": 0})
+    daily_views = defaultdict(lambda: {
+        "views": 0,
+        "reels": 0,
+        "zero_view_reels": 0,
+        "unavailable_posts": 0,
+        "posters": set(),
+        "zero_view_posters": set(),
+    })
     total_views_24h = 0
     total_views_3d = 0
     total_views_7d = 0
@@ -342,11 +445,23 @@ def compute_reel_views_kpis(session, active_accounts):
         dt = p.get("_dt")
         if not dt:
             continue
+        date_key = dt.date().isoformat()
+        bucket = daily_views[date_key]
+        bucket["reels"] += 1
+        profile = p.get("profile_username")
+        if profile:
+            bucket["posters"].add(profile)
         if dt >= cutoff_7d:
             total_reels_7d += 1
         views = p.get("views")
         if not isinstance(views, int):
+            bucket["unavailable_posts"] += 1
             continue
+        bucket["views"] += views
+        if views == 0:
+            bucket["zero_view_reels"] += 1
+            if profile:
+                bucket["zero_view_posters"].add(profile)
         if dt >= cutoff_24h:
             total_views_24h += views
         if dt >= cutoff_3d:
@@ -357,25 +472,47 @@ def compute_reel_views_kpis(session, active_accounts):
             recent_7d_daily += views
         elif cutoff_14d <= dt < cutoff_7d:
             prior_7d_daily += views
-        if dt >= cutoff_28d:
-            key = dt.date().isoformat()
-            daily_views[key]["views"] += views
-            daily_views[key]["reels"] += 1
 
     avg_views_per_reel_7d = round(total_views_7d / total_reels_7d_with_views, 2) if total_reels_7d_with_views else None
     trend = "up" if recent_7d_daily > prior_7d_daily else ("down" if recent_7d_daily < prior_7d_daily else "flat")
     trend_pct = round((recent_7d_daily - prior_7d_daily) / prior_7d_daily * 100, 1) if prior_7d_daily > 0 else None
 
-    daily_views_series = []
+    daily_rows = []
     for date_str in sorted(daily_views.keys()):
+        dt = parse_iso_utc(f"{date_str}T00:00:00Z")
+        if not dt or dt < cutoff_28d:
+            continue
         reels = daily_views[date_str]["reels"]
         views = daily_views[date_str]["views"]
-        daily_views_series.append({
+        posted_accounts = len(daily_views[date_str]["posters"])
+        daily_rows.append({
             "date": date_str,
             "views": views,
             "reels": reels,
+            "posted_reels": reels,
             "avg_views_per_reel": round(views / reels, 2) if reels else None,
+            "zero_view_reels": int(daily_views[date_str]["zero_view_reels"]),
+            "estimated_no_post_active_accounts": max(len(active_accounts) - posted_accounts, 0),
+            "estimated_at_risk_posters": int(len(daily_views[date_str]["zero_view_posters"])),
+            "estimated_unavailable_analytics_posts": int(daily_views[date_str]["unavailable_posts"]),
+            "source": "estimated",
         })
+
+    reference_rows = [row for row in daily_rows if row["date"] >= cutoff_7d.date().isoformat()]
+    if not reference_rows:
+        reference_rows = daily_rows
+    expected_daily_reels = round(
+        sum(row["posted_reels"] for row in reference_rows) / max(len(reference_rows), 1)
+    )
+    expected_daily_reels = max(expected_daily_reels, 1)
+    avg_candidates = [row["avg_views_per_reel"] for row in reference_rows if isinstance(row["avg_views_per_reel"], (int, float))]
+    baseline_avg = float(sum(avg_candidates) / len(avg_candidates)) if avg_candidates else 0.0
+
+    daily_views_series = []
+    daily_health_insights = {}
+    for row in daily_rows:
+        daily_views_series.append(row)
+        daily_health_insights[row["date"]] = build_daily_insight(row, expected_daily_reels, baseline_avg)
 
     return {
         "total_reels_7d": int(total_reels_7d),
@@ -384,6 +521,7 @@ def compute_reel_views_kpis(session, active_accounts):
         "total_views_7d": int(total_views_7d),
         "avg_views_per_reel_7d": avg_views_per_reel_7d,
         "daily_views_series": daily_views_series,
+        "daily_health_insights": daily_health_insights,
         "trend": trend,
         "trend_pct": trend_pct,
     }
@@ -621,17 +759,87 @@ def main():
             "total_views_7d": reel_kpis["total_views_7d"],
             "avg_views_per_reel_7d": reel_kpis["avg_views_per_reel_7d"],
             "daily_views_series": reel_kpis["daily_views_series"],
+            "daily_health_insights": reel_kpis["daily_health_insights"],
         },
         "accounts": all_accounts,
     }
+
+    diagnostics_log = load_diagnostics_log()
+    series_by_date = {row["date"]: row for row in reel_kpis["daily_views_series"]}
+    insight_by_date = reel_kpis["daily_health_insights"]
+    today_key = now_utc.date().isoformat()
+    today_series = series_by_date.get(today_key, {
+        "posted_reels": 0,
+        "views": 0,
+        "avg_views_per_reel": None,
+        "zero_view_reels": 0,
+        "estimated_no_post_active_accounts": len(active_accounts),
+        "estimated_at_risk_posters": 0,
+        "estimated_unavailable_analytics_posts": 0,
+    })
+    today_insight = insight_by_date.get(today_key, build_daily_insight(
+        {
+            "posted_reels": 0,
+            "views": 0,
+            "avg_views_per_reel": None,
+            "zero_view_reels": 0,
+            "estimated_no_post_active_accounts": len(active_accounts),
+            "estimated_at_risk_posters": 0,
+            "estimated_unavailable_analytics_posts": 0,
+            "source": "estimated",
+        },
+        1,
+        0.0,
+    ))
+
+    logged_entry = {
+        "source": "logged",
+        "logged_at": now_utc.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "health_score": today_insight.get("health_score"),
+        "top_causes": today_insight.get("top_causes", []),
+        "summary_line": today_insight.get("summary_line"),
+        "active_accounts": summary.get("ACTIVE", 0),
+        "blocked_accounts": summary.get("BLOCKED", 0),
+        "broken_accounts": summary.get("BROKEN", 0),
+        "checkpoint_accounts": summary.get("CHECKPOINT", 0),
+        "reauth_accounts": summary.get("REAUTH", 0),
+        "posted_reels": today_series.get("posted_reels", 0),
+        "views": today_series.get("views", 0),
+        "avg_views_per_reel": today_series.get("avg_views_per_reel"),
+        "zero_view_reels": today_series.get("zero_view_reels", 0),
+        "estimated_no_post_active_accounts": today_series.get("estimated_no_post_active_accounts", 0),
+        "estimated_at_risk_posters": today_series.get("estimated_at_risk_posters", 0),
+        "estimated_unavailable_analytics_posts": today_series.get("estimated_unavailable_analytics_posts", 0),
+    }
+    diagnostics_log = add_logged_day_snapshot(
+        diagnostics_log,
+        today_key,
+        logged_entry,
+        now_utc.strftime("%Y-%m-%dT%H:%M:%SZ"),
+    )
+
+    log_days = diagnostics_log.get("days", {})
+    for row in data["global"]["daily_views_series"]:
+        logged = log_days.get(row["date"])
+        if logged:
+            row["source"] = "logged"
+    for date_key, insight in data["global"]["daily_health_insights"].items():
+        logged = log_days.get(date_key)
+        if logged:
+            insight["source"] = "logged"
+            insight["health_score"] = logged.get("health_score", insight.get("health_score"))
+            insight["top_causes"] = logged.get("top_causes", insight.get("top_causes", []))
+            insight["summary_line"] = logged.get("summary_line", insight.get("summary_line"))
 
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
     with open(AUTH_FILE, "w", encoding="utf-8") as f:
         json.dump({"pass_hash": pass_hash}, f, indent=2, ensure_ascii=False)
+    save_diagnostics_log(diagnostics_log)
 
     print(f"Wrote {DATA_FILE}")
     print(f"Wrote {AUTH_FILE}")
+    print(f"Wrote {DIAGNOSTICS_LOG_FILE}")
     print(f"Summary: {summary}")
     print(f"Global 7d reach: {global_reach_7d:,} | trend: {reach_trend}")
     print(f"Global 7d reel views: {reel_kpis['total_views_7d']:,} | reels: {reel_kpis['total_reels_7d']:,} | trend: {reel_kpis['trend']}")

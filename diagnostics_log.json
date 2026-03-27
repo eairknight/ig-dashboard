@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "updated_at": "2026-03-27T12:38:46Z",
+  "days": {
+    "2026-03-27": {
+      "source": "logged",
+      "logged_at": "2026-03-27T12:38:46Z",
+      "health_score": 27,
+      "top_causes": [
+        "Low posting volume",
+        "Zero-view spike",
+        "Many active accounts did not post",
+        "Low avg views per reel"
+      ],
+      "summary_line": "42 total views across 12 posted reels, 4 avg/reel. Main drag: low posting volume + zero-view spike.",
+      "active_accounts": 25,
+      "blocked_accounts": 0,
+      "broken_accounts": 0,
+      "checkpoint_accounts": 0,
+      "reauth_accounts": 0,
+      "posted_reels": 12,
+      "views": 42,
+      "avg_views_per_reel": 3.5,
+      "zero_view_reels": 8,
+      "estimated_no_post_active_accounts": 13,
+      "estimated_at_risk_posters": 8,
+      "estimated_unavailable_analytics_posts": 0
+    }
+  }
+}
