@@ -152,6 +152,13 @@ def compact_views_k(value):
     return f"{int(round(n / 1000.0))}k"
 
 
+def fixed_est_date_key(dt_utc):
+    """Map UTC timestamp to fixed EST day key (UTC-5, no DST)."""
+    if not dt_utc:
+        return None
+    return (dt_utc - timedelta(hours=5)).date().isoformat()
+
+
 def build_daily_insight(row, expected_daily_reels, baseline_avg):
     posted = int(row.get("posted_reels", 0) or 0)
     views = int(row.get("views", 0) or 0)
@@ -166,16 +173,22 @@ def build_daily_insight(row, expected_daily_reels, baseline_avg):
     unavailable_rate = (unavailable / posted) if posted else 0.0
     avg_ratio = (avg_num / baseline_avg) if (avg_num is not None and baseline_avg > 0) else 1.0
 
+    low_post_threshold = max(1, int(round(expected_daily_reels * 0.65)))
+    zero_view_threshold = 0.25
+    no_post_threshold = 3
+    missing_analytics_threshold = 0.2
+    low_avg_ratio_threshold = 0.55
+
     causes = []
-    if posted < max(1, int(round(expected_daily_reels * 0.65))):
+    if posted < low_post_threshold:
         causes.append("Low posting volume")
-    if zero_rate >= 0.25 and posted >= 4:
+    if zero_rate >= zero_view_threshold and posted >= 4:
         causes.append("Zero-view spike")
-    if no_post_active >= 3:
+    if no_post_active >= no_post_threshold:
         causes.append("Many active accounts did not post")
-    if unavailable_rate >= 0.2 and posted >= 3:
+    if unavailable_rate >= missing_analytics_threshold and posted >= 3:
         causes.append("Missing post analytics")
-    if avg_num is not None and baseline_avg > 0 and avg_ratio < 0.55:
+    if avg_num is not None and baseline_avg > 0 and avg_ratio < low_avg_ratio_threshold:
         causes.append("Low avg views per reel")
     if not causes:
         causes.append("Stable posting and view quality")
@@ -196,11 +209,48 @@ def build_daily_insight(row, expected_daily_reels, baseline_avg):
         f"{compact_views_k(views)} total views across {posted} posted reels, "
         f"{avg_txt} avg/reel. Main drag: {' + '.join(causes[:2]).lower()}."
     )
+    reason_details = {
+        "Low posting volume": {
+            "triggered": posted < low_post_threshold,
+            "posted_reels": posted,
+            "threshold_min_posted_reels": low_post_threshold,
+            "expected_daily_reels": expected_daily_reels,
+        },
+        "Zero-view spike": {
+            "triggered": (zero_rate >= zero_view_threshold and posted >= 4),
+            "zero_view_reels": zero_reels,
+            "posted_reels": posted,
+            "zero_rate_pct": round(zero_rate * 100, 1),
+            "threshold_pct": int(zero_view_threshold * 100),
+            "minimum_reels_required": 4,
+        },
+        "Many active accounts did not post": {
+            "triggered": no_post_active >= no_post_threshold,
+            "no_post_active_accounts": no_post_active,
+            "threshold_accounts": no_post_threshold,
+        },
+        "Missing post analytics": {
+            "triggered": (unavailable_rate >= missing_analytics_threshold and posted >= 3),
+            "unavailable_posts": unavailable,
+            "posted_reels": posted,
+            "unavailable_rate_pct": round(unavailable_rate * 100, 1),
+            "threshold_pct": int(missing_analytics_threshold * 100),
+            "minimum_reels_required": 3,
+        },
+        "Low avg views per reel": {
+            "triggered": (avg_num is not None and baseline_avg > 0 and avg_ratio < low_avg_ratio_threshold),
+            "avg_views_per_reel": None if avg_num is None else round(avg_num, 2),
+            "baseline_avg_views_per_reel": round(baseline_avg, 2),
+            "ratio_pct_of_baseline": None if avg_num is None or baseline_avg <= 0 else round(avg_ratio * 100, 1),
+            "threshold_pct_of_baseline": int(low_avg_ratio_threshold * 100),
+        },
+    }
 
     return {
         "top_causes": causes[:4],
         "health_score": score,
         "summary_line": summary_line,
+        "reason_details": reason_details,
         "source": row.get("source", "estimated"),
     }
 
@@ -445,7 +495,9 @@ def compute_reel_views_kpis(session, active_accounts):
         dt = p.get("_dt")
         if not dt:
             continue
-        date_key = dt.date().isoformat()
+        date_key = fixed_est_date_key(dt)
+        if not date_key:
+            continue
         bucket = daily_views[date_key]
         bucket["reels"] += 1
         profile = p.get("profile_username")
@@ -798,6 +850,7 @@ def main():
         "health_score": today_insight.get("health_score"),
         "top_causes": today_insight.get("top_causes", []),
         "summary_line": today_insight.get("summary_line"),
+        "reason_details": today_insight.get("reason_details", {}),
         "active_accounts": summary.get("ACTIVE", 0),
         "blocked_accounts": summary.get("BLOCKED", 0),
         "broken_accounts": summary.get("BROKEN", 0),
@@ -830,6 +883,7 @@ def main():
             insight["health_score"] = logged.get("health_score", insight.get("health_score"))
             insight["top_causes"] = logged.get("top_causes", insight.get("top_causes", []))
             insight["summary_line"] = logged.get("summary_line", insight.get("summary_line"))
+            insight["reason_details"] = logged.get("reason_details", insight.get("reason_details", {}))
 
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)

@@ -72,6 +72,13 @@
     <div id="update-disclaimer" class="mb-3 text-xs text-indigo-200 bg-indigo-950/40 border border-indigo-900 rounded-lg px-3 py-2">
       Loading dashboard freshness info...
     </div>
+    <div class="mb-3 flex flex-wrap items-center gap-2">
+      <span class="text-xs text-gray-500">Window:</span>
+      <button id="window-7d" onclick="setWindow('7d')" class="window-btn text-xs px-2.5 py-1 rounded border border-gray-700 text-gray-200 bg-gray-800">Last 7 days</button>
+      <button id="window-3d" onclick="setWindow('3d')" class="window-btn text-xs px-2.5 py-1 rounded border border-gray-700 text-gray-400 hover:text-white">Last 3 days</button>
+      <button id="window-1d" onclick="setWindow('1d')" class="window-btn text-xs px-2.5 py-1 rounded border border-gray-700 text-gray-400 hover:text-white">Last full day</button>
+      <span class="text-[11px] text-gray-600">data windows use fixed EST day boundaries</span>
+    </div>
     <div id="global-stats" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-5"></div>
   </div>
 
@@ -79,7 +86,7 @@
   <div class="max-w-7xl mx-auto px-4 mb-5">
     <div class="bg-gray-900 border border-gray-800 rounded-xl p-4">
       <div class="flex items-center justify-between mb-3">
-        <h2 class="text-sm font-semibold text-white">System Reel Views — Daily Views & Avg Views/Reel (28 days)</h2>
+        <h2 id="chart-title" class="text-sm font-semibold text-white">System Reel Views — Daily Views & Avg Views/Reel (Last 7 days)</h2>
         <span id="trend-badge" class="text-xs font-medium px-2.5 py-1 rounded-full hidden"></span>
       </div>
       <div class="relative" style="height:180px">
@@ -88,6 +95,7 @@
       <div id="daily-health-summary" class="mt-3 text-sm text-gray-200">Loading daily diagnostics...</div>
       <div id="daily-health-meta" class="mt-1 text-xs text-gray-500"></div>
       <div id="daily-health-chips" class="mt-2 flex flex-wrap gap-2"></div>
+      <div id="daily-reason-detail" class="mt-2 hidden text-xs text-gray-300 border border-gray-800 rounded-lg bg-gray-950/50 px-3 py-2"></div>
     </div>
   </div>
 
@@ -175,6 +183,9 @@ let activeFilter = 'ALL';
 let currentSort = '7d';
 let globalChart = null;
 let globalDailyInsights = {};
+let globalData = {};
+let selectedWindow = '7d';
+let selectedReasonName = null;
 
 async function refreshData() { await loadData(true); }
 
@@ -187,15 +198,68 @@ async function loadData(forceRefresh = false, preloadedData = null) {
     const data = preloadedData || await fetch(url).then(r => r.json());
 
     allAccounts = data.accounts || [];
-    renderGlobalStats(data.global || {}, data.updated_at_display);
-    globalDailyInsights = data.global?.daily_health_insights || {};
-    renderGlobalChart(data.global?.daily_views_series || [], globalDailyInsights);
+    globalData = data.global || {};
+    globalDailyInsights = globalData.daily_health_insights || {};
+    applyGlobalWindow(globalData, data.updated_at_display);
     renderLeaderboard(allAccounts);
     renderFilterTabs(data.summary || {}, allAccounts);
     renderCards(allAccounts);
   } catch(e) {
     document.getElementById('last-updated').textContent = 'Error loading data — ' + e.message;
   }
+}
+
+function getSeriesForWindow(series, windowId) {
+  if (!Array.isArray(series) || !series.length) return [];
+  const sorted = [...series].sort((a, b) => String(a.date).localeCompare(String(b.date)));
+  if (windowId === '1d') return sorted.slice(-1);
+  if (windowId === '3d') return sorted.slice(-3);
+  return sorted.slice(-7);
+}
+
+function setWindow(windowId) {
+  selectedWindow = windowId;
+  selectedReasonName = null;
+  document.querySelectorAll('.window-btn').forEach(btn => {
+    btn.classList.remove('bg-gray-800', 'text-gray-200');
+    btn.classList.add('text-gray-400');
+  });
+  const activeBtn = document.getElementById(`window-${windowId}`);
+  if (activeBtn) {
+    activeBtn.classList.add('bg-gray-800', 'text-gray-200');
+    activeBtn.classList.remove('text-gray-400');
+  }
+  if (globalData && Object.keys(globalData).length) {
+    applyGlobalWindow(globalData, window._updatedAtDisplay || 'unknown');
+  }
+}
+
+function applyGlobalWindow(g, updatedAt) {
+  window._updatedAtDisplay = updatedAt || window._updatedAtDisplay || 'unknown';
+  const fullSeries = Array.isArray(g?.daily_views_series) ? g.daily_views_series : [];
+  const series = getSeriesForWindow(fullSeries, selectedWindow);
+  const views = series.reduce((sum, d) => sum + Number(d.views || 0), 0);
+  const reels = series.reduce((sum, d) => sum + Number(d.posted_reels || d.reels || 0), 0);
+  const avg = reels > 0 ? Number((views / reels).toFixed(2)) : null;
+  const trend = g?.trend;
+  const trendPct = g?.trend_pct;
+  const atRisk = allAccounts.filter(a => a.shadowban_health?.status === 'AT_RISK').length;
+  const scoped = {
+    ...g,
+    trend,
+    trend_pct: trendPct,
+    total_views_7d: views,
+    total_reels_7d: reels,
+    avg_views_per_reel_7d: avg,
+    _window_label: selectedWindow === '7d' ? 'Last 7 days' : selectedWindow === '3d' ? 'Last 3 days' : 'Last full day',
+    _at_risk_count: atRisk,
+  };
+  const chartTitle = document.getElementById('chart-title');
+  if (chartTitle) {
+    chartTitle.textContent = `System Reel Views — Daily Views & Avg Views/Reel (${scoped._window_label})`;
+  }
+  renderGlobalStats(scoped, window._updatedAtDisplay);
+  renderGlobalChart(series, g?.daily_health_insights || {});
 }
 
 // ─── Status config ─────────────────────────────────────────────────────
@@ -280,21 +344,69 @@ function inferDailyCauses(row) {
   return causes;
 }
 
+function renderReasonDetail(reasonName, insight, row) {
+  const detailEl = document.getElementById('daily-reason-detail');
+  if (!detailEl) return;
+  if (!reasonName) {
+    detailEl.classList.add('hidden');
+    detailEl.innerHTML = '';
+    return;
+  }
+  const details = insight?.reason_details?.[reasonName];
+  if (!details || typeof details !== 'object') {
+    detailEl.classList.remove('hidden');
+    detailEl.innerHTML = `<div class="font-medium text-gray-200">${esc(reasonName)}</div><div class="mt-1 text-gray-400">No detailed derivation payload available for this reason.</div>`;
+    return;
+  }
+
+  const lines = Object.entries(details).map(([k, v]) => {
+    const key = k.replaceAll('_', ' ');
+    return `<div><span class="text-gray-500">${esc(key)}:</span> <span class="text-gray-200">${esc(v)}</span></div>`;
+  }).join('');
+  detailEl.classList.remove('hidden');
+  detailEl.innerHTML = `
+    <div class="flex items-center justify-between gap-2">
+      <div class="font-medium text-gray-200">${esc(reasonName)}</div>
+      <button onclick="clearReasonDetail()" class="text-[11px] text-gray-500 hover:text-gray-300">hide</button>
+    </div>
+    <div class="mt-1 text-[11px] text-gray-500">date: ${esc(row?.date || 'unknown')} · source: ${esc((insight?.source || row?.source || 'estimated').toLowerCase())}</div>
+    <div class="mt-2 space-y-1 text-[12px]">${lines}</div>
+  `;
+}
+
+function clearReasonDetail() {
+  selectedReasonName = null;
+  renderReasonDetail(null, null, null);
+}
+
+function openReasonDetail(encodedReasonName) {
+  const reasonName = decodeURIComponent(encodedReasonName || '');
+  selectedReasonName = reasonName;
+  renderReasonDetail(reasonName, window._currentDailyInsight || {}, window._currentDailyRow || {});
+}
+
 function updateDailyHealthPanel(series, insights, idx) {
   const summaryEl = document.getElementById('daily-health-summary');
   const metaEl = document.getElementById('daily-health-meta');
   const chipsEl = document.getElementById('daily-health-chips');
+  const detailEl = document.getElementById('daily-reason-detail');
   if (!summaryEl || !metaEl || !chipsEl) return;
   if (!series.length) {
     summaryEl.textContent = 'No daily reel diagnostics available yet.';
     metaEl.textContent = '';
     chipsEl.innerHTML = '';
+    if (detailEl) {
+      detailEl.classList.add('hidden');
+      detailEl.innerHTML = '';
+    }
     return;
   }
 
   const safeIdx = Math.max(0, Math.min(idx, series.length - 1));
   const row = series[safeIdx] || {};
   const insight = insights?.[row.date] || {};
+  window._currentDailyRow = row;
+  window._currentDailyInsight = insight;
   const avg = Number.isFinite(Number(row.avg_views_per_reel)) ? Math.round(Number(row.avg_views_per_reel)) : '—';
   const fallbackSummary = `${fmtRoundedK(row.views)} total views across ${row.posted_reels || 0} posted reels, ${avg} avg/reel.`;
   summaryEl.textContent = insight.summary_line || fallbackSummary;
@@ -308,10 +420,15 @@ function updateDailyHealthPanel(series, insights, idx) {
     ? insight.top_causes
     : inferDailyCauses(row);
   chipsEl.innerHTML = chipCauses.map(c => `
-    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium border border-gray-700 text-gray-300 bg-gray-900">
+    <button onclick="openReasonDetail('${encodeURIComponent(c)}')" class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium border border-gray-700 text-gray-300 bg-gray-900 hover:border-gray-500">
       ${esc(c)}
-    </span>
+    </button>
   `).join('');
+  if (selectedReasonName && chipCauses.includes(selectedReasonName)) {
+    renderReasonDetail(selectedReasonName, insight, row);
+  } else {
+    clearReasonDetail();
+  }
 }
 
 // ─── Global Stats Bar ──────────────────────────────────────────────────
@@ -321,11 +438,15 @@ function renderGlobalStats(g, updatedAt) {
   document.getElementById('update-disclaimer').textContent =
     `Updates run automatically every 6 hours. Last update: ${updatedAt || 'unknown'}. Metrics are based on Upload-Post tracked Instagram reels.`;
 
+  const showTrend = selectedWindow === '7d';
   const trendColor = g.trend === 'up' ? 'text-emerald-400' : g.trend === 'down' ? 'text-red-400' : 'text-gray-400';
   const trendArrow = g.trend === 'up' ? '↑' : g.trend === 'down' ? '↓' : '→';
-  const trendPct = fmtTrendPct(g.trend_pct);
+  const trendPct = showTrend ? fmtTrendPct(g.trend_pct) : '';
   const activeCount = allAccounts.filter(a => a.status === 'ACTIVE').length;
-  const atRiskCount = allAccounts.filter(a => a.shadowban_health?.status === 'AT_RISK').length;
+  const atRiskCount = Number.isFinite(Number(g._at_risk_count))
+    ? Number(g._at_risk_count)
+    : allAccounts.filter(a => a.shadowban_health?.status === 'AT_RISK').length;
+  const windowLabel = g._window_label || 'Last 7 days';
 
   const badge = document.getElementById('trend-badge');
   if (g.trend && trendPct) {
@@ -338,9 +459,9 @@ function renderGlobalStats(g, updatedAt) {
 
   const stats = [
     { label: 'Active Accounts', value: fmt(activeCount), sub: 'posting-capable accounts' },
-    { label: 'Reels (7d)', value: fmt(g.total_reels_7d), sub: 'tracked by Upload-Post' },
-    { label: 'Views (7d)', value: fmt(g.total_views_7d), sub: trendPct ? `${trendArrow} ${trendPct} vs prior 7d` : 'all tracked reels', subColor: trendColor },
-    { label: 'Avg Views/Reel (7d)', value: fmtAvg(g.avg_views_per_reel_7d), sub: 'system-wide' },
+    { label: `Reels (${windowLabel})`, value: fmt(g.total_reels_7d), sub: 'tracked by Upload-Post' },
+    { label: `Views (${windowLabel})`, value: fmt(g.total_views_7d), sub: trendPct ? `${trendArrow} ${trendPct} vs prior 7d` : 'all tracked reels', subColor: trendPct ? trendColor : undefined },
+    { label: `Avg Views/Reel (${windowLabel})`, value: fmtAvg(g.avg_views_per_reel_7d), sub: 'system-wide' },
     { label: 'At Risk Accounts', value: fmt(atRiskCount), sub: '>=3 zero-view reels in last 10' },
   ];
 

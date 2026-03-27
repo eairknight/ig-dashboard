@@ -1,29 +1,65 @@
 {
   "version": 1,
-  "updated_at": "2026-03-27T12:39:24Z",
+  "updated_at": "2026-03-27T13:44:56Z",
   "days": {
     "2026-03-27": {
       "source": "logged",
-      "logged_at": "2026-03-27T12:39:24Z",
-      "health_score": 27,
+      "logged_at": "2026-03-27T13:44:56Z",
+      "health_score": 38,
       "top_causes": [
         "Low posting volume",
         "Zero-view spike",
         "Many active accounts did not post",
         "Low avg views per reel"
       ],
-      "summary_line": "42 total views across 12 posted reels, 4 avg/reel. Main drag: low posting volume + zero-view spike.",
+      "summary_line": "161 total views across 12 posted reels, 13 avg/reel. Main drag: low posting volume + zero-view spike.",
+      "reason_details": {
+        "Low posting volume": {
+          "triggered": true,
+          "posted_reels": 12,
+          "threshold_min_posted_reels": 24,
+          "expected_daily_reels": 37
+        },
+        "Zero-view spike": {
+          "triggered": true,
+          "zero_view_reels": 5,
+          "posted_reels": 12,
+          "zero_rate_pct": 41.7,
+          "threshold_pct": 25,
+          "minimum_reels_required": 4
+        },
+        "Many active accounts did not post": {
+          "triggered": true,
+          "no_post_active_accounts": 13,
+          "threshold_accounts": 3
+        },
+        "Missing post analytics": {
+          "triggered": false,
+          "unavailable_posts": 0,
+          "posted_reels": 12,
+          "unavailable_rate_pct": 0.0,
+          "threshold_pct": 20,
+          "minimum_reels_required": 3
+        },
+        "Low avg views per reel": {
+          "triggered": true,
+          "avg_views_per_reel": 13.42,
+          "baseline_avg_views_per_reel": 53.96,
+          "ratio_pct_of_baseline": 24.9,
+          "threshold_pct_of_baseline": 55
+        }
+      },
       "active_accounts": 25,
       "blocked_accounts": 0,
       "broken_accounts": 0,
       "checkpoint_accounts": 0,
       "reauth_accounts": 0,
       "posted_reels": 12,
-      "views": 42,
-      "avg_views_per_reel": 3.5,
-      "zero_view_reels": 8,
+      "views": 161,
+      "avg_views_per_reel": 13.42,
+      "zero_view_reels": 5,
       "estimated_no_post_active_accounts": 13,
-      "estimated_at_risk_posters": 8,
+      "estimated_at_risk_posters": 5,
       "estimated_unavailable_analytics_posts": 0
     }
   }
