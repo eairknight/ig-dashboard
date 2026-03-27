@@ -182,7 +182,7 @@ async function loadData(forceRefresh = false, preloadedData = null) {
     renderGlobalStats(data.global || {}, data.updated_at_display);
     renderGlobalChart(data.global?.series || []);
     renderLeaderboard(allAccounts);
-    renderFilterTabs(data.summary || {});
+    renderFilterTabs(data.summary || {}, allAccounts);
     renderCards(allAccounts);
   } catch(e) {
     document.getElementById('last-updated').textContent = 'Error loading data — ' + e.message;
@@ -197,6 +197,13 @@ const SC = {
   BROKEN:     { label:'Broken Token',  color:'bg-red-600',     text:'text-red-400',     border:'border-red-900',    dot:'bg-red-500' },
   NO_IG:      { label:'No IG Linked',  color:'bg-gray-600',    text:'text-gray-400',    border:'border-gray-700',   dot:'bg-gray-500' },
   BLOCKED:    { label:'Blocked',       color:'bg-rose-900',    text:'text-rose-400',    border:'border-rose-950',   dot:'bg-rose-700' },
+};
+
+const HC = {
+  HEALTHY:           { label: 'Healthy',            color: 'bg-emerald-500', text: 'text-emerald-300' },
+  AT_RISK:           { label: 'At Risk (0 views)',  color: 'bg-rose-600',    text: 'text-rose-200' },
+  INSUFFICIENT_DATA: { label: 'Insufficient Data',  color: 'bg-amber-500',   text: 'text-amber-200' },
+  UNAVAILABLE:       { label: 'Unavailable',        color: 'bg-gray-600',    text: 'text-gray-200' },
 };
 
 function fmt(n) {
@@ -229,6 +236,13 @@ function localDateKey(d) {
   const m = String(d.getMonth() + 1).padStart(2, '0');
   const day = String(d.getDate()).padStart(2, '0');
   return `${y}-${m}-${day}`;
+}
+
+function fmtTs(ts) {
+  if (!ts) return '—';
+  const d = new Date(ts);
+  if (Number.isNaN(d.getTime())) return '—';
+  return d.toLocaleString(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
 }
 
 // ─── Global Stats Bar ──────────────────────────────────────────────────
@@ -364,10 +378,15 @@ function renderLeaderboard(accounts) {
 }
 
 // ─── Filter Tabs ───────────────────────────────────────────────────────
-function renderFilterTabs(summary) {
+function renderFilterTabs(summary, accounts = allAccounts) {
   const tabs = document.getElementById('filter-tabs');
   const total = Object.values(summary).reduce((a,b)=>a+b,0);
+  const atRisk = accounts.filter(a => a.shadowban_health?.status === 'AT_RISK').length;
+  if (activeFilter === 'AT_RISK' && atRisk === 0) activeFilter = 'ALL';
   let html = tabBtn('ALL', `All (${total})`, activeFilter === 'ALL');
+  if (atRisk) {
+    html += tabBtn('AT_RISK', `At Risk (${atRisk})`, activeFilter === 'AT_RISK', 'bg-rose-400');
+  }
   for (const [status, count] of Object.entries(summary)) {
     if (!count) continue;
     const cfg = SC[status] || SC.NO_IG;
@@ -387,7 +406,7 @@ function tabBtn(id, label, active, dotClass='') {
 
 function setFilter(f) {
   activeFilter = f;
-  renderFilterTabs(buildSummary(allAccounts));
+  renderFilterTabs(buildSummary(allAccounts), allAccounts);
   renderCards(allAccounts);
 }
 
@@ -456,7 +475,11 @@ function sparkline(dailySeries) {
 function renderCards(accounts) {
   const grid = document.getElementById('cards-grid');
   const empty = document.getElementById('empty-msg');
-  const filtered = activeFilter === 'ALL' ? accounts : accounts.filter(a => a.status === activeFilter);
+  const filtered = activeFilter === 'ALL'
+    ? accounts
+    : activeFilter === 'AT_RISK'
+      ? accounts.filter(a => a.shadowban_health?.status === 'AT_RISK')
+      : accounts.filter(a => a.status === activeFilter);
   const sorted = sortedAccounts(filtered);
   const activeAccounts = accounts.filter(a => a.status === 'ACTIVE');
 
@@ -476,6 +499,11 @@ function renderCards(accounts) {
     const assignedUrl = esc(a.assigned_url || '');
     const errorMsg = esc(a.error_msg || '');
     const profilePic = esc(a.profile_pic || '');
+    const health = a.shadowban_health || {};
+    const healthCfg = HC[health.status] || HC.UNAVAILABLE;
+    const zeroViewsCount = Number.isFinite(health.zero_views_count) ? health.zero_views_count : 0;
+    const sampleSize = Number.isFinite(health.sample_size) ? health.sample_size : 0;
+    const latestViews = health.latest_views == null ? '—' : fmt(health.latest_views);
     const pic = a.profile_pic
       ? `<img src="${profilePic}" class="w-12 h-12 rounded-full object-cover border-2 border-gray-700 shrink-0" onerror="this.style.display='none'">`
       : `<div class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center text-gray-400 text-lg font-bold border-2 border-gray-600 shrink-0">${(a.ig_handle||a.username||'?')[0].toUpperCase()}</div>`;
@@ -504,6 +532,18 @@ function renderCards(accounts) {
         <div>
           <div class="text-sm font-bold text-white">${fmt(a.followers)}</div>
           <div class="text-xs text-gray-600">followers</div>
+        </div>
+      </div>
+      <div class="mt-2 text-xs border border-gray-800 rounded-lg p-2 bg-gray-950/40">
+        <div class="flex items-center justify-between gap-2 mb-1">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold ${healthCfg.color} ${healthCfg.text}">
+            ${healthCfg.label}
+          </span>
+          <span class="text-gray-500">0-view reels: ${zeroViewsCount}/${sampleSize}</span>
+        </div>
+        <div class="flex items-center justify-between text-gray-500">
+          <span>latest reel views: ${latestViews}</span>
+          <span>checked: ${esc(fmtTs(health.checked_at))}</span>
         </div>
       </div>
       <div class="flex justify-end mt-2">

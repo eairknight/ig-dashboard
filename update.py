@@ -21,6 +21,8 @@ API_BASE = "https://api.upload-post.com"
 USERS_URL = f"{API_BASE}/api/uploadposts/users"
 MEDIA_URL = f"{API_BASE}/api/uploadposts/media"
 ANALYTICS_URL = f"{API_BASE}/api/analytics"
+HISTORY_URL = f"{API_BASE}/api/uploadposts/history"
+POST_ANALYTICS_URL = f"{API_BASE}/api/uploadposts/post-analytics"
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(BASE_DIR, "data.json")
 AUTH_FILE = os.path.join(BASE_DIR, "auth.json")
@@ -88,6 +90,168 @@ def fetch_analytics(session, username):
         return None
 
 
+def fetch_instagram_reel_history(session, max_pages=20, page_size=100):
+    """
+    Fetch recent successful Instagram video posts from upload history.
+    Returns items ordered newest->oldest as provided by the API.
+    """
+    reels = []
+    for page in range(1, max_pages + 1):
+        try:
+            r = session.get(
+                HISTORY_URL,
+                params={"page": page, "limit": page_size},
+                timeout=30,
+            )
+            if r.status_code != 200:
+                break
+            data = r.json()
+            items = data.get("history", [])
+            if not items:
+                break
+            for item in items:
+                if item.get("platform") != "instagram":
+                    continue
+                if item.get("media_type") != "video":
+                    continue
+                if item.get("success") is not True:
+                    continue
+                if not item.get("request_id"):
+                    continue
+                reels.append(item)
+            if len(items) < page_size:
+                break
+        except Exception:
+            break
+    return reels
+
+
+def extract_post_views(payload):
+    """
+    Extract a per-post views value from post-analytics responses.
+    The response can vary by endpoint version, so we try several shapes.
+    """
+    candidates = []
+    if isinstance(payload, dict):
+        candidates.append(payload)
+        ig = payload.get("instagram")
+        if isinstance(ig, dict):
+            candidates.append(ig)
+        data = payload.get("data")
+        if isinstance(data, dict):
+            candidates.append(data)
+            data_ig = data.get("instagram")
+            if isinstance(data_ig, dict):
+                candidates.append(data_ig)
+        platforms = payload.get("platforms")
+        if isinstance(platforms, dict):
+            candidates.append(platforms)
+            p_ig = platforms.get("instagram")
+            if isinstance(p_ig, dict):
+                candidates.append(p_ig)
+
+    metrics = []
+    for c in candidates:
+        pm = c.get("post_metrics")
+        if isinstance(pm, dict):
+            metrics.append(pm)
+        elif isinstance(pm, list):
+            metrics.extend(x for x in pm if isinstance(x, dict))
+        # Some payloads may expose post fields directly.
+        metrics.append(c)
+
+    for m in metrics:
+        for key in ("views", "view_count", "impressions", "plays"):
+            v = m.get(key) if isinstance(m, dict) else None
+            if isinstance(v, (int, float)):
+                return max(0, int(round(v)))
+    return None
+
+
+def fetch_post_views(session, request_id):
+    """Fetch per-post Instagram views for one request_id."""
+    try:
+        r = session.get(
+            f"{POST_ANALYTICS_URL}/{request_id}",
+            params={"platform": "instagram"},
+            timeout=30,
+        )
+        if r.status_code != 200:
+            return None
+        return extract_post_views(r.json())
+    except Exception:
+        return None
+
+
+def compute_shadowban_health(session, active_accounts):
+    """
+    Heuristic detector:
+    - Look at the most recent 10 Instagram reels per account.
+    - Flag AT_RISK if >=3 reels have 0 views.
+    """
+    checked_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    history = fetch_instagram_reel_history(session)
+
+    by_profile = defaultdict(list)
+    for item in history:
+        profile = item.get("profile_username")
+        if profile:
+            by_profile[profile].append(item)
+
+    # Cache request_id lookups so each post is only queried once.
+    views_cache = {}
+
+    def health_for_account(account):
+        username = account["username"]
+        recent = by_profile.get(username, [])[:10]
+        if not recent:
+            account["shadowban_health"] = {
+                "status": "INSUFFICIENT_DATA",
+                "zero_views_count": 0,
+                "sample_size": 0,
+                "latest_views": None,
+                "checked_at": checked_at,
+            }
+            return
+
+        ordered_request_ids = [item.get("request_id") for item in recent if item.get("request_id")]
+        views = []
+        for rid in ordered_request_ids:
+            if rid not in views_cache:
+                views_cache[rid] = fetch_post_views(session, rid)
+            views.append(views_cache[rid])
+
+        available = [v for v in views if isinstance(v, int)]
+        sample_size = len(available)
+        zero_views = sum(1 for v in available if v == 0)
+        latest_views = next((v for v in views if isinstance(v, int)), None)
+
+        if sample_size == 0:
+            status = "UNAVAILABLE"
+        elif sample_size < 10:
+            status = "INSUFFICIENT_DATA"
+        elif zero_views >= 3:
+            status = "AT_RISK"
+        else:
+            status = "HEALTHY"
+
+        account["shadowban_health"] = {
+            "status": status,
+            "zero_views_count": zero_views,
+            "sample_size": sample_size,
+            "latest_views": latest_views,
+            "checked_at": checked_at,
+        }
+
+    with ThreadPoolExecutor(max_workers=min(len(active_accounts), 20)) as pool:
+        futures = [pool.submit(health_for_account, account) for account in active_accounts]
+        for future in as_completed(futures):
+            try:
+                future.result()
+            except Exception:
+                pass
+
+
 def check_account(session, profile, url_map):
     username = profile.get("username", "?")
     ig = profile.get("social_accounts", {}).get("instagram")
@@ -111,6 +275,13 @@ def check_account(session, profile, url_map):
         "reach_7d": 0,
         "reach_28d": 0,
         "daily_series": [],
+        "shadowban_health": {
+            "status": "UNAVAILABLE",
+            "zero_views_count": 0,
+            "sample_size": 0,
+            "latest_views": None,
+            "checked_at": None,
+        },
     }
 
     if blocked or not ig:
@@ -252,6 +423,9 @@ def main():
                 future.result()
             except Exception as e:
                 print(f"Error enriching account: {e}", file=sys.stderr)
+
+    print("Computing shadowban health (recent post views)...")
+    compute_shadowban_health(session, active_accounts)
 
     all_accounts = active_accounts + inactive_accounts
     all_accounts.sort(key=lambda a: a["username"])
