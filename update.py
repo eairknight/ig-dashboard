@@ -126,6 +126,24 @@ def fetch_instagram_reel_history(session, max_pages=20, page_size=100):
     return reels
 
 
+def parse_iso_utc(raw):
+    if not raw:
+        return None
+    try:
+        normalized = raw.replace("Z", "+00:00")
+        dt = datetime.fromisoformat(normalized)
+    except Exception:
+        try:
+            dt = datetime.strptime(raw, "%Y-%m-%dT%H:%M:%S").replace(tzinfo=timezone.utc)
+        except Exception:
+            return None
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    else:
+        dt = dt.astimezone(timezone.utc)
+    return dt
+
+
 def extract_post_views(payload):
     """
     Extract a per-post views value from post-analytics responses.
@@ -183,23 +201,54 @@ def fetch_post_views(session, request_id):
         return None
 
 
-def compute_shadowban_health(session, active_accounts):
+def compute_reel_views_kpis(session, active_accounts):
     """
-    Heuristic detector:
-    - Look at the most recent 10 Instagram reels per account.
-    - Flag AT_RISK if >=3 reels have 0 views.
+    Compute per-account and global views-first KPIs from Upload-Post reel history.
+    Risk heuristic:
+      - Look at most recent 10 reels/account
+      - AT_RISK if >=3 have 0 views
     """
-    checked_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    now_utc = datetime.now(timezone.utc)
+    checked_at = now_utc.strftime("%Y-%m-%dT%H:%M:%SZ")
     history = fetch_instagram_reel_history(session)
+    active_usernames = {a["username"] for a in active_accounts}
 
     by_profile = defaultdict(list)
+    all_active_posts = []
     for item in history:
         profile = item.get("profile_username")
-        if profile:
-            by_profile[profile].append(item)
+        if profile in active_usernames:
+            dt = parse_iso_utc(item.get("upload_timestamp"))
+            enriched = {
+                "profile_username": profile,
+                "request_id": item.get("request_id"),
+                "upload_timestamp": item.get("upload_timestamp"),
+                "_dt": dt,
+            }
+            by_profile[profile].append(enriched)
+            all_active_posts.append(enriched)
 
     # Cache request_id lookups so each post is only queried once.
     views_cache = {}
+    request_ids = list({
+        p["request_id"] for p in all_active_posts
+        if p.get("request_id")
+    })
+
+    def resolve_views(request_id):
+        return request_id, fetch_post_views(session, request_id)
+
+    with ThreadPoolExecutor(max_workers=min(len(request_ids), 25) or 1) as pool:
+        futures = [pool.submit(resolve_views, rid) for rid in request_ids]
+        for future in as_completed(futures):
+            try:
+                rid, views = future.result()
+                views_cache[rid] = views
+            except Exception:
+                pass
+
+    for p in all_active_posts:
+        p["views"] = views_cache.get(p.get("request_id"))
 
     def health_for_account(account):
         username = account["username"]
@@ -212,14 +261,15 @@ def compute_shadowban_health(session, active_accounts):
                 "latest_views": None,
                 "checked_at": checked_at,
             }
+            account["views_24h"] = 0
+            account["views_3d"] = 0
+            account["views_7d"] = 0
+            account["reels_7d_count"] = 0
+            account["avg_views_per_reel_7d"] = None
+            account["latest_reel_views"] = None
             return
 
-        ordered_request_ids = [item.get("request_id") for item in recent if item.get("request_id")]
-        views = []
-        for rid in ordered_request_ids:
-            if rid not in views_cache:
-                views_cache[rid] = fetch_post_views(session, rid)
-            views.append(views_cache[rid])
+        views = [p.get("views") for p in recent]
 
         available = [v for v in views if isinstance(v, int)]
         sample_size = len(available)
@@ -235,6 +285,22 @@ def compute_shadowban_health(session, active_accounts):
         else:
             status = "HEALTHY"
 
+        cutoff_24h = now_utc - timedelta(hours=24)
+        cutoff_3d = now_utc - timedelta(days=3)
+        cutoff_7d = now_utc - timedelta(days=7)
+        posts_with_dt = [p for p in by_profile.get(username, []) if p.get("_dt")]
+
+        reels_7d = [p for p in posts_with_dt if p["_dt"] >= cutoff_7d]
+        reels_3d = [p for p in posts_with_dt if p["_dt"] >= cutoff_3d]
+        reels_24h = [p for p in posts_with_dt if p["_dt"] >= cutoff_24h]
+        reels_7d_with_views = [p for p in reels_7d if isinstance(p.get("views"), int)]
+
+        views_7d = int(sum(p.get("views", 0) for p in reels_7d if isinstance(p.get("views"), int)))
+        views_3d = int(sum(p.get("views", 0) for p in reels_3d if isinstance(p.get("views"), int)))
+        views_24h = int(sum(p.get("views", 0) for p in reels_24h if isinstance(p.get("views"), int)))
+        reels_7d_count = len(reels_7d)
+        avg_views_per_reel_7d = round(views_7d / len(reels_7d_with_views), 2) if reels_7d_with_views else None
+
         account["shadowban_health"] = {
             "status": status,
             "zero_views_count": zero_views,
@@ -242,6 +308,12 @@ def compute_shadowban_health(session, active_accounts):
             "latest_views": latest_views,
             "checked_at": checked_at,
         }
+        account["views_24h"] = views_24h
+        account["views_3d"] = views_3d
+        account["views_7d"] = views_7d
+        account["reels_7d_count"] = reels_7d_count
+        account["avg_views_per_reel_7d"] = avg_views_per_reel_7d
+        account["latest_reel_views"] = latest_views
 
     with ThreadPoolExecutor(max_workers=min(len(active_accounts), 20)) as pool:
         futures = [pool.submit(health_for_account, account) for account in active_accounts]
@@ -250,6 +322,71 @@ def compute_shadowban_health(session, active_accounts):
                 future.result()
             except Exception:
                 pass
+
+    cutoff_24h = now_utc - timedelta(hours=24)
+    cutoff_3d = now_utc - timedelta(days=3)
+    cutoff_7d = now_utc - timedelta(days=7)
+    cutoff_14d = now_utc - timedelta(days=14)
+    cutoff_28d = now_utc - timedelta(days=28)
+
+    daily_views = defaultdict(lambda: {"views": 0, "reels": 0})
+    total_views_24h = 0
+    total_views_3d = 0
+    total_views_7d = 0
+    total_reels_7d = 0
+    total_reels_7d_with_views = 0
+    recent_7d_daily = 0
+    prior_7d_daily = 0
+
+    for p in all_active_posts:
+        dt = p.get("_dt")
+        if not dt:
+            continue
+        if dt >= cutoff_7d:
+            total_reels_7d += 1
+        views = p.get("views")
+        if not isinstance(views, int):
+            continue
+        if dt >= cutoff_24h:
+            total_views_24h += views
+        if dt >= cutoff_3d:
+            total_views_3d += views
+        if dt >= cutoff_7d:
+            total_views_7d += views
+            total_reels_7d_with_views += 1
+            recent_7d_daily += views
+        elif cutoff_14d <= dt < cutoff_7d:
+            prior_7d_daily += views
+        if dt >= cutoff_28d:
+            key = dt.date().isoformat()
+            daily_views[key]["views"] += views
+            daily_views[key]["reels"] += 1
+
+    avg_views_per_reel_7d = round(total_views_7d / total_reels_7d_with_views, 2) if total_reels_7d_with_views else None
+    trend = "up" if recent_7d_daily > prior_7d_daily else ("down" if recent_7d_daily < prior_7d_daily else "flat")
+    trend_pct = round((recent_7d_daily - prior_7d_daily) / prior_7d_daily * 100, 1) if prior_7d_daily > 0 else None
+
+    daily_views_series = []
+    for date_str in sorted(daily_views.keys()):
+        reels = daily_views[date_str]["reels"]
+        views = daily_views[date_str]["views"]
+        daily_views_series.append({
+            "date": date_str,
+            "views": views,
+            "reels": reels,
+            "avg_views_per_reel": round(views / reels, 2) if reels else None,
+        })
+
+    return {
+        "total_reels_7d": int(total_reels_7d),
+        "total_views_24h": int(total_views_24h),
+        "total_views_3d": int(total_views_3d),
+        "total_views_7d": int(total_views_7d),
+        "avg_views_per_reel_7d": avg_views_per_reel_7d,
+        "daily_views_series": daily_views_series,
+        "trend": trend,
+        "trend_pct": trend_pct,
+    }
 
 
 def check_account(session, profile, url_map):
@@ -274,6 +411,12 @@ def check_account(session, profile, url_map):
         "followers": 0,
         "reach_7d": 0,
         "reach_28d": 0,
+        "views_24h": 0,
+        "views_3d": 0,
+        "views_7d": 0,
+        "reels_7d_count": 0,
+        "avg_views_per_reel_7d": None,
+        "latest_reel_views": None,
         "daily_series": [],
         "shadowban_health": {
             "status": "UNAVAILABLE",
@@ -424,8 +567,8 @@ def main():
             except Exception as e:
                 print(f"Error enriching account: {e}", file=sys.stderr)
 
-    print("Computing shadowban health (recent post views)...")
-    compute_shadowban_health(session, active_accounts)
+    print("Computing views-first reel KPIs + shadowban health...")
+    reel_kpis = compute_reel_views_kpis(session, active_accounts)
 
     all_accounts = active_accounts + inactive_accounts
     all_accounts.sort(key=lambda a: a["username"])
@@ -443,7 +586,7 @@ def main():
     global_reach_28d = int(sum(d["reach"] for d in global_series))
     global_total_views = sum(a.get("total_views", 0) for a in active_accounts)
     prior_reach_7d = int(sum(d["reach"] for d in prior_global))
-    trend = "up" if global_reach_7d > prior_reach_7d else ("down" if global_reach_7d < prior_reach_7d else "flat")
+    reach_trend = "up" if global_reach_7d > prior_reach_7d else ("down" if global_reach_7d < prior_reach_7d else "flat")
 
 
     summary = {s: 0 for s in ("ACTIVE", "REAUTH", "CHECKPOINT", "BROKEN", "NO_IG", "BLOCKED")}
@@ -466,9 +609,17 @@ def main():
             "total_views": global_total_views,
             "reach_7d": global_reach_7d,
             "reach_28d": global_reach_28d,
-            "trend": trend,
-            "trend_pct": round((global_reach_7d - prior_reach_7d) / prior_reach_7d * 100, 1) if prior_reach_7d > 0 else None,
+            "trend": reel_kpis["trend"],
+            "trend_pct": reel_kpis["trend_pct"],
+            "reach_trend": reach_trend,
+            "reach_trend_pct": round((global_reach_7d - prior_reach_7d) / prior_reach_7d * 100, 1) if prior_reach_7d > 0 else None,
             "series": global_series,
+            "total_reels_7d": reel_kpis["total_reels_7d"],
+            "total_views_24h": reel_kpis["total_views_24h"],
+            "total_views_3d": reel_kpis["total_views_3d"],
+            "total_views_7d": reel_kpis["total_views_7d"],
+            "avg_views_per_reel_7d": reel_kpis["avg_views_per_reel_7d"],
+            "daily_views_series": reel_kpis["daily_views_series"],
         },
         "accounts": all_accounts,
     }
@@ -481,7 +632,8 @@ def main():
     print(f"Wrote {DATA_FILE}")
     print(f"Wrote {AUTH_FILE}")
     print(f"Summary: {summary}")
-    print(f"Global 7d reach: {global_reach_7d:,} | trend: {trend}")
+    print(f"Global 7d reach: {global_reach_7d:,} | trend: {reach_trend}")
+    print(f"Global 7d reel views: {reel_kpis['total_views_7d']:,} | reels: {reel_kpis['total_reels_7d']:,} | trend: {reel_kpis['trend']}")
     print(f"Updated at: {updated_at_display}")
 
 

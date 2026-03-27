@@ -69,6 +69,9 @@
 
   <!-- Global Stats -->
   <div class="max-w-7xl mx-auto px-4 pt-5">
+    <div id="update-disclaimer" class="mb-3 text-xs text-indigo-200 bg-indigo-950/40 border border-indigo-900 rounded-lg px-3 py-2">
+      Loading dashboard freshness info...
+    </div>
     <div id="global-stats" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-5"></div>
   </div>
 
@@ -76,7 +79,7 @@
   <div class="max-w-7xl mx-auto px-4 mb-5">
     <div class="bg-gray-900 border border-gray-800 rounded-xl p-4">
       <div class="flex items-center justify-between mb-3">
-        <h2 class="text-sm font-semibold text-white">All Accounts — Daily Reach & Avg Reach/Active Account (28 days)</h2>
+        <h2 class="text-sm font-semibold text-white">System Reel Views — Daily Views & Avg Views/Reel (28 days)</h2>
         <span id="trend-badge" class="text-xs font-medium px-2.5 py-1 rounded-full hidden"></span>
       </div>
       <div class="relative" style="height:180px">
@@ -90,13 +93,13 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <div class="bg-gray-900 border border-gray-800 rounded-xl p-4">
         <h2 class="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-          <span class="text-green-400">↑</span> Top 5 Performers <span class="text-xs text-gray-500 font-normal">(7-day reach)</span>
+          <span class="text-green-400">↑</span> Top 5 Performers <span class="text-xs text-gray-500 font-normal">(7-day views)</span>
         </h2>
         <div id="top5" class="space-y-2"></div>
       </div>
       <div class="bg-gray-900 border border-gray-800 rounded-xl p-4">
         <h2 class="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-          <span class="text-red-400">↓</span> Bottom 5 Performers <span class="text-xs text-gray-500 font-normal">(7-day reach)</span>
+          <span class="text-red-400">↓</span> Bottom 5 Performers <span class="text-xs text-gray-500 font-normal">(7-day views)</span>
         </h2>
         <div id="bottom5" class="space-y-2"></div>
       </div>
@@ -110,7 +113,8 @@
       <div class="flex-1"></div>
       <div class="flex items-center gap-1 text-xs text-gray-500">
         Sort:
-        <button id="sort-7d"   onclick="setSort('7d')"   class="sort-btn px-2.5 py-1 rounded border border-gray-700 text-gray-400 hover:text-white transition sort-active">7d reach</button>
+        <button id="sort-7d"   onclick="setSort('7d')"   class="sort-btn px-2.5 py-1 rounded border border-gray-700 text-gray-400 hover:text-white transition sort-active">7d views</button>
+        <button id="sort-avr"  onclick="setSort('avr')"  class="sort-btn px-2.5 py-1 rounded border border-gray-700 text-gray-400 hover:text-white transition">avg/reel 7d</button>
         <button id="sort-tot"  onclick="setSort('tot')"  class="sort-btn px-2.5 py-1 rounded border border-gray-700 text-gray-400 hover:text-white transition">Total views</button>
         <button id="sort-flw"  onclick="setSort('flw')"  class="sort-btn px-2.5 py-1 rounded border border-gray-700 text-gray-400 hover:text-white transition">Followers</button>
         <button id="sort-abc"  onclick="setSort('abc')"  class="sort-btn px-2.5 py-1 rounded border border-gray-700 text-gray-400 hover:text-white transition">A–Z</button>
@@ -180,7 +184,7 @@ async function loadData(forceRefresh = false, preloadedData = null) {
 
     allAccounts = data.accounts || [];
     renderGlobalStats(data.global || {}, data.updated_at_display);
-    renderGlobalChart(data.global?.series || []);
+    renderGlobalChart(data.global?.daily_views_series || []);
     renderLeaderboard(allAccounts);
     renderFilterTabs(data.summary || {}, allAccounts);
     renderCards(allAccounts);
@@ -211,6 +215,11 @@ function fmt(n) {
   if (n >= 1000000) return (n/1000000).toFixed(1)+'M';
   if (n >= 1000) return (n/1000).toFixed(1)+'K';
   return String(Math.round(n));
+}
+
+function fmtAvg(n) {
+  if (n == null || !Number.isFinite(Number(n))) return '—';
+  return Number(n).toFixed(1);
 }
 
 function esc(v) {
@@ -248,25 +257,31 @@ function fmtTs(ts) {
 // ─── Global Stats Bar ──────────────────────────────────────────────────
 function renderGlobalStats(g, updatedAt) {
   document.getElementById('last-updated').textContent =
-    `Last updated: ${updatedAt || 'unknown'} · Updates daily at 9 AM EST`;
+    `Last updated: ${updatedAt || 'unknown'} · Auto-updates every 6 hours`;
+  document.getElementById('update-disclaimer').textContent =
+    `Updates run automatically every 6 hours. Last update: ${updatedAt || 'unknown'}. Metrics are based on Upload-Post tracked Instagram reels.`;
 
   const trendColor = g.trend === 'up' ? 'text-emerald-400' : g.trend === 'down' ? 'text-red-400' : 'text-gray-400';
   const trendArrow = g.trend === 'up' ? '↑' : g.trend === 'down' ? '↓' : '→';
   const trendPct = fmtTrendPct(g.trend_pct);
+  const activeCount = allAccounts.filter(a => a.status === 'ACTIVE').length;
+  const atRiskCount = allAccounts.filter(a => a.shadowban_health?.status === 'AT_RISK').length;
 
   const badge = document.getElementById('trend-badge');
   if (g.trend && trendPct) {
     badge.className = `text-xs font-medium px-2.5 py-1 rounded-full ${trendColor} bg-gray-800`;
-    badge.textContent = `${trendArrow} ${trendPct} vs prior 7 days`;
+    badge.textContent = `${trendArrow} ${trendPct} vs prior 7 days (reel views)`;
     badge.classList.remove('hidden');
   } else {
     badge.classList.add('hidden');
   }
 
   const stats = [
-    { label: 'Total Views (28d)',  value: fmt(g.total_views), sub: 'all accounts' },
-    { label: '7-Day Reach',        value: fmt(g.reach_7d),    sub: trendPct ? `${trendArrow} ${trendPct} vs prior 7d` : 'all accounts', subColor: trendColor },
-    { label: '28-Day Reach',       value: fmt(g.reach_28d),   sub: 'all accounts' },
+    { label: 'Active Accounts', value: fmt(activeCount), sub: 'posting-capable accounts' },
+    { label: 'Reels (7d)', value: fmt(g.total_reels_7d), sub: 'tracked by Upload-Post' },
+    { label: 'Views (7d)', value: fmt(g.total_views_7d), sub: trendPct ? `${trendArrow} ${trendPct} vs prior 7d` : 'all tracked reels', subColor: trendColor },
+    { label: 'Avg Views/Reel (7d)', value: fmtAvg(g.avg_views_per_reel_7d), sub: 'system-wide' },
+    { label: 'At Risk Accounts', value: fmt(atRiskCount), sub: '>=3 zero-view reels in last 10' },
   ];
 
   document.getElementById('global-stats').innerHTML = stats.map(s => `
@@ -283,12 +298,8 @@ function renderGlobalChart(series) {
   if (globalChart) { globalChart.destroy(); globalChart = null; }
 
   const labels = series.map(d => d.date.slice(5));  // MM-DD
-  const reachData = series.map(d => d.reach);
-  const activeCount = Math.max(allAccounts.filter(a => a.status === 'ACTIVE').length, 1);
-  const avgData = series.map(d => {
-    if (typeof d.avg === 'number') return d.avg;
-    return Number(((d.reach || 0) / activeCount).toFixed(2));
-  });
+  const viewsData = series.map(d => d.views || 0);
+  const avgData = series.map(d => Number.isFinite(Number(d.avg_views_per_reel)) ? Number(d.avg_views_per_reel) : null);
 
   globalChart = new Chart(ctx, {
     type: 'bar',
@@ -296,8 +307,8 @@ function renderGlobalChart(series) {
       labels,
       datasets: [
         {
-          label: 'Daily Reach',
-          data: reachData,
+          label: 'Daily Reel Views',
+          data: viewsData,
           backgroundColor: 'rgba(99,102,241,0.35)',
           borderColor: 'rgba(99,102,241,0.7)',
           borderWidth: 1,
@@ -305,7 +316,7 @@ function renderGlobalChart(series) {
           yAxisID: 'y',
         },
         {
-          label: 'Avg Reach / Active Account',
+          label: 'Avg Views / Reel',
           data: avgData,
           type: 'line',
           borderColor: '#34d399',
@@ -334,8 +345,8 @@ function renderGlobalChart(series) {
       },
       scales: {
         x: { ticks: { color: '#6b7280', font: { size: 10 }, maxTicksLimit: 14 }, grid: { color: '#1f2937' } },
-        y: { ticks: { color: '#6b7280', font: { size: 10 } }, grid: { color: '#1f2937' }, title: { display: true, text: 'Reach', color: '#6b7280', font: { size: 10 } } },
-        y2: { position: 'right', ticks: { color: '#34d399', font: { size: 10 } }, grid: { drawOnChartArea: false }, title: { display: true, text: 'Avg/Active', color: '#34d399', font: { size: 10 } } },
+        y: { ticks: { color: '#6b7280', font: { size: 10 } }, grid: { color: '#1f2937' }, title: { display: true, text: 'Views', color: '#6b7280', font: { size: 10 } } },
+        y2: { position: 'right', ticks: { color: '#34d399', font: { size: 10 } }, grid: { drawOnChartArea: false }, title: { display: true, text: 'Avg/Reel', color: '#34d399', font: { size: 10 } } },
       },
     },
   });
@@ -344,7 +355,8 @@ function renderGlobalChart(series) {
 // ─── Leaderboard ───────────────────────────────────────────────────────
 function leaderboardRow(acc, rank, isTop) {
   const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `#${rank}`;
-  const reach = fmt(acc.reach_7d);
+  const views7d = fmt(acc.views_7d);
+  const avg7d = fmtAvg(acc.avg_views_per_reel_7d);
   const handle = esc(acc.ig_handle || acc.username);
   const url = esc(acc.assigned_url || '—');
   const rowBg = isTop ? 'bg-emerald-950 border-emerald-900' : 'bg-red-950 border-red-900';
@@ -356,15 +368,15 @@ function leaderboardRow(acc, rank, isTop) {
         <div class="text-xs text-gray-500">${url}</div>
       </div>
       <div class="text-right shrink-0">
-        <div class="font-semibold ${isTop ? 'text-emerald-400' : 'text-red-400'}">${reach}</div>
-        <div class="text-xs text-gray-500">7d reach</div>
+        <div class="font-semibold ${isTop ? 'text-emerald-400' : 'text-red-400'}">${views7d}</div>
+        <div class="text-xs text-gray-500">${avg7d} avg/reel</div>
       </div>
     </div>`;
 }
 
 function renderLeaderboard(accounts) {
-  const active = accounts.filter(a => a.status === 'ACTIVE' && a.reach_7d > 0);
-  active.sort((a,b) => b.reach_7d - a.reach_7d);
+  const active = accounts.filter(a => a.status === 'ACTIVE' && (a.views_7d || 0) > 0);
+  active.sort((a,b) => (b.views_7d || 0) - (a.views_7d || 0));
   const top = active.slice(0, 5);
   const bottom = active.slice(-5).reverse();
 
@@ -427,7 +439,8 @@ function setSort(s) {
 
 function sortedAccounts(accounts) {
   const a = [...accounts];
-  if (currentSort === '7d')  a.sort((x,y) => (y.reach_7d||0) - (x.reach_7d||0));
+  if (currentSort === '7d')  a.sort((x,y) => (y.views_7d||0) - (x.views_7d||0));
+  if (currentSort === 'avr') a.sort((x,y) => (y.avg_views_per_reel_7d||0) - (x.avg_views_per_reel_7d||0));
   if (currentSort === 'tot') a.sort((x,y) => (y.total_views||0) - (x.total_views||0));
   if (currentSort === 'flw') a.sort((x,y) => (y.followers||0) - (x.followers||0));
   if (currentSort === 'abc') a.sort((x,y) => x.username.localeCompare(y.username));
@@ -437,12 +450,12 @@ function sortedAccounts(accounts) {
 // ─── Performance color ─────────────────────────────────────────────────
 function perfBorder(account, allActive) {
   if (account.status !== 'ACTIVE') return SC[account.status]?.border || 'border-gray-700';
-  const vals = allActive.map(a => a.reach_7d).filter(v => v > 0).sort((a,b)=>a-b);
+  const vals = allActive.map(a => a.views_7d).filter(v => v > 0).sort((a,b)=>a-b);
   if (!vals.length) return 'border-indigo-900';
   const p33 = vals[Math.floor(vals.length * 0.33)];
   const p66 = vals[Math.floor(vals.length * 0.66)];
-  if (account.reach_7d >= p66) return 'border-emerald-600';
-  if (account.reach_7d >= p33) return 'border-amber-700';
+  if ((account.views_7d || 0) >= p66) return 'border-emerald-600';
+  if ((account.views_7d || 0) >= p33) return 'border-amber-700';
   return 'border-red-800';
 }
 
@@ -503,7 +516,9 @@ function renderCards(accounts) {
     const healthCfg = HC[health.status] || HC.UNAVAILABLE;
     const zeroViewsCount = Number.isFinite(health.zero_views_count) ? health.zero_views_count : 0;
     const sampleSize = Number.isFinite(health.sample_size) ? health.sample_size : 0;
-    const latestViews = health.latest_views == null ? '—' : fmt(health.latest_views);
+    const latestViews = a.latest_reel_views == null
+      ? (health.latest_views == null ? '—' : fmt(health.latest_views))
+      : fmt(a.latest_reel_views);
     const pic = a.profile_pic
       ? `<img src="${profilePic}" class="w-12 h-12 rounded-full object-cover border-2 border-gray-700 shrink-0" onerror="this.style.display='none'">`
       : `<div class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center text-gray-400 text-lg font-bold border-2 border-gray-600 shrink-0">${(a.ig_handle||a.username||'?')[0].toUpperCase()}</div>`;
@@ -520,18 +535,22 @@ function renderCards(accounts) {
       : '';
 
     const statsRow = a.status === 'ACTIVE' ? `
-      <div class="grid grid-cols-3 gap-1 mt-2 pt-2 border-t border-gray-800 text-center">
+      <div class="grid grid-cols-4 gap-1 mt-2 pt-2 border-t border-gray-800 text-center">
         <div>
-          <div class="text-sm font-bold text-white">${fmt(a.reach_7d)}</div>
-          <div class="text-xs text-gray-600">7d reach</div>
+          <div class="text-sm font-bold text-white">${fmt(a.views_7d)}</div>
+          <div class="text-xs text-gray-600">views 7d</div>
+        </div>
+        <div>
+          <div class="text-sm font-bold text-white">${fmt(a.reels_7d_count)}</div>
+          <div class="text-xs text-gray-600">reels 7d</div>
+        </div>
+        <div>
+          <div class="text-sm font-bold text-white">${fmtAvg(a.avg_views_per_reel_7d)}</div>
+          <div class="text-xs text-gray-600">avg/reel</div>
         </div>
         <div>
           <div class="text-sm font-bold text-white">${fmt(a.total_views)}</div>
           <div class="text-xs text-gray-600">total views</div>
-        </div>
-        <div>
-          <div class="text-sm font-bold text-white">${fmt(a.followers)}</div>
-          <div class="text-xs text-gray-600">followers</div>
         </div>
       </div>
       <div class="mt-2 text-xs border border-gray-800 rounded-lg p-2 bg-gray-950/40">

@@ -2,7 +2,7 @@ name: Daily Status Update
 
 on:
   schedule:
-    - cron: '0 14 * * *'   # 9 AM EST (UTC-5) = 14:00 UTC
+    - cron: '0 */6 * * *'   # every 6 hours (UTC)
   workflow_dispatch:         # manual trigger from GitHub UI Actions tab
 
 jobs:
