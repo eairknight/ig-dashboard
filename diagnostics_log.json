@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-04-03T13:07:27Z",
+  "updated_at": "2026-04-03T18:51:34Z",
   "days": {
     "2026-03-27": {
       "source": "logged",
@@ -416,26 +416,26 @@
     },
     "2026-04-03": {
       "source": "logged",
-      "logged_at": "2026-04-03T13:07:27Z",
-      "health_score": 28,
+      "logged_at": "2026-04-03T18:51:34Z",
+      "health_score": 38,
       "top_causes": [
         "Low posting volume",
         "Many active accounts did not post",
         "Missing post analytics",
         "Low avg views per reel"
       ],
-      "summary_line": "0 total views across 8 posted reels, 0 avg/reel. Main drag: low posting volume + many active accounts did not post.",
+      "summary_line": "1 total views across 40 posted reels, 0 avg/reel. Main drag: low posting volume + many active accounts did not post.",
       "reason_details": {
         "Low posting volume": {
           "triggered": true,
-          "posted_reels": 8,
-          "threshold_min_posted_reels": 66,
-          "expected_daily_reels": 102
+          "posted_reels": 40,
+          "threshold_min_posted_reels": 69,
+          "expected_daily_reels": 106
         },
         "Zero-view spike": {
           "triggered": false,
           "zero_view_reels": 0,
-          "posted_reels": 8,
+          "posted_reels": 40,
           "zero_rate_pct": 0.0,
           "threshold_pct": 25,
           "minimum_reels_required": 4
@@ -447,32 +447,32 @@
         },
         "Missing post analytics": {
           "triggered": true,
-          "unavailable_posts": 8,
-          "posted_reels": 8,
-          "unavailable_rate_pct": 100.0,
+          "unavailable_posts": 39,
+          "posted_reels": 40,
+          "unavailable_rate_pct": 97.5,
           "threshold_pct": 20,
           "minimum_reels_required": 3
         },
         "Low avg views per reel": {
           "triggered": true,
-          "avg_views_per_reel": 0.0,
-          "baseline_avg_views_per_reel": 0.09,
-          "ratio_pct_of_baseline": 0.0,
+          "avg_views_per_reel": 0.03,
+          "baseline_avg_views_per_reel": 1.02,
+          "ratio_pct_of_baseline": 2.9,
           "threshold_pct_of_baseline": 55
         }
       },
       "active_accounts": 21,
       "blocked_accounts": 0,
-      "broken_accounts": 1,
+      "broken_accounts": 0,
       "checkpoint_accounts": 0,
       "reauth_accounts": 0,
-      "posted_reels": 8,
-      "views": 0,
-      "avg_views_per_reel": 0.0,
+      "posted_reels": 40,
+      "views": 1,
+      "avg_views_per_reel": 0.03,
       "zero_view_reels": 0,
       "estimated_no_post_active_accounts": 13,
       "estimated_at_risk_posters": 0,
-      "estimated_unavailable_analytics_posts": 8
+      "estimated_unavailable_analytics_posts": 39
     }
   }
 }
