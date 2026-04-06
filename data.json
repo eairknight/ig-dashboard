@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-04-06T13:14:28Z",
-  "updated_at_display": "Monday, Apr 6 at 3:14 PM CEST",
+  "updated_at": "2026-04-06T19:02:59Z",
+  "updated_at_display": "Monday, Apr 6 at 9:02 PM CEST",
   "summary": {
     "ACTIVE": 24,
     "REAUTH": 0,
@@ -10,13 +10,13 @@
     "BLOCKED": 0
   },
   "global": {
-    "total_views": 45729,
-    "reach_7d": 13564,
-    "reach_28d": 34881,
+    "total_views": 50057,
+    "reach_7d": 16864,
+    "reach_28d": 38181,
     "trend": "flat",
     "trend_pct": null,
     "reach_trend": "down",
-    "reach_trend_pct": -36.3,
+    "reach_trend_pct": -20.8,
     "series": [
       {
         "date": "2026-03-09",
@@ -160,38 +160,26 @@
       },
       {
         "date": "2026-04-06",
-        "reach": 1162.0,
-        "avg": 48.42
+        "reach": 4462.0,
+        "avg": 185.92
       }
     ],
-    "total_reels_7d": 433,
+    "total_reels_7d": 476,
     "total_views_24h": 0,
     "total_views_3d": 0,
     "total_views_7d": 0,
     "avg_views_per_reel_7d": null,
     "daily_views_series": [
       {
-        "date": "2026-03-28",
-        "views": 0,
-        "reels": 19,
-        "posted_reels": 19,
-        "avg_views_per_reel": 0.0,
-        "zero_view_reels": 0,
-        "estimated_no_post_active_accounts": 7,
-        "estimated_at_risk_posters": 0,
-        "estimated_unavailable_analytics_posts": 19,
-        "source": "logged"
-      },
-      {
         "date": "2026-03-29",
         "views": 0,
-        "reels": 179,
-        "posted_reels": 179,
+        "reels": 94,
+        "posted_reels": 94,
         "avg_views_per_reel": 0.0,
         "zero_view_reels": 0,
         "estimated_no_post_active_accounts": 7,
         "estimated_at_risk_posters": 0,
-        "estimated_unavailable_analytics_posts": 179,
+        "estimated_unavailable_analytics_posts": 94,
         "source": "logged"
       },
       {
@@ -269,62 +257,17 @@
       {
         "date": "2026-04-06",
         "views": 0,
-        "reels": 24,
-        "posted_reels": 24,
+        "reels": 159,
+        "posted_reels": 159,
         "avg_views_per_reel": 0.0,
         "zero_view_reels": 0,
         "estimated_no_post_active_accounts": 0,
         "estimated_at_risk_posters": 0,
-        "estimated_unavailable_analytics_posts": 24,
+        "estimated_unavailable_analytics_posts": 159,
         "source": "logged"
       }
     ],
     "daily_health_insights": {
-      "2026-03-28": {
-        "top_causes": [
-          "Zero-view spike",
-          "Low avg views per reel"
-        ],
-        "health_score": 58,
-        "summary_line": "2k total views across 66 posted reels, 27 avg/reel. Main drag: zero-view spike + low avg views per reel.",
-        "reason_details": {
-          "Low posting volume": {
-            "triggered": false,
-            "posted_reels": 66,
-            "threshold_min_posted_reels": 32,
-            "expected_daily_reels": 49
-          },
-          "Zero-view spike": {
-            "triggered": true,
-            "zero_view_reels": 43,
-            "posted_reels": 66,
-            "zero_rate_pct": 65.2,
-            "threshold_pct": 25,
-            "minimum_reels_required": 4
-          },
-          "Many active accounts did not post": {
-            "triggered": false,
-            "no_post_active_accounts": 2,
-            "threshold_accounts": 3
-          },
-          "Missing post analytics": {
-            "triggered": false,
-            "unavailable_posts": 0,
-            "posted_reels": 66,
-            "unavailable_rate_pct": 0.0,
-            "threshold_pct": 20,
-            "minimum_reels_required": 3
-          },
-          "Low avg views per reel": {
-            "triggered": true,
-            "avg_views_per_reel": 26.77,
-            "baseline_avg_views_per_reel": 58.14,
-            "ratio_pct_of_baseline": 46.0,
-            "threshold_pct_of_baseline": 55
-          }
-        },
-        "source": "logged"
-      },
       "2026-03-29": {
         "top_causes": [
           "Zero-view spike",
@@ -651,22 +594,21 @@
       },
       "2026-04-06": {
         "top_causes": [
-          "Low posting volume",
           "Missing post analytics"
         ],
-        "health_score": 58,
-        "summary_line": "0 total views across 24 posted reels, 0 avg/reel. Main drag: low posting volume + missing post analytics.",
+        "health_score": 80,
+        "summary_line": "0 total views across 159 posted reels, 0 avg/reel. Main drag: missing post analytics.",
         "reason_details": {
           "Low posting volume": {
-            "triggered": true,
-            "posted_reels": 24,
-            "threshold_min_posted_reels": 41,
-            "expected_daily_reels": 63
+            "triggered": false,
+            "posted_reels": 159,
+            "threshold_min_posted_reels": 53,
+            "expected_daily_reels": 82
           },
           "Zero-view spike": {
             "triggered": false,
             "zero_view_reels": 0,
-            "posted_reels": 24,
+            "posted_reels": 159,
             "zero_rate_pct": 0.0,
             "threshold_pct": 25,
             "minimum_reels_required": 4
@@ -678,8 +620,8 @@
           },
           "Missing post analytics": {
             "triggered": true,
-            "unavailable_posts": 24,
-            "posted_reels": 24,
+            "unavailable_posts": 159,
+            "posted_reels": 159,
             "unavailable_rate_pct": 100.0,
             "threshold_pct": 20,
             "minimum_reels_required": 3
@@ -707,16 +649,16 @@
       "blocked": false,
       "error_msg": null,
       "assigned_url": "EatsVerify.com",
-      "total_views": 4053,
-      "total_reach": 3189,
+      "total_views": 4102,
+      "total_reach": 3227,
       "total_likes": 12,
       "followers": 2,
-      "reach_7d": 1204,
-      "reach_28d": 3189,
+      "reach_7d": 1242,
+      "reach_28d": 3227,
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 58,
+      "reels_7d_count": 55,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "daily_series": [
@@ -834,7 +776,7 @@
         },
         {
           "date": "2026-04-06",
-          "reach": 1.0
+          "reach": 39.0
         }
       ],
       "shadowban_health": {
@@ -842,7 +784,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-04-06T13:14:18Z"
+        "checked_at": "2026-04-06T19:02:52Z"
       }
     },
     {
@@ -864,7 +806,7 @@
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 56,
+      "reels_7d_count": 53,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "daily_series": [
@@ -990,7 +932,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-04-06T13:14:18Z"
+        "checked_at": "2026-04-06T19:02:52Z"
       }
     },
     {
@@ -1012,7 +954,7 @@
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 56,
+      "reels_7d_count": 54,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "daily_series": [
@@ -1138,7 +1080,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-04-06T13:14:18Z"
+        "checked_at": "2026-04-06T19:02:52Z"
       }
     },
     {
@@ -1151,16 +1093,16 @@
       "blocked": false,
       "error_msg": null,
       "assigned_url": "ClaimTreat.com",
-      "total_views": 1994,
-      "total_reach": 1355,
+      "total_views": 2010,
+      "total_reach": 1358,
       "total_likes": 21,
       "followers": 10,
-      "reach_7d": 491,
-      "reach_28d": 1355,
+      "reach_7d": 494,
+      "reach_28d": 1358,
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 56,
+      "reels_7d_count": 53,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "daily_series": [
@@ -1278,7 +1220,7 @@
         },
         {
           "date": "2026-04-06",
-          "reach": 1.0
+          "reach": 4.0
         }
       ],
       "shadowban_health": {
@@ -1286,7 +1228,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-04-06T13:14:18Z"
+        "checked_at": "2026-04-06T19:02:52Z"
       }
     },
     {
@@ -1299,16 +1241,16 @@
       "blocked": false,
       "error_msg": null,
       "assigned_url": "GetFoodPerk.com",
-      "total_views": 144,
-      "total_reach": 31,
-      "total_likes": 13,
+      "total_views": 398,
+      "total_reach": 205,
+      "total_likes": 14,
       "followers": 1,
-      "reach_7d": 29,
-      "reach_28d": 31,
+      "reach_7d": 203,
+      "reach_28d": 205,
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 56,
+      "reels_7d_count": 53,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "daily_series": [
@@ -1426,7 +1368,7 @@
         },
         {
           "date": "2026-04-06",
-          "reach": 22.0
+          "reach": 196.0
         }
       ],
       "shadowban_health": {
@@ -1434,7 +1376,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-04-06T13:14:18Z"
+        "checked_at": "2026-04-06T19:02:52Z"
       }
     },
     {
@@ -1447,16 +1389,16 @@
       "blocked": false,
       "error_msg": null,
       "assigned_url": "McdForm.com",
-      "total_views": 14284,
-      "total_reach": 10399,
-      "total_likes": 43,
+      "total_views": 14940,
+      "total_reach": 10893,
+      "total_likes": 48,
       "followers": 4,
-      "reach_7d": 6183,
-      "reach_28d": 10399,
+      "reach_7d": 6677,
+      "reach_28d": 10893,
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 56,
+      "reels_7d_count": 54,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "daily_series": [
@@ -1574,7 +1516,7 @@
         },
         {
           "date": "2026-04-06",
-          "reach": 78.0
+          "reach": 572.0
         }
       ],
       "shadowban_health": {
@@ -1582,7 +1524,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-04-06T13:14:18Z"
+        "checked_at": "2026-04-06T19:02:52Z"
       }
     },
     {
@@ -1595,16 +1537,16 @@
       "blocked": false,
       "error_msg": null,
       "assigned_url": "FryPerk.com",
-      "total_views": 1673,
-      "total_reach": 1316,
+      "total_views": 1789,
+      "total_reach": 1404,
       "total_likes": 2,
       "followers": 4,
-      "reach_7d": 298,
-      "reach_28d": 1316,
+      "reach_7d": 386,
+      "reach_28d": 1404,
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 8,
+      "reels_7d_count": 10,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "daily_series": [
@@ -1722,7 +1664,7 @@
         },
         {
           "date": "2026-04-06",
-          "reach": 0.0
+          "reach": 88.0
         }
       ],
       "shadowban_health": {
@@ -1730,7 +1672,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-04-06T13:14:18Z"
+        "checked_at": "2026-04-06T19:02:52Z"
       }
     },
     {
@@ -1743,16 +1685,16 @@
       "blocked": false,
       "error_msg": null,
       "assigned_url": "ClaimTreat.com",
-      "total_views": 3020,
-      "total_reach": 2374,
-      "total_likes": 5,
+      "total_views": 3435,
+      "total_reach": 2694,
+      "total_likes": 7,
       "followers": 1,
-      "reach_7d": 639,
-      "reach_28d": 2374,
+      "reach_7d": 959,
+      "reach_28d": 2694,
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 8,
+      "reels_7d_count": 10,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "daily_series": [
@@ -1870,7 +1812,7 @@
         },
         {
           "date": "2026-04-06",
-          "reach": 146.0
+          "reach": 466.0
         }
       ],
       "shadowban_health": {
@@ -1878,7 +1820,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-04-06T13:14:18Z"
+        "checked_at": "2026-04-06T19:02:52Z"
       }
     },
     {
@@ -1900,7 +1842,7 @@
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 8,
+      "reels_7d_count": 10,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "daily_series": [
@@ -2026,7 +1968,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-04-06T13:14:18Z"
+        "checked_at": "2026-04-06T19:02:52Z"
       }
     },
     {
@@ -2039,16 +1981,16 @@
       "blocked": false,
       "error_msg": null,
       "assigned_url": "GetFoodPerk.com",
-      "total_views": 1595,
-      "total_reach": 1243,
-      "total_likes": 6,
+      "total_views": 1881,
+      "total_reach": 1451,
+      "total_likes": 7,
       "followers": 3,
-      "reach_7d": 441,
-      "reach_28d": 1243,
+      "reach_7d": 649,
+      "reach_28d": 1451,
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 8,
+      "reels_7d_count": 10,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "daily_series": [
@@ -2166,7 +2108,7 @@
         },
         {
           "date": "2026-04-06",
-          "reach": 0.0
+          "reach": 208.0
         }
       ],
       "shadowban_health": {
@@ -2174,7 +2116,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-04-06T13:14:18Z"
+        "checked_at": "2026-04-06T19:02:52Z"
       }
     },
     {
@@ -2187,16 +2129,16 @@
       "blocked": false,
       "error_msg": null,
       "assigned_url": "McdForm.com",
-      "total_views": 3145,
-      "total_reach": 2363,
-      "total_likes": 11,
+      "total_views": 3380,
+      "total_reach": 2534,
+      "total_likes": 14,
       "followers": 15,
-      "reach_7d": 605,
-      "reach_28d": 2363,
+      "reach_7d": 776,
+      "reach_28d": 2534,
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 8,
+      "reels_7d_count": 9,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "daily_series": [
@@ -2314,7 +2256,7 @@
         },
         {
           "date": "2026-04-06",
-          "reach": 96.0
+          "reach": 267.0
         }
       ],
       "shadowban_health": {
@@ -2322,7 +2264,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-04-06T13:14:18Z"
+        "checked_at": "2026-04-06T19:02:52Z"
       }
     },
     {
@@ -2335,16 +2277,16 @@
       "blocked": false,
       "error_msg": null,
       "assigned_url": "EatVerify.com",
-      "total_views": 934,
-      "total_reach": 730,
+      "total_views": 943,
+      "total_reach": 739,
       "total_likes": 4,
       "followers": 1,
-      "reach_7d": 168,
-      "reach_28d": 730,
+      "reach_7d": 177,
+      "reach_28d": 739,
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 8,
+      "reels_7d_count": 9,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "daily_series": [
@@ -2462,7 +2404,7 @@
         },
         {
           "date": "2026-04-06",
-          "reach": 0.0
+          "reach": 9.0
         }
       ],
       "shadowban_health": {
@@ -2470,7 +2412,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-04-06T13:14:18Z"
+        "checked_at": "2026-04-06T19:02:52Z"
       }
     },
     {
@@ -2483,16 +2425,16 @@
       "blocked": false,
       "error_msg": null,
       "assigned_url": "FryPerk.com",
-      "total_views": 1480,
-      "total_reach": 1168,
-      "total_likes": 5,
+      "total_views": 1630,
+      "total_reach": 1283,
+      "total_likes": 6,
       "followers": 3,
-      "reach_7d": 532,
-      "reach_28d": 1168,
+      "reach_7d": 647,
+      "reach_28d": 1283,
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 8,
+      "reels_7d_count": 10,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "daily_series": [
@@ -2610,7 +2552,7 @@
         },
         {
           "date": "2026-04-06",
-          "reach": 60.0
+          "reach": 175.0
         }
       ],
       "shadowban_health": {
@@ -2618,7 +2560,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-04-06T13:14:18Z"
+        "checked_at": "2026-04-06T19:02:52Z"
       }
     },
     {
@@ -2631,16 +2573,16 @@
       "blocked": false,
       "error_msg": null,
       "assigned_url": "ClaimTreat.com",
-      "total_views": 2207,
-      "total_reach": 1791,
+      "total_views": 2580,
+      "total_reach": 2072,
       "total_likes": 15,
       "followers": 3,
-      "reach_7d": 290,
-      "reach_28d": 1791,
+      "reach_7d": 571,
+      "reach_28d": 2072,
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 8,
+      "reels_7d_count": 9,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "daily_series": [
@@ -2758,7 +2700,7 @@
         },
         {
           "date": "2026-04-06",
-          "reach": 0.0
+          "reach": 281.0
         }
       ],
       "shadowban_health": {
@@ -2766,7 +2708,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-04-06T13:14:18Z"
+        "checked_at": "2026-04-06T19:02:52Z"
       }
     },
     {
@@ -2779,16 +2721,16 @@
       "blocked": false,
       "error_msg": null,
       "assigned_url": "GetFoodPerk.com",
-      "total_views": 948,
-      "total_reach": 768,
+      "total_views": 1100,
+      "total_reach": 873,
       "total_likes": 4,
-      "followers": 8,
-      "reach_7d": 115,
-      "reach_28d": 768,
+      "followers": 9,
+      "reach_7d": 220,
+      "reach_28d": 873,
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 8,
+      "reels_7d_count": 9,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "daily_series": [
@@ -2906,7 +2848,7 @@
         },
         {
           "date": "2026-04-06",
-          "reach": 0.0
+          "reach": 105.0
         }
       ],
       "shadowban_health": {
@@ -2914,7 +2856,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-04-06T13:14:18Z"
+        "checked_at": "2026-04-06T19:02:52Z"
       }
     },
     {
@@ -2936,7 +2878,7 @@
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 8,
+      "reels_7d_count": 9,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "daily_series": [
@@ -3062,7 +3004,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-04-06T13:14:18Z"
+        "checked_at": "2026-04-06T19:02:52Z"
       }
     },
     {
@@ -3075,16 +3017,16 @@
       "blocked": false,
       "error_msg": null,
       "assigned_url": "EatVerify.com",
-      "total_views": 3191,
-      "total_reach": 2582,
-      "total_likes": 22,
+      "total_views": 3542,
+      "total_reach": 2864,
+      "total_likes": 23,
       "followers": 2,
-      "reach_7d": 669,
-      "reach_28d": 2582,
+      "reach_7d": 951,
+      "reach_28d": 2864,
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 8,
+      "reels_7d_count": 10,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "daily_series": [
@@ -3202,7 +3144,7 @@
         },
         {
           "date": "2026-04-06",
-          "reach": 20.0
+          "reach": 302.0
         }
       ],
       "shadowban_health": {
@@ -3210,7 +3152,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-04-06T13:14:18Z"
+        "checked_at": "2026-04-06T19:02:52Z"
       }
     },
     {
@@ -3223,16 +3165,16 @@
       "blocked": false,
       "error_msg": null,
       "assigned_url": "",
-      "total_views": 48,
-      "total_reach": 31,
-      "total_likes": 0,
-      "followers": 0,
-      "reach_7d": 31,
-      "reach_28d": 31,
+      "total_views": 341,
+      "total_reach": 286,
+      "total_likes": 1,
+      "followers": 1,
+      "reach_7d": 286,
+      "reach_28d": 286,
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 1,
+      "reels_7d_count": 7,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "daily_series": [
@@ -3350,7 +3292,7 @@
         },
         {
           "date": "2026-04-06",
-          "reach": 30.0
+          "reach": 285.0
         }
       ],
       "shadowban_health": {
@@ -3358,7 +3300,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-04-06T13:14:18Z"
+        "checked_at": "2026-04-06T19:02:52Z"
       }
     },
     {
@@ -3371,16 +3313,16 @@
       "blocked": false,
       "error_msg": null,
       "assigned_url": "",
-      "total_views": 31,
-      "total_reach": 26,
+      "total_views": 135,
+      "total_reach": 108,
       "total_likes": 0,
       "followers": 1,
-      "reach_7d": 25,
-      "reach_28d": 26,
+      "reach_7d": 107,
+      "reach_28d": 108,
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 1,
+      "reels_7d_count": 7,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "daily_series": [
@@ -3498,7 +3440,7 @@
         },
         {
           "date": "2026-04-06",
-          "reach": 24.0
+          "reach": 106.0
         }
       ],
       "shadowban_health": {
@@ -3506,7 +3448,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-04-06T13:14:18Z"
+        "checked_at": "2026-04-06T19:02:52Z"
       }
     },
     {
@@ -3519,16 +3461,16 @@
       "blocked": false,
       "error_msg": null,
       "assigned_url": "",
-      "total_views": 190,
-      "total_reach": 161,
+      "total_views": 293,
+      "total_reach": 237,
       "total_likes": 0,
       "followers": 11,
-      "reach_7d": 161,
-      "reach_28d": 161,
+      "reach_7d": 237,
+      "reach_28d": 237,
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 1,
+      "reels_7d_count": 8,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "daily_series": [
@@ -3646,7 +3588,7 @@
         },
         {
           "date": "2026-04-06",
-          "reach": 161.0
+          "reach": 237.0
         }
       ],
       "shadowban_health": {
@@ -3654,7 +3596,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-04-06T13:14:18Z"
+        "checked_at": "2026-04-06T19:02:52Z"
       }
     },
     {
@@ -3667,16 +3609,16 @@
       "blocked": false,
       "error_msg": null,
       "assigned_url": "",
-      "total_views": 171,
-      "total_reach": 146,
+      "total_views": 638,
+      "total_reach": 504,
       "total_likes": 1,
       "followers": 4,
-      "reach_7d": 146,
-      "reach_28d": 146,
+      "reach_7d": 504,
+      "reach_28d": 504,
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 1,
+      "reels_7d_count": 7,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "daily_series": [
@@ -3794,7 +3736,7 @@
         },
         {
           "date": "2026-04-06",
-          "reach": 146.0
+          "reach": 504.0
         }
       ],
       "shadowban_health": {
@@ -3802,7 +3744,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-04-06T13:14:18Z"
+        "checked_at": "2026-04-06T19:02:52Z"
       }
     },
     {
@@ -3815,16 +3757,16 @@
       "blocked": false,
       "error_msg": null,
       "assigned_url": "",
-      "total_views": 120,
-      "total_reach": 101,
+      "total_views": 226,
+      "total_reach": 190,
       "total_likes": 2,
       "followers": 2,
-      "reach_7d": 101,
-      "reach_28d": 101,
+      "reach_7d": 190,
+      "reach_28d": 190,
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 1,
+      "reels_7d_count": 7,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "daily_series": [
@@ -3942,7 +3884,7 @@
         },
         {
           "date": "2026-04-06",
-          "reach": 101.0
+          "reach": 190.0
         }
       ],
       "shadowban_health": {
@@ -3950,7 +3892,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-04-06T13:14:18Z"
+        "checked_at": "2026-04-06T19:02:52Z"
       }
     },
     {
@@ -3963,16 +3905,16 @@
       "blocked": false,
       "error_msg": null,
       "assigned_url": "",
-      "total_views": 198,
-      "total_reach": 161,
+      "total_views": 367,
+      "total_reach": 297,
       "total_likes": 2,
       "followers": 0,
-      "reach_7d": 161,
-      "reach_28d": 161,
+      "reach_7d": 297,
+      "reach_28d": 297,
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 1,
+      "reels_7d_count": 7,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "daily_series": [
@@ -4090,7 +4032,7 @@
         },
         {
           "date": "2026-04-06",
-          "reach": 161.0
+          "reach": 297.0
         }
       ],
       "shadowban_health": {
@@ -4098,7 +4040,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-04-06T13:14:18Z"
+        "checked_at": "2026-04-06T19:02:52Z"
       }
     },
     {
@@ -4111,16 +4053,16 @@
       "blocked": false,
       "error_msg": null,
       "assigned_url": "",
-      "total_views": 133,
-      "total_reach": 115,
+      "total_views": 157,
+      "total_reach": 131,
       "total_likes": 0,
       "followers": 0,
-      "reach_7d": 115,
-      "reach_28d": 115,
+      "reach_7d": 131,
+      "reach_28d": 131,
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 1,
+      "reels_7d_count": 6,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "daily_series": [
@@ -4238,7 +4180,7 @@
         },
         {
           "date": "2026-04-06",
-          "reach": 115.0
+          "reach": 131.0
         }
       ],
       "shadowban_health": {
@@ -4246,7 +4188,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-04-06T13:14:18Z"
+        "checked_at": "2026-04-06T19:02:52Z"
       }
     },
     {
