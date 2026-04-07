@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-04-07T13:22:30Z",
+  "updated_at": "2026-04-07T19:06:02Z",
   "days": {
     "2026-03-27": {
       "source": "logged",
@@ -651,24 +651,23 @@
     },
     "2026-04-07": {
       "source": "logged",
-      "logged_at": "2026-04-07T13:22:30Z",
-      "health_score": 56,
+      "logged_at": "2026-04-07T19:06:02Z",
+      "health_score": 80,
       "top_causes": [
-        "Low posting volume",
         "Missing post analytics"
       ],
-      "summary_line": "0 total views across 24 posted reels, 0 avg/reel. Main drag: low posting volume + missing post analytics.",
+      "summary_line": "0 total views across 144 posted reels, 0 avg/reel. Main drag: missing post analytics.",
       "reason_details": {
         "Low posting volume": {
-          "triggered": true,
-          "posted_reels": 24,
-          "threshold_min_posted_reels": 50,
-          "expected_daily_reels": 77
+          "triggered": false,
+          "posted_reels": 144,
+          "threshold_min_posted_reels": 61,
+          "expected_daily_reels": 94
         },
         "Zero-view spike": {
           "triggered": false,
           "zero_view_reels": 0,
-          "posted_reels": 24,
+          "posted_reels": 144,
           "zero_rate_pct": 0.0,
           "threshold_pct": 25,
           "minimum_reels_required": 4
@@ -680,8 +679,8 @@
         },
         "Missing post analytics": {
           "triggered": true,
-          "unavailable_posts": 24,
-          "posted_reels": 24,
+          "unavailable_posts": 144,
+          "posted_reels": 144,
           "unavailable_rate_pct": 100.0,
           "threshold_pct": 20,
           "minimum_reels_required": 3
@@ -699,13 +698,13 @@
       "broken_accounts": 0,
       "checkpoint_accounts": 0,
       "reauth_accounts": 0,
-      "posted_reels": 24,
+      "posted_reels": 144,
       "views": 0,
       "avg_views_per_reel": 0.0,
       "zero_view_reels": 0,
       "estimated_no_post_active_accounts": 0,
       "estimated_at_risk_posters": 0,
-      "estimated_unavailable_analytics_posts": 24
+      "estimated_unavailable_analytics_posts": 144
     }
   }
 }
