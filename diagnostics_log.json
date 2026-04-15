@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-04-14T19:18:24Z",
+  "updated_at": "2026-04-15T02:38:38Z",
   "days": {
     "2026-03-27": {
       "source": "logged",
@@ -1059,6 +1059,64 @@
     "2026-04-14": {
       "source": "logged",
       "logged_at": "2026-04-14T19:18:24Z",
+      "health_score": 65,
+      "top_causes": [
+        "Low posting volume",
+        "Many active accounts did not post"
+      ],
+      "summary_line": "0 total views across 0 posted reels, — avg/reel. Main drag: low posting volume + many active accounts did not post.",
+      "reason_details": {
+        "Low posting volume": {
+          "triggered": true,
+          "posted_reels": 0,
+          "threshold_min_posted_reels": 1,
+          "expected_daily_reels": 1
+        },
+        "Zero-view spike": {
+          "triggered": false,
+          "zero_view_reels": 0,
+          "posted_reels": 0,
+          "zero_rate_pct": 0.0,
+          "threshold_pct": 25,
+          "minimum_reels_required": 4
+        },
+        "Many active accounts did not post": {
+          "triggered": true,
+          "no_post_active_accounts": 24,
+          "threshold_accounts": 3
+        },
+        "Missing post analytics": {
+          "triggered": false,
+          "unavailable_posts": 0,
+          "posted_reels": 0,
+          "unavailable_rate_pct": 0.0,
+          "threshold_pct": 20,
+          "minimum_reels_required": 3
+        },
+        "Low avg views per reel": {
+          "triggered": false,
+          "avg_views_per_reel": null,
+          "baseline_avg_views_per_reel": 0.0,
+          "ratio_pct_of_baseline": null,
+          "threshold_pct_of_baseline": 55
+        }
+      },
+      "active_accounts": 24,
+      "blocked_accounts": 0,
+      "broken_accounts": 0,
+      "checkpoint_accounts": 0,
+      "reauth_accounts": 0,
+      "posted_reels": 0,
+      "views": 0,
+      "avg_views_per_reel": null,
+      "zero_view_reels": 0,
+      "estimated_no_post_active_accounts": 24,
+      "estimated_at_risk_posters": 0,
+      "estimated_unavailable_analytics_posts": 0
+    },
+    "2026-04-15": {
+      "source": "logged",
+      "logged_at": "2026-04-15T02:38:38Z",
       "health_score": 65,
       "top_causes": [
         "Low posting volume",
