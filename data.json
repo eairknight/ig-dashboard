@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-05-03T19:01:28Z",
-  "updated_at_display": "Sunday, May 3 at 9:01 PM CEST",
+  "updated_at": "2026-05-04T02:58:13Z",
+  "updated_at_display": "Monday, May 4 at 4:58 AM CEST",
   "summary": {
     "ACTIVE": 2,
     "REAUTH": 0,
@@ -171,27 +171,15 @@
     "avg_views_per_reel_7d": null,
     "daily_views_series": [
       {
-        "date": "2026-04-06",
-        "views": 1095,
-        "reels": 25,
-        "posted_reels": 25,
-        "avg_views_per_reel": 43.8,
-        "zero_view_reels": 7,
-        "estimated_no_post_active_accounts": 0,
-        "estimated_at_risk_posters": 2,
-        "estimated_unavailable_analytics_posts": 12,
-        "source": "logged"
-      },
-      {
         "date": "2026-04-07",
-        "views": 166,
+        "views": 241,
         "reels": 24,
         "posted_reels": 24,
-        "avg_views_per_reel": 6.92,
-        "zero_view_reels": 10,
+        "avg_views_per_reel": 10.04,
+        "zero_view_reels": 14,
         "estimated_no_post_active_accounts": 0,
         "estimated_at_risk_posters": 2,
-        "estimated_unavailable_analytics_posts": 13,
+        "estimated_unavailable_analytics_posts": 9,
         "source": "logged"
       },
       {
@@ -224,10 +212,10 @@
         "reels": 6,
         "posted_reels": 6,
         "avg_views_per_reel": 0.0,
-        "zero_view_reels": 3,
+        "zero_view_reels": 2,
         "estimated_no_post_active_accounts": 0,
         "estimated_at_risk_posters": 2,
-        "estimated_unavailable_analytics_posts": 3,
+        "estimated_unavailable_analytics_posts": 4,
         "source": "logged"
       },
       {
@@ -236,58 +224,14 @@
         "reels": 4,
         "posted_reels": 4,
         "avg_views_per_reel": 0.0,
-        "zero_view_reels": 1,
+        "zero_view_reels": 3,
         "estimated_no_post_active_accounts": 0,
-        "estimated_at_risk_posters": 1,
-        "estimated_unavailable_analytics_posts": 3,
+        "estimated_at_risk_posters": 2,
+        "estimated_unavailable_analytics_posts": 1,
         "source": "logged"
       }
     ],
     "daily_health_insights": {
-      "2026-04-06": {
-        "top_causes": [
-          "Missing post analytics"
-        ],
-        "health_score": 80,
-        "summary_line": "0 total views across 159 posted reels, 0 avg/reel. Main drag: missing post analytics.",
-        "reason_details": {
-          "Low posting volume": {
-            "triggered": false,
-            "posted_reels": 159,
-            "threshold_min_posted_reels": 53,
-            "expected_daily_reels": 82
-          },
-          "Zero-view spike": {
-            "triggered": false,
-            "zero_view_reels": 0,
-            "posted_reels": 159,
-            "zero_rate_pct": 0.0,
-            "threshold_pct": 25,
-            "minimum_reels_required": 4
-          },
-          "Many active accounts did not post": {
-            "triggered": false,
-            "no_post_active_accounts": 0,
-            "threshold_accounts": 3
-          },
-          "Missing post analytics": {
-            "triggered": true,
-            "unavailable_posts": 159,
-            "posted_reels": 159,
-            "unavailable_rate_pct": 100.0,
-            "threshold_pct": 20,
-            "minimum_reels_required": 3
-          },
-          "Low avg views per reel": {
-            "triggered": false,
-            "avg_views_per_reel": 0.0,
-            "baseline_avg_views_per_reel": 0.0,
-            "ratio_pct_of_baseline": null,
-            "threshold_pct_of_baseline": 55
-          }
-        },
-        "source": "logged"
-      },
       "2026-04-07": {
         "top_causes": [
           "Missing post analytics"
@@ -1248,10 +1192,10 @@
       ],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
-        "zero_views_count": 4,
-        "sample_size": 4,
+        "zero_views_count": 5,
+        "sample_size": 5,
         "latest_views": 0,
-        "checked_at": "2026-05-03T19:01:23Z"
+        "checked_at": "2026-05-04T02:58:08Z"
       }
     },
     {
@@ -1396,10 +1340,10 @@
       ],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
-        "zero_views_count": 4,
-        "sample_size": 4,
+        "zero_views_count": 5,
+        "sample_size": 5,
         "latest_views": 0,
-        "checked_at": "2026-05-03T19:01:23Z"
+        "checked_at": "2026-05-04T02:58:08Z"
       }
     },
     {
