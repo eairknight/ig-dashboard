@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-05-05T08:11:56Z",
-  "updated_at_display": "Tuesday, May 5 at 10:11 AM CEST",
+  "updated_at": "2026-05-05T19:22:40Z",
+  "updated_at_display": "Tuesday, May 5 at 9:22 PM CEST",
   "summary": {
     "ACTIVE": 2,
     "REAUTH": 0,
@@ -176,10 +176,10 @@
         "reels": 7,
         "posted_reels": 7,
         "avg_views_per_reel": 0.0,
-        "zero_view_reels": 2,
+        "zero_view_reels": 4,
         "estimated_no_post_active_accounts": 0,
         "estimated_at_risk_posters": 2,
-        "estimated_unavailable_analytics_posts": 5,
+        "estimated_unavailable_analytics_posts": 3,
         "source": "logged"
       },
       {
@@ -188,10 +188,10 @@
         "reels": 11,
         "posted_reels": 11,
         "avg_views_per_reel": 0.0,
-        "zero_view_reels": 3,
+        "zero_view_reels": 4,
         "estimated_no_post_active_accounts": 0,
         "estimated_at_risk_posters": 2,
-        "estimated_unavailable_analytics_posts": 8,
+        "estimated_unavailable_analytics_posts": 7,
         "source": "logged"
       },
       {
@@ -212,10 +212,10 @@
         "reels": 4,
         "posted_reels": 4,
         "avg_views_per_reel": 0.0,
-        "zero_view_reels": 2,
+        "zero_view_reels": 3,
         "estimated_no_post_active_accounts": 0,
         "estimated_at_risk_posters": 2,
-        "estimated_unavailable_analytics_posts": 2,
+        "estimated_unavailable_analytics_posts": 1,
         "source": "logged"
       }
     ],
@@ -1136,10 +1136,10 @@
       ],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
-        "zero_views_count": 2,
-        "sample_size": 2,
+        "zero_views_count": 4,
+        "sample_size": 4,
         "latest_views": 0,
-        "checked_at": "2026-05-05T08:11:51Z"
+        "checked_at": "2026-05-05T19:22:32Z"
       }
     },
     {
@@ -1287,7 +1287,7 @@
         "zero_views_count": 4,
         "sample_size": 4,
         "latest_views": 0,
-        "checked_at": "2026-05-05T08:11:51Z"
+        "checked_at": "2026-05-05T19:22:32Z"
       }
     },
     {
