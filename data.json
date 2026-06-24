@@ -1,11 +1,11 @@
 {
-  "updated_at": "2026-06-24T09:31:31Z",
-  "updated_at_display": "Wednesday, Jun 24 at 11:31 AM CEST",
+  "updated_at": "2026-06-24T14:32:28Z",
+  "updated_at_display": "Wednesday, Jun 24 at 4:32 PM CEST",
   "summary": {
-    "ACTIVE": 52,
+    "ACTIVE": 51,
     "REAUTH": 0,
     "CHECKPOINT": 0,
-    "BROKEN": 20,
+    "BROKEN": 21,
     "NO_IG": 2,
     "BLOCKED": 0
   },
@@ -55,7 +55,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -86,7 +86,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -117,7 +117,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -148,7 +148,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -241,7 +241,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -249,10 +249,10 @@
       "ig_handle": "vanefeelsxa",
       "display_name": "vanefeelsxa",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/2e3cf383ba3b40aebe2381ff6c25ce48.jpg",
-      "status": "ACTIVE",
+      "status": "BROKEN",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": null,
+      "error_msg": "Too many requests. Please slow down and retry.",
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -268,11 +268,11 @@
       "latest_reel_views": null,
       "daily_series": [],
       "shadowban_health": {
-        "status": "INSUFFICIENT_DATA",
+        "status": "UNAVAILABLE",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": null
       }
     },
     {
@@ -303,7 +303,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -334,7 +334,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -365,7 +365,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -427,7 +427,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -489,7 +489,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -497,10 +497,10 @@
       "ig_handle": "vane.flamebt",
       "display_name": "vane.flamebt",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/6fcfed9d09f24415be313e0500c37dd9.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -516,11 +516,11 @@
       "latest_reel_views": null,
       "daily_series": [],
       "shadowban_health": {
-        "status": "UNAVAILABLE",
+        "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": null
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -551,7 +551,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -559,10 +559,10 @@
       "ig_handle": "vanepassionfv",
       "display_name": "vanepassionfv",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/b2dc8d683cfc4610a199457862207487.jpg",
-      "status": "ACTIVE",
+      "status": "BROKEN",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": null,
+      "error_msg": "Too many requests. Please slow down and retry.",
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -578,11 +578,11 @@
       "latest_reel_views": null,
       "daily_series": [],
       "shadowban_health": {
-        "status": "INSUFFICIENT_DATA",
+        "status": "UNAVAILABLE",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": null
       }
     },
     {
@@ -613,7 +613,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -675,7 +675,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -706,7 +706,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -714,10 +714,10 @@
       "ig_handle": "vane.kittyzr",
       "display_name": "vane.kittyzr",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/b2537608602f4cbbaac7b93c0b8a80b1.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -733,11 +733,11 @@
       "latest_reel_views": null,
       "daily_series": [],
       "shadowban_health": {
-        "status": "UNAVAILABLE",
+        "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": null
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -799,7 +799,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -830,7 +830,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -923,7 +923,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -954,7 +954,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -985,7 +985,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -1016,7 +1016,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -1047,7 +1047,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -1078,7 +1078,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -1109,7 +1109,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -1140,7 +1140,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -1171,7 +1171,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -1179,10 +1179,10 @@
       "ig_handle": "vanelipsyx",
       "display_name": "vanelipsyx",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/f1e5e94b4d2e4ddab7f0ecebd42352a9.jpg",
-      "status": "ACTIVE",
+      "status": "BROKEN",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": null,
+      "error_msg": "Too many requests. Please slow down and retry.",
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -1198,11 +1198,11 @@
       "latest_reel_views": null,
       "daily_series": [],
       "shadowban_health": {
-        "status": "INSUFFICIENT_DATA",
+        "status": "UNAVAILABLE",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": null
       }
     },
     {
@@ -1233,7 +1233,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -1264,7 +1264,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -1295,7 +1295,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -1326,7 +1326,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -1357,7 +1357,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -1419,7 +1419,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -1543,7 +1543,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -1605,7 +1605,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -1636,7 +1636,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -1667,7 +1667,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -1698,7 +1698,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -1729,7 +1729,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -1822,7 +1822,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -1884,7 +1884,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -1946,7 +1946,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -2039,7 +2039,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -2070,7 +2070,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -2101,7 +2101,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -2132,7 +2132,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -2163,7 +2163,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -2194,7 +2194,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -2225,7 +2225,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -2287,7 +2287,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     },
     {
@@ -2318,7 +2318,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-24T09:31:31Z"
+        "checked_at": "2026-06-24T14:32:28Z"
       }
     }
   ]
