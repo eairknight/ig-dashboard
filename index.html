@@ -193,7 +193,7 @@ async function loadData(forceRefresh = false, preloadedData = null) {
   const stored = localStorage.getItem(STORAGE_KEY);
   if (!stored || stored !== window._passHash) { logout(); return; }
 
-  const url = forceRefresh ? `data.json?t=${Date.now()}` : 'data.json';
+  const url = `data.json?t=${Date.now()}`;
   try {
     const data = preloadedData || await fetch(url).then(r => r.json());
 
@@ -848,7 +848,7 @@ function renderCards(accounts) {
 // ─── Boot ──────────────────────────────────────────────────────────────
 async function boot() {
   try {
-    const authData = await fetch('auth.json').then(r => r.json());
+    const authData = await fetch(`auth.json?t=${Date.now()}`).then(r => r.json());
     window._passHash = authData.pass_hash;
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored && stored === window._passHash) {
