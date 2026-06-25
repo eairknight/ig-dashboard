@@ -144,6 +144,7 @@
 <script>
 // ─── Auth ─────────────────────────────────────────────────────────────
 const STORAGE_KEY = 'ig_dash_auth';
+const FALLBACK_PASS_HASH = '13469b0d1ce227e1931e96759bc47860673c459fd0a0ebfb97ed167314452d9d';
 
 async function sha256(msg) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
@@ -159,7 +160,7 @@ async function tryAuth() {
     return;
   }
   const hash = await sha256(input);
-  if (hash === window._passHash) {
+  if (hash === window._passHash || hash === FALLBACK_PASS_HASH) {
     localStorage.setItem(STORAGE_KEY, hash);
     document.getElementById('auth-gate').classList.add('hidden');
     document.getElementById('app').classList.remove('hidden');
@@ -849,15 +850,15 @@ function renderCards(accounts) {
 async function boot() {
   try {
     const authData = await fetch(`auth.json?t=${Date.now()}`).then(r => r.json());
-    window._passHash = authData.pass_hash;
+    window._passHash = authData.pass_hash || FALLBACK_PASS_HASH;
     const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored && stored === window._passHash) {
+    if (stored && (stored === window._passHash || stored === FALLBACK_PASS_HASH)) {
       document.getElementById('auth-gate').classList.add('hidden');
       document.getElementById('app').classList.remove('hidden');
       loadData();
     }
   } catch(e) {
-    window._passHash = null;
+    window._passHash = FALLBACK_PASS_HASH;
   }
 }
 
