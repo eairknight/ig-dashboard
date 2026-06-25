@@ -9,6 +9,7 @@ import hashlib
 import json
 import os
 import sys
+import time
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone, timedelta
@@ -22,6 +23,7 @@ USERS_URL = f"{API_BASE}/api/uploadposts/users"
 MEDIA_URL = f"{API_BASE}/api/uploadposts/media"
 ANALYTICS_URL = f"{API_BASE}/api/analytics"
 HISTORY_URL = f"{API_BASE}/api/uploadposts/history"
+SCHEDULE_URL = f"{API_BASE}/api/uploadposts/schedule"
 POST_ANALYTICS_URL = f"{API_BASE}/api/uploadposts/post-analytics"
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(BASE_DIR, "data.json")
@@ -347,6 +349,105 @@ def fetch_post_views(session, request_id):
         return None
 
 
+def fetch_scheduled_instagram_reels(session):
+    """Fetch future Instagram video/Reels jobs currently queued in Upload-Post."""
+    data = None
+    for attempt in range(1, 4):
+        try:
+            r = session.get(SCHEDULE_URL, timeout=60)
+            if r.status_code == 200:
+                data = r.json()
+                break
+            if r.status_code == 429 and attempt < 3:
+                try:
+                    retry_after = int((r.json() or {}).get("retry_after_seconds") or 0)
+                except Exception:
+                    retry_after = 0
+                time.sleep(min(45, max(retry_after, 10 * attempt)))
+        except Exception:
+            if attempt < 3:
+                time.sleep(5 * attempt)
+    if not isinstance(data, dict):
+        return []
+
+    rows = []
+    for job in data.get("scheduled_posts", []):
+        platforms = job.get("platforms") or []
+        platform_content = job.get("platform_content") or {}
+        fields = job.get("fields") or {}
+        is_instagram = "instagram" in platforms or "instagram" in platform_content
+        if not is_instagram:
+            continue
+
+        post_type = str(job.get("post_type") or "").lower()
+        media_type = str(fields.get("media_type") or "").upper()
+        if post_type != "video" and media_type != "REELS":
+            continue
+
+        profile = job.get("profile_username") or job.get("user") or job.get("profile") or ""
+        scheduled_raw = job.get("original_scheduled_str") or job.get("scheduled_date")
+        scheduled_dt = parse_iso_utc(scheduled_raw)
+        rows.append({
+            "profile_username": profile,
+            "job_id": job.get("job_id"),
+            "scheduled_at": scheduled_dt.strftime("%Y-%m-%dT%H:%M:%SZ") if scheduled_dt else scheduled_raw,
+            "_dt": scheduled_dt,
+        })
+    return rows
+
+
+def compute_scheduled_reel_kpis(session, accounts, scheduled=None):
+    """Attach scheduled queue counts per account and return global scheduled totals."""
+    now_utc = datetime.now(timezone.utc)
+    if scheduled is None:
+        scheduled = fetch_scheduled_instagram_reels(session)
+    by_profile = defaultdict(list)
+    for job in scheduled:
+        profile = str(job.get("profile_username") or "").lower()
+        if profile:
+            by_profile[profile].append(job)
+
+    total_24h = 0
+    total_7d = 0
+    total_30d = 0
+    next_dt = None
+    cutoff_24h = now_utc + timedelta(hours=24)
+    cutoff_7d = now_utc + timedelta(days=7)
+    cutoff_30d = now_utc + timedelta(days=30)
+
+    for job in scheduled:
+        dt = job.get("_dt")
+        if not dt:
+            continue
+        if next_dt is None or dt < next_dt:
+            next_dt = dt
+        if dt <= cutoff_24h:
+            total_24h += 1
+        if dt <= cutoff_7d:
+            total_7d += 1
+        if dt <= cutoff_30d:
+            total_30d += 1
+
+    for account in accounts:
+        key = str(account.get("username") or "").lower()
+        rows = sorted(by_profile.get(key, []), key=lambda item: item.get("_dt") or datetime.max.replace(tzinfo=timezone.utc))
+        rows_24h = [row for row in rows if row.get("_dt") and row["_dt"] <= cutoff_24h]
+        rows_7d = [row for row in rows if row.get("_dt") and row["_dt"] <= cutoff_7d]
+        next_row = next((row for row in rows if row.get("_dt")), None)
+        account["scheduled_reels_total"] = len(rows)
+        account["scheduled_reels_24h"] = len(rows_24h)
+        account["scheduled_reels_7d"] = len(rows_7d)
+        account["next_scheduled_at"] = next_row["scheduled_at"] if next_row else None
+
+    return {
+        "scheduled_reels_total": len(scheduled),
+        "scheduled_reels_24h": total_24h,
+        "scheduled_reels_7d": total_7d,
+        "scheduled_reels_30d": total_30d,
+        "next_scheduled_at": next_dt.strftime("%Y-%m-%dT%H:%M:%SZ") if next_dt else None,
+    }
+
+
 def compute_reel_views_kpis(session, active_accounts):
     """
     Compute per-account and global views-first KPIs from Upload-Post reel history.
@@ -607,6 +708,10 @@ def check_account(session, profile, url_map):
         "reels_7d_count": 0,
         "avg_views_per_reel_7d": None,
         "latest_reel_views": None,
+        "scheduled_reels_total": 0,
+        "scheduled_reels_24h": 0,
+        "scheduled_reels_7d": 0,
+        "next_scheduled_at": None,
         "daily_series": [],
         "shadowban_health": {
             "status": "UNAVAILABLE",
@@ -727,6 +832,9 @@ def main():
     resp.raise_for_status()
     profiles = resp.json().get("profiles", [])
     print(f"Found {len(profiles)} profiles.")
+    print("Fetching scheduled Instagram Reels queue...")
+    scheduled_reels = fetch_scheduled_instagram_reels(session)
+    print(f"Found {len(scheduled_reels)} scheduled Instagram video jobs.")
 
     # Phase 1: status checks (deep token) in parallel
     print("Running deep token checks in parallel...")
@@ -762,6 +870,7 @@ def main():
 
     all_accounts = active_accounts + inactive_accounts
     all_accounts.sort(key=lambda a: a["username"])
+    scheduled_kpis = compute_scheduled_reel_kpis(session, all_accounts, scheduled_reels)
 
     # Global aggregates
     global_series = compute_global_series(active_accounts)
@@ -806,6 +915,11 @@ def main():
             "reach_trend_pct": round((global_reach_7d - prior_reach_7d) / prior_reach_7d * 100, 1) if prior_reach_7d > 0 else None,
             "series": global_series,
             "total_reels_7d": reel_kpis["total_reels_7d"],
+            "scheduled_reels_total": scheduled_kpis["scheduled_reels_total"],
+            "scheduled_reels_24h": scheduled_kpis["scheduled_reels_24h"],
+            "scheduled_reels_7d": scheduled_kpis["scheduled_reels_7d"],
+            "scheduled_reels_30d": scheduled_kpis["scheduled_reels_30d"],
+            "next_scheduled_at": scheduled_kpis["next_scheduled_at"],
             "total_views_24h": reel_kpis["total_views_24h"],
             "total_views_3d": reel_kpis["total_views_3d"],
             "total_views_7d": reel_kpis["total_views_7d"],
@@ -897,6 +1011,7 @@ def main():
     print(f"Summary: {summary}")
     print(f"Global 7d reach: {global_reach_7d:,} | trend: {reach_trend}")
     print(f"Global 7d reel views: {reel_kpis['total_views_7d']:,} | reels: {reel_kpis['total_reels_7d']:,} | trend: {reel_kpis['trend']}")
+    print(f"Scheduled Reels: {scheduled_kpis['scheduled_reels_total']:,} | next 24h: {scheduled_kpis['scheduled_reels_24h']:,} | next 7d: {scheduled_kpis['scheduled_reels_7d']:,}")
     print(f"Updated at: {updated_at_display}")
 
 

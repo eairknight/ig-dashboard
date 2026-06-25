@@ -79,7 +79,7 @@
       <button id="window-1d" onclick="setWindow('1d')" class="window-btn text-xs px-2.5 py-1 rounded border border-gray-700 text-gray-400 hover:text-white">Last full day</button>
       <span class="text-[11px] text-gray-600">data windows use fixed EST day boundaries</span>
     </div>
-    <div id="global-stats" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-5"></div>
+    <div id="global-stats" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-5"></div>
   </div>
 
   <!-- Global Trend Chart -->
@@ -436,7 +436,7 @@ function renderGlobalStats(g, updatedAt) {
   document.getElementById('last-updated').textContent =
     `Last updated: ${updatedAt || 'unknown'} · Auto-updates every 6 hours`;
   document.getElementById('update-disclaimer').textContent =
-    `Updates run automatically every 6 hours. Last update: ${updatedAt || 'unknown'}. Metrics are based on Upload-Post tracked Instagram reels.`;
+    `Updates run automatically every 6 hours. Last update: ${updatedAt || 'unknown'}. Scheduled counts are queued Upload-Post jobs; views appear after reels publish and analytics are available.`;
 
   const showTrend = selectedWindow === '7d';
   const trendColor = g.trend === 'up' ? 'text-emerald-400' : g.trend === 'down' ? 'text-red-400' : 'text-gray-400';
@@ -459,6 +459,7 @@ function renderGlobalStats(g, updatedAt) {
 
   const stats = [
     { label: 'Active Accounts', value: fmt(activeCount), sub: 'posting-capable accounts' },
+    { label: 'Scheduled Reels', value: fmt(g.scheduled_reels_total), sub: `${fmt(g.scheduled_reels_24h)} next 24h · ${fmt(g.scheduled_reels_7d)} next 7d` },
     { label: `Reels (${windowLabel})`, value: fmt(g.total_reels_7d), sub: 'tracked by Upload-Post' },
     { label: `Views (${windowLabel})`, value: fmt(g.total_views_7d), sub: trendPct ? `${trendArrow} ${trendPct} vs prior 7d` : 'all tracked reels', subColor: trendPct ? trendColor : undefined },
     { label: `Avg Views/Reel (${windowLabel})`, value: fmtAvg(g.avg_views_per_reel_7d), sub: 'system-wide' },
@@ -736,6 +737,8 @@ function renderCards(accounts) {
     const profilePic = esc(a.profile_pic || '');
     const health = a.shadowban_health || {};
     const healthCfg = HC[health.status] || HC.UNAVAILABLE;
+    const scheduledTotal = Number(a.scheduled_reels_total || 0);
+    const scheduled24h = Number(a.scheduled_reels_24h || 0);
     const zeroViewsCount = Number.isFinite(health.zero_views_count) ? health.zero_views_count : 0;
     const sampleSize = Number.isFinite(health.sample_size) ? health.sample_size : 0;
     const latestViews = a.latest_reel_views == null
@@ -755,6 +758,22 @@ function renderCards(accounts) {
            <span class="text-xs text-indigo-300 truncate">${assignedUrl}</span>
          </div>`
       : '';
+
+    const scheduleRow = scheduledTotal > 0 ? `
+      <div class="grid grid-cols-3 gap-1 mt-2 border border-gray-800 rounded-lg p-2 bg-gray-950/40 text-center">
+        <div>
+          <div class="text-sm font-bold text-indigo-200">${fmt(scheduledTotal)}</div>
+          <div class="text-xs text-gray-600">scheduled</div>
+        </div>
+        <div>
+          <div class="text-sm font-bold text-indigo-200">${fmt(scheduled24h)}</div>
+          <div class="text-xs text-gray-600">next 24h</div>
+        </div>
+        <div>
+          <div class="text-sm font-bold text-indigo-200">${fmtTs(a.next_scheduled_at)}</div>
+          <div class="text-xs text-gray-600">next post</div>
+        </div>
+      </div>` : '';
 
     const statsRow = a.status === 'ACTIVE' ? `
       <div class="grid grid-cols-4 gap-1 mt-2 pt-2 border-t border-gray-800 text-center">
@@ -819,6 +838,7 @@ function renderCards(accounts) {
             ${cfg.label}
           </span>
         </div>
+        ${scheduleRow}
         ${statsRow}
         ${igLink}
       </div>`;
