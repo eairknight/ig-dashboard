@@ -18,7 +18,7 @@
 <body class="bg-gray-950 text-gray-100 min-h-screen">
 
 <!-- ─── Password Gate ─────────────────────────────────────────────────── -->
-<div id="auth-gate" class="fixed inset-0 bg-gray-950 flex items-center justify-center z-50">
+<div id="auth-gate" class="hidden fixed inset-0 bg-gray-950 flex items-center justify-center z-50">
   <div class="bg-gray-900 border border-gray-700 rounded-2xl p-8 w-full max-w-sm shadow-2xl">
     <div class="text-center mb-6">
       <div class="text-3xl mb-2">🔐</div>
@@ -62,7 +62,7 @@
           </svg>
           Trigger update
         </a>
-        <button onclick="logout()" class="text-xs text-gray-600 hover:text-gray-400 transition">Lock</button>
+        <button onclick="logout()" class="hidden text-xs text-gray-600 hover:text-gray-400 transition">Lock</button>
       </div>
     </div>
   </div>
@@ -191,9 +191,6 @@ let selectedReasonName = null;
 async function refreshData() { await loadData(true); }
 
 async function loadData(forceRefresh = false, preloadedData = null) {
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (!stored || stored !== window._passHash) { logout(); return; }
-
   const url = `data.json?t=${Date.now()}`;
   try {
     const data = preloadedData || await fetch(url).then(r => r.json());
@@ -848,18 +845,9 @@ function renderCards(accounts) {
 
 // ─── Boot ──────────────────────────────────────────────────────────────
 async function boot() {
-  try {
-    const authData = await fetch(`auth.json?t=${Date.now()}`).then(r => r.json());
-    window._passHash = authData.pass_hash || FALLBACK_PASS_HASH;
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored && (stored === window._passHash || stored === FALLBACK_PASS_HASH)) {
-      document.getElementById('auth-gate').classList.add('hidden');
-      document.getElementById('app').classList.remove('hidden');
-      loadData();
-    }
-  } catch(e) {
-    window._passHash = FALLBACK_PASS_HASH;
-  }
+  document.getElementById('auth-gate').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  loadData();
 }
 
 boot();
