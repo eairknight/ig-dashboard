@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-06-26T03:50:19Z",
+  "updated_at": "2026-06-26T09:28:54Z",
   "days": {
     "2026-06-25": {
       "source": "logged",
@@ -62,7 +62,7 @@
     },
     "2026-06-26": {
       "source": "logged",
-      "logged_at": "2026-06-26T03:50:19Z",
+      "logged_at": "2026-06-26T09:28:54Z",
       "health_score": 65,
       "top_causes": [
         "Low posting volume",
@@ -86,7 +86,7 @@
         },
         "Many active accounts did not post": {
           "triggered": true,
-          "no_post_active_accounts": 49,
+          "no_post_active_accounts": 48,
           "threshold_accounts": 3
         },
         "Missing post analytics": {
@@ -105,16 +105,16 @@
           "threshold_pct_of_baseline": 55
         }
       },
-      "active_accounts": 49,
+      "active_accounts": 48,
       "blocked_accounts": 0,
-      "broken_accounts": 23,
+      "broken_accounts": 24,
       "checkpoint_accounts": 0,
       "reauth_accounts": 0,
       "posted_reels": 0,
       "views": 0,
       "avg_views_per_reel": null,
       "zero_view_reels": 0,
-      "estimated_no_post_active_accounts": 49,
+      "estimated_no_post_active_accounts": 48,
       "estimated_at_risk_posters": 0,
       "estimated_unavailable_analytics_posts": 0
     }
