@@ -1,11 +1,11 @@
 {
-  "updated_at": "2026-06-29T11:01:21Z",
-  "updated_at_display": "Monday, Jun 29 at 1:01 PM CEST",
+  "updated_at": "2026-06-29T11:10:16Z",
+  "updated_at_display": "Monday, Jun 29 at 1:10 PM CEST",
   "summary": {
-    "ACTIVE": 16,
+    "ACTIVE": 41,
     "REAUTH": 0,
     "CHECKPOINT": 0,
-    "BROKEN": 56,
+    "BROKEN": 31,
     "NO_IG": 2,
     "BLOCKED": 0
   },
@@ -18,12 +18,12 @@
     "reach_trend": "flat",
     "reach_trend_pct": null,
     "series": [],
-    "total_reels_7d": 431,
-    "scheduled_reels_total": 11503,
+    "total_reels_7d": 432,
+    "scheduled_reels_total": 11501,
     "scheduled_reels_24h": 414,
-    "scheduled_reels_7d": 2571,
-    "scheduled_reels_30d": 11503,
-    "next_scheduled_at": "2026-06-29T11:10:00Z",
+    "scheduled_reels_7d": 2570,
+    "scheduled_reels_30d": 11501,
+    "next_scheduled_at": "2026-06-29T11:30:00Z",
     "total_views_24h": 0,
     "total_views_3d": 0,
     "total_views_7d": 0,
@@ -80,13 +80,13 @@
       {
         "date": "2026-06-28",
         "views": 0,
-        "reels": 121,
-        "posted_reels": 121,
+        "reels": 122,
+        "posted_reels": 122,
         "avg_views_per_reel": null,
         "zero_view_reels": 0,
         "estimated_no_post_active_accounts": 16,
         "estimated_at_risk_posters": 0,
-        "estimated_unavailable_analytics_posts": 121,
+        "estimated_unavailable_analytics_posts": 122,
         "source": "logged"
       },
       {
@@ -374,9 +374,9 @@
         "source": "logged"
       }
     },
-    "published_reels_history_total": 2695,
-    "published_reels_tracked_total": 431,
-    "post_analytics_lookup_count": 50,
+    "published_reels_history_total": 2697,
+    "published_reels_tracked_total": 432,
+    "post_analytics_lookup_count": 0,
     "post_analytics_available_count": 0
   },
   "accounts": [
@@ -412,7 +412,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -447,7 +447,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -482,7 +482,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -517,7 +517,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -525,10 +525,10 @@
       "ig_handle": "andriaglowhx",
       "display_name": "andriaglowhx",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/264d4b0b63c74ad7a1b1b6be9cdd0814.jpg",
-      "status": "ACTIVE",
+      "status": "BROKEN",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": null,
+      "error_msg": "{\"success\":false,\"error\":\"Graph API Error: Error validating access token: You cannot access the app till you log in to w",
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -542,17 +542,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 160,
-      "scheduled_reels_24h": 7,
-      "scheduled_reels_7d": 36,
-      "next_scheduled_at": "2026-06-29T11:10:00Z",
+      "scheduled_reels_total": 158,
+      "scheduled_reels_24h": 5,
+      "scheduled_reels_7d": 34,
+      "next_scheduled_at": "2026-06-29T18:53:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -560,10 +560,10 @@
       "ig_handle": "vanesugarvn",
       "display_name": "vanesugarvn",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/86ac9c4a277c4d30a4d26b9aab29d47d.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -587,7 +587,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -595,10 +595,10 @@
       "ig_handle": "andriagoddesswo",
       "display_name": "andriagoddesswo",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/6b2fb9d7ace84da099961aaaee813ff9.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -622,7 +622,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -657,7 +657,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -692,7 +692,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -727,7 +727,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -762,7 +762,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -797,7 +797,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -808,7 +808,7 @@
       "status": "BROKEN",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": "{\"success\":false,\"error\":\"Graph API Error: Error validating access token: You cannot access the app till you log in to w",
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -832,7 +832,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -867,7 +867,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -875,10 +875,10 @@
       "ig_handle": "andriajoyjj",
       "display_name": "andriajoyjj",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/6a82a07cbb274d2d8e32882d80b2162c.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -902,7 +902,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -937,7 +937,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -945,10 +945,10 @@
       "ig_handle": "andriakissesbs",
       "display_name": "andriakissesbs",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/de341351ee8549b18ac55c09ef83c590.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -972,7 +972,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1007,7 +1007,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1042,7 +1042,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1077,7 +1077,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1085,10 +1085,10 @@
       "ig_handle": "vanesoftiepl",
       "display_name": "vanesoftiepl",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/dab88063b81142ca83d4bf27c1bf067d.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -1112,7 +1112,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1123,7 +1123,7 @@
       "status": "BROKEN",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": "{\"success\":false,\"error\":\"Graph API Error: Error validating access token: You cannot access the app till you log in to w",
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -1147,7 +1147,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1182,7 +1182,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1193,7 +1193,7 @@
       "status": "BROKEN",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": "{\"success\":false,\"error\":\"Graph API Error: Error validating access token: You cannot access the app till you log in to w",
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -1217,7 +1217,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1252,7 +1252,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1260,10 +1260,10 @@
       "ig_handle": "andrianovatw",
       "display_name": "andrianovatw",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/6d00c3a88fb14446b982eb30ac0e5fff.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -1287,7 +1287,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1298,7 +1298,7 @@
       "status": "BROKEN",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": "{\"success\":false,\"error\":\"Graph API Error: Error validating access token: You cannot access the app till you log in to w",
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -1322,7 +1322,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1333,7 +1333,7 @@
       "status": "BROKEN",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": "{\"success\":false,\"error\":\"Graph API Error: Error validating access token: You cannot access the app till you log in to w",
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -1357,7 +1357,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1365,10 +1365,10 @@
       "ig_handle": "andriapinkat",
       "display_name": "andriapinkat",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/b9f6335963ef4a01be1baaebd2c729a1.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -1392,7 +1392,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1400,10 +1400,10 @@
       "ig_handle": "andriaplaygd",
       "display_name": "andriaplaygd",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/7fcd0cb3d6964e689b9a6842cea53a23.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -1427,7 +1427,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1435,10 +1435,10 @@
       "ig_handle": "vane.kissesra",
       "display_name": "vane.kissesra",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/ec663d62d9874e9fac298d64ca0dffe3.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -1462,7 +1462,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1497,7 +1497,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1505,10 +1505,10 @@
       "ig_handle": "vane.museyr",
       "display_name": "vane.museyr",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/5210d0ea755243c2b6c7bd2cb42feac8.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -1532,7 +1532,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1559,7 +1559,7 @@
       "latest_reel_views": null,
       "scheduled_reels_total": 161,
       "scheduled_reels_24h": 7,
-      "scheduled_reels_7d": 36,
+      "scheduled_reels_7d": 37,
       "next_scheduled_at": "2026-06-29T15:31:00Z",
       "daily_series": [],
       "shadowban_health": {
@@ -1567,7 +1567,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1575,10 +1575,10 @@
       "ig_handle": "vanehazeik",
       "display_name": "vanehazeik",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/128ef73ac1f34803936d1aade6c332e3.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -1602,7 +1602,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1637,7 +1637,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1672,7 +1672,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1698,7 +1698,7 @@
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "scheduled_reels_total": 158,
-      "scheduled_reels_24h": 3,
+      "scheduled_reels_24h": 5,
       "scheduled_reels_7d": 35,
       "next_scheduled_at": "2026-06-29T12:05:00Z",
       "daily_series": [],
@@ -1707,7 +1707,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1742,7 +1742,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1750,10 +1750,10 @@
       "ig_handle": "andriaqueenqe",
       "display_name": "andriaqueenqe",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/c4f553edc3c6481586d833d49b880f9b.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -1777,7 +1777,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1785,10 +1785,10 @@
       "ig_handle": "andriarosekt",
       "display_name": "andriarosekt",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/7dfb6beb3bee45f6ab314b3351c5f5a2.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -1812,7 +1812,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1820,10 +1820,10 @@
       "ig_handle": "andriarushfjj",
       "display_name": "andriarushfjj",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/2e941e22bd8c4d2eb5f72b5b1a5a690c.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -1847,7 +1847,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1882,7 +1882,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1917,7 +1917,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1952,7 +1952,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1963,7 +1963,7 @@
       "status": "BROKEN",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": "{\"success\":false,\"error\":\"Graph API Error: Error validating access token: You cannot access the app till you log in to w",
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -1987,7 +1987,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -1998,7 +1998,7 @@
       "status": "BROKEN",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": "{\"success\":false,\"error\":\"Graph API Error: Error validating access token: You cannot access the app till you log in to w",
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -2022,7 +2022,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -2033,7 +2033,7 @@
       "status": "BROKEN",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": "{\"success\":false,\"error\":\"Graph API Error: Error validating access token: You cannot access the app till you log in to w",
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -2057,7 +2057,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -2065,10 +2065,10 @@
       "ig_handle": "andriastarbu",
       "display_name": "andriastarbu",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/903865b656204f2d8b664df70e4b761c.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -2092,7 +2092,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -2135,10 +2135,10 @@
       "ig_handle": "andriasoftql",
       "display_name": "andriasoftql",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/854fddf8527047798a1e2109f06a5cf8.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -2162,7 +2162,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -2170,10 +2170,10 @@
       "ig_handle": "andriashinevv",
       "display_name": "andriashinevv",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/484a1fa80312410e9a281ddbab505493.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -2197,7 +2197,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -2205,10 +2205,10 @@
       "ig_handle": "andriaskysyy",
       "display_name": "andriaskysyy",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/b8760190890e45cb90eaa74fd9ea1be4.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -2219,7 +2219,7 @@
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 8,
+      "reels_7d_count": 9,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
       "scheduled_reels_total": 160,
@@ -2232,7 +2232,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -2267,7 +2267,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -2275,10 +2275,10 @@
       "ig_handle": "andriastylepdd",
       "display_name": "andriastylepdd",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/99b1ab1d78504c70a621f29999c350a5.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -2302,7 +2302,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -2313,7 +2313,7 @@
       "status": "BROKEN",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": "{\"success\":false,\"error\":\"Graph API Error: Error validating access token: You cannot access the app till you log in to w",
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -2337,7 +2337,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -2348,7 +2348,7 @@
       "status": "BROKEN",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": "{\"success\":false,\"error\":\"Graph API Error: Error validating access token: You cannot access the app till you log in to w",
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -2372,7 +2372,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -2380,10 +2380,10 @@
       "ig_handle": "andriatempths",
       "display_name": "andriatempths",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/42ff81713fe74aee9214b6359f770163.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -2407,7 +2407,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -2418,7 +2418,7 @@
       "status": "BROKEN",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": "{\"success\":false,\"error\":\"Graph API Error: Error validating access token: You cannot access the app till you log in to w",
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -2442,7 +2442,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -2450,10 +2450,10 @@
       "ig_handle": "andriavelvetmr",
       "display_name": "andriavelvetmr",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/76744338c92d4aef97ff537c6cba903d.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -2477,7 +2477,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -2485,10 +2485,10 @@
       "ig_handle": "andriavibekpp",
       "display_name": "andriavibekpp",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/c1bfa500add243f1b3928b091fb84d44.jpg",
-      "status": "ACTIVE",
+      "status": "BROKEN",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": null,
+      "error_msg": "{\"success\":false,\"error\":\"Graph API Error: Error validating access token: You cannot access the app till you log in to w",
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -2512,7 +2512,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -2520,10 +2520,10 @@
       "ig_handle": "andriawishsdd",
       "display_name": "andriawishsdd",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/84b91fa7d23b4689a95e26be0d1b1cae.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -2547,7 +2547,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -2558,7 +2558,7 @@
       "status": "BROKEN",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": "{\"success\":false,\"error\":\"Graph API Error: Error validating access token: You cannot access the app till you log in to w",
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -2582,7 +2582,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -2593,7 +2593,7 @@
       "status": "BROKEN",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": "{\"success\":false,\"error\":\"Graph API Error: Error validating access token: You cannot access the app till you log in to w",
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -2617,7 +2617,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -2652,7 +2652,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -2660,10 +2660,10 @@
       "ig_handle": "andriazence",
       "display_name": "andriazence",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/74943868a052465981232f7341fa0dee.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -2687,7 +2687,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -2695,10 +2695,10 @@
       "ig_handle": "andriafairyls",
       "display_name": "andriafairyls",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/278d3cf33c8c41a997f07b6f325a317e.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -2722,7 +2722,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -2730,10 +2730,10 @@
       "ig_handle": "andriafiercebk",
       "display_name": "andriafiercebk",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/8639d69a7bc045ddbf1615e96d668396.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -2757,7 +2757,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -2792,7 +2792,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -2800,10 +2800,10 @@
       "ig_handle": "andriagoldenmv",
       "display_name": "andriagoldenmv",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/4de9edbaff4f49d79baeffb80905b59f.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -2827,7 +2827,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -2835,10 +2835,10 @@
       "ig_handle": "andriaglacierxr",
       "display_name": "andriaglacierxr",
       "profile_pic": "https://storage.googleapis.com/pfp-social-pics-upload-post-eu3/1dc3357fc48e488fb0a89a3b14cf0255.jpg",
-      "status": "BROKEN",
+      "status": "ACTIVE",
       "reauth_required": false,
       "blocked": false,
-      "error_msg": "Too many requests. Please slow down and retry.",
+      "error_msg": null,
       "assigned_url": "",
       "total_views": 0,
       "total_reach": 0,
@@ -2862,7 +2862,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -2932,7 +2932,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     },
     {
@@ -2967,7 +2967,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-06-29T11:01:20Z"
+        "checked_at": "2026-06-29T11:10:16Z"
       }
     }
   ]

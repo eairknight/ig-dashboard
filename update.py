@@ -54,6 +54,37 @@ def load_url_map():
     return {}
 
 
+def load_existing_data():
+    if not os.path.exists(DATA_FILE):
+        return {}
+    try:
+        with open(DATA_FILE, encoding="utf-8-sig") as f:
+            data = json.load(f)
+        return data if isinstance(data, dict) else {}
+    except Exception:
+        return {}
+
+
+def normalize_profiles(payload):
+    if isinstance(payload, dict):
+        for key in ("profiles", "users", "data"):
+            value = payload.get(key)
+            if isinstance(value, list):
+                return [p for p in value if isinstance(p, dict) and p.get("username")]
+            if isinstance(value, dict):
+                nested = normalize_profiles(value)
+                if nested:
+                    return nested
+    if isinstance(payload, list):
+        return [p for p in payload if isinstance(p, dict) and p.get("username")]
+    return []
+
+
+def clone_existing_accounts(existing_data):
+    accounts = existing_data.get("accounts", []) if isinstance(existing_data, dict) else []
+    return [dict(a) for a in accounts if isinstance(a, dict) and a.get("username")]
+
+
 def classify_status(ig, deep_ok, deep_error):
     if not ig:
         return "NO_IG"
@@ -137,7 +168,7 @@ def fetch_instagram_reel_history(session, max_pages=50, page_size=100):
             except Exception as e:
                 if attempt == 3:
                     print(f"History page {page} failed: {e}", file=sys.stderr)
-                    return reels
+                    return reels if reels else None
                 time.sleep(5 * attempt)
                 continue
 
@@ -150,10 +181,10 @@ def fetch_instagram_reel_history(session, max_pages=50, page_size=100):
                 continue
 
             print(f"History page {page} returned HTTP {r.status_code}; stopping history scan.", file=sys.stderr)
-            return reels
+            return reels if reels else None
 
         if not isinstance(data, dict):
-            break
+            return reels if reels else None
 
         items = data.get("history", [])
         if not items:
@@ -412,7 +443,7 @@ def fetch_scheduled_instagram_reels(session):
             if attempt < 3:
                 time.sleep(5 * attempt)
     if not isinstance(data, dict):
-        return []
+        return None
 
     rows = []
     for job in data.get("scheduled_posts", []):
@@ -898,63 +929,148 @@ def main():
 
     pass_hash = hashlib.sha256(dash_password.encode()).hexdigest()
     url_map = load_url_map()
+    existing_data = load_existing_data()
     session = make_session(api_key)
 
     print("Fetching profiles...")
-    resp = session.get(USERS_URL, timeout=30)
-    resp.raise_for_status()
-    profile_payload = resp.json()
-    if isinstance(profile_payload, dict):
-        profiles = profile_payload.get("profiles", [])
-    elif isinstance(profile_payload, list):
-        profiles = profile_payload
+    profiles = []
+    profile_error = None
+    for attempt in range(1, 4):
+        try:
+            resp = session.get(USERS_URL, timeout=30)
+            if resp.status_code == 200:
+                profiles = normalize_profiles(resp.json())
+                if profiles:
+                    break
+                profile_error = "profile payload had no valid profile records"
+            else:
+                profile_error = f"HTTP {resp.status_code}"
+                if resp.status_code in (429, 500, 502, 503, 504) and attempt < 3:
+                    time.sleep(retry_delay(resp, attempt, base_delay=8))
+                    continue
+        except Exception as e:
+            profile_error = str(e)
+            if attempt < 3:
+                time.sleep(5 * attempt)
+
+    existing_accounts = clone_existing_accounts(existing_data)
+    use_existing_accounts = False
+    if not profiles:
+        if existing_accounts:
+            use_existing_accounts = True
+            print(f"Profile fetch failed ({profile_error}); reusing existing account list.")
+        else:
+            raise RuntimeError(f"Profile fetch failed ({profile_error}) and no existing dashboard data is available.")
     else:
-        profiles = []
-    print(f"Found {len(profiles)} profiles.")
+        print(f"Found {len(profiles)} profiles.")
+
     print("Fetching scheduled Instagram Reels queue...")
     scheduled_reels = fetch_scheduled_instagram_reels(session)
-    print(f"Found {len(scheduled_reels)} scheduled Instagram video jobs.")
+    schedule_unavailable = scheduled_reels is None
+    if schedule_unavailable:
+        scheduled_reels = []
+        print("Scheduled queue fetch unavailable; preserving existing scheduled counts.")
+    else:
+        print(f"Found {len(scheduled_reels)} scheduled Instagram video jobs.")
+
     print("Fetching published Instagram Reels history...")
     published_reels = fetch_instagram_reel_history(session)
-    print(f"Found {len(published_reels)} successful Instagram video uploads in history.")
+    history_unavailable = published_reels is None
+    if history_unavailable:
+        published_reels = []
+        print("Published history fetch unavailable; preserving existing reel/view counts.")
+    else:
+        print(f"Found {len(published_reels)} successful Instagram video uploads in history.")
 
-    # Phase 1: status checks (deep token) in parallel
-    print("Running deep token checks in parallel...")
-    accounts = []
-    with ThreadPoolExecutor(max_workers=min(len(profiles), 20)) as pool:
-        futures = {pool.submit(check_account, session, p, url_map): p for p in profiles}
-        for future in as_completed(futures):
-            try:
-                accounts.append(future.result())
-            except Exception as e:
-                print(f"Error checking account: {e}", file=sys.stderr)
+    if use_existing_accounts:
+        accounts = existing_accounts
+        active_accounts = [a for a in accounts if a["status"] == "ACTIVE"]
+        inactive_accounts = [a for a in accounts if a["status"] != "ACTIVE"]
+        print(f"Using {len(accounts)} existing accounts; skipped live status and profile analytics checks.")
+    else:
+        # Phase 1: status checks (deep token) in parallel
+        print("Running deep token checks in parallel...")
+        accounts = []
+        with ThreadPoolExecutor(max_workers=min(len(profiles), 20)) as pool:
+            futures = {pool.submit(check_account, session, p, url_map): p for p in profiles}
+            for future in as_completed(futures):
+                try:
+                    accounts.append(future.result())
+                except Exception as e:
+                    print(f"Error checking account: {e}", file=sys.stderr)
 
-    active_accounts = [a for a in accounts if a["status"] == "ACTIVE"]
-    inactive_accounts = [a for a in accounts if a["status"] != "ACTIVE"]
+        active_accounts = [a for a in accounts if a["status"] == "ACTIVE"]
+        inactive_accounts = [a for a in accounts if a["status"] != "ACTIVE"]
+        existing_active_count = sum(1 for a in existing_accounts if a.get("status") == "ACTIVE")
+        print(f"Live active accounts: {len(active_accounts)}; existing active baseline: {existing_active_count}")
+        if (
+            existing_accounts
+            and existing_active_count
+            and len(active_accounts) < max(1, int(existing_active_count * 0.8))
+        ):
+            print(
+                "Live status checks dropped sharply; reusing existing account health "
+                f"({len(active_accounts)} active live vs {existing_active_count} existing)."
+            )
+            accounts = existing_accounts
+            active_accounts = [a for a in accounts if a["status"] == "ACTIVE"]
+            inactive_accounts = [a for a in accounts if a["status"] != "ACTIVE"]
+            use_existing_accounts = True
 
-    num_active = len(active_accounts) or 1
+        num_active = len(active_accounts) or 1
 
-    # Phase 2: analytics enrichment in parallel
-    print(f"Fetching analytics for {num_active} active accounts...")
-    with ThreadPoolExecutor(max_workers=min(num_active, 15)) as pool:
-        futures = {
-            pool.submit(enrich_with_analytics, session, a): a
-            for a in active_accounts
-        }
-        for future in as_completed(futures):
-            try:
-                future.result()
-            except Exception as e:
-                print(f"Error enriching account: {e}", file=sys.stderr)
+        # Phase 2: analytics enrichment in parallel
+        if use_existing_accounts:
+            print("Skipped live profile analytics checks because account health is using fallback data.")
+        else:
+            print(f"Fetching analytics for {num_active} active accounts...")
+            with ThreadPoolExecutor(max_workers=min(num_active, 15)) as pool:
+                futures = {
+                    pool.submit(enrich_with_analytics, session, a): a
+                    for a in active_accounts
+                }
+                for future in as_completed(futures):
+                    try:
+                        future.result()
+                    except Exception as e:
+                        print(f"Error enriching account: {e}", file=sys.stderr)
 
     all_accounts = active_accounts + inactive_accounts
     all_accounts.sort(key=lambda a: a["username"])
     linked_accounts = [a for a in all_accounts if a["status"] not in ("NO_IG", "BLOCKED")]
 
     print("Computing views-first reel KPIs + shadowban health...")
-    reel_kpis = compute_reel_views_kpis(session, linked_accounts, published_reels)
+    if history_unavailable:
+        existing_global = existing_data.get("global", {}) if isinstance(existing_data, dict) else {}
+        reel_kpis = {
+            "total_reels_7d": int(existing_global.get("total_reels_7d", 0) or 0),
+            "total_views_24h": int(existing_global.get("total_views_24h", 0) or 0),
+            "total_views_3d": int(existing_global.get("total_views_3d", 0) or 0),
+            "total_views_7d": int(existing_global.get("total_views_7d", 0) or 0),
+            "avg_views_per_reel_7d": existing_global.get("avg_views_per_reel_7d"),
+            "daily_views_series": existing_global.get("daily_views_series", []),
+            "daily_health_insights": existing_global.get("daily_health_insights", {}),
+            "published_reels_history_total": int(existing_global.get("published_reels_history_total", 0) or 0),
+            "published_reels_tracked_total": int(existing_global.get("published_reels_tracked_total", 0) or 0),
+            "post_analytics_lookup_count": 0,
+            "post_analytics_available_count": int(existing_global.get("post_analytics_available_count", 0) or 0),
+            "trend": existing_global.get("trend", "flat"),
+            "trend_pct": existing_global.get("trend_pct"),
+        }
+    else:
+        reel_kpis = compute_reel_views_kpis(session, linked_accounts, published_reels)
 
-    scheduled_kpis = compute_scheduled_reel_kpis(session, all_accounts, scheduled_reels)
+    if schedule_unavailable:
+        existing_global = existing_data.get("global", {}) if isinstance(existing_data, dict) else {}
+        scheduled_kpis = {
+            "scheduled_reels_total": int(existing_global.get("scheduled_reels_total", 0) or 0),
+            "scheduled_reels_24h": int(existing_global.get("scheduled_reels_24h", 0) or 0),
+            "scheduled_reels_7d": int(existing_global.get("scheduled_reels_7d", 0) or 0),
+            "scheduled_reels_30d": int(existing_global.get("scheduled_reels_30d", 0) or 0),
+            "next_scheduled_at": existing_global.get("next_scheduled_at"),
+        }
+    else:
+        scheduled_kpis = compute_scheduled_reel_kpis(session, all_accounts, scheduled_reels)
 
     # Global aggregates
     global_series = compute_global_series(active_accounts)

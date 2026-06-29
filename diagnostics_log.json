@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-06-29T11:01:21Z",
+  "updated_at": "2026-06-29T11:10:16Z",
   "days": {
     "2026-06-25": {
       "source": "logged",
@@ -236,7 +236,7 @@
     },
     "2026-06-29": {
       "source": "logged",
-      "logged_at": "2026-06-29T11:01:21Z",
+      "logged_at": "2026-06-29T11:10:16Z",
       "health_score": 80,
       "top_causes": [
         "Many active accounts did not post",
@@ -279,9 +279,9 @@
           "threshold_pct_of_baseline": 55
         }
       },
-      "active_accounts": 16,
+      "active_accounts": 41,
       "blocked_accounts": 0,
-      "broken_accounts": 56,
+      "broken_accounts": 31,
       "checkpoint_accounts": 0,
       "reauth_accounts": 0,
       "posted_reels": 81,
