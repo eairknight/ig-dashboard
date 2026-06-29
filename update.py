@@ -22,10 +22,16 @@ API_BASE = "https://api.upload-post.com"
 USERS_URL = f"{API_BASE}/api/uploadposts/users"
 MEDIA_URL = f"{API_BASE}/api/uploadposts/media"
 ANALYTICS_URL = f"{API_BASE}/api/analytics"
+TOTAL_IMPRESSIONS_URL = f"{API_BASE}/api/uploadposts/total-impressions"
 HISTORY_URL = f"{API_BASE}/api/uploadposts/history"
 SCHEDULE_URL = f"{API_BASE}/api/uploadposts/schedule"
 POST_ANALYTICS_URL = f"{API_BASE}/api/uploadposts/post-analytics"
-MAX_POST_ANALYTICS_LOOKUPS = int(os.environ.get("MAX_POST_ANALYTICS_LOOKUPS", "50"))
+MAX_POST_ANALYTICS_LOOKUPS = int(os.environ.get("MAX_POST_ANALYTICS_LOOKUPS", "0"))
+PROFILE_VIEW_MAX_WORKERS = int(os.environ.get("PROFILE_VIEW_MAX_WORKERS", "3"))
+USE_TOTAL_IMPRESSIONS_ENDPOINT = os.environ.get("USE_TOTAL_IMPRESSIONS_ENDPOINT", "").lower() in ("1", "true", "yes")
+ENABLE_DEEP_STATUS_CHECKS = os.environ.get("ENABLE_DEEP_STATUS_CHECKS", "").lower() in ("1", "true", "yes")
+HISTORY_MAX_PAGES = int(os.environ.get("HISTORY_MAX_PAGES", "8"))
+HISTORY_PAGE_SIZE = int(os.environ.get("HISTORY_PAGE_SIZE", "100"))
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(BASE_DIR, "data.json")
 AUTH_FILE = os.path.join(BASE_DIR, "auth.json")
@@ -101,28 +107,277 @@ def classify_status(ig, deep_ok, deep_error):
 
 def fetch_analytics(session, username):
     """Fetch 28-day reach timeseries + aggregate metrics for one account."""
+    for attempt in range(1, 4):
+        try:
+            r = session.get(
+                f"{ANALYTICS_URL}/{username}",
+                params={"platforms": "instagram"},
+                timeout=30,
+            )
+            if r.status_code == 200:
+                ig = r.json().get("instagram", {})
+                timeseries = ig.get("reach_timeseries", [])
+                return {
+                    "total_views": ig.get("views", 0) or 0,
+                    "total_reach": ig.get("reach", 0) or 0,
+                    "total_impressions": ig.get("impressions", ig.get("views", 0)) or 0,
+                    "total_likes": ig.get("likes", 0) or 0,
+                    "followers": ig.get("followers", 0) or 0,
+                    "timeseries": [
+                        {"date": d.get("date"), "reach": d.get("value", 0)}
+                        for d in timeseries
+                        if isinstance(d, dict) and d.get("date")
+                    ],
+                }
+            if r.status_code in (429, 500, 502, 503, 504) and attempt < 3:
+                time.sleep(retry_delay(r, attempt, base_delay=8))
+                continue
+            return None
+        except Exception:
+            if attempt < 3:
+                time.sleep(5 * attempt)
+                continue
+            return None
+    return None
+
+
+def distribute_total_by_weight(total, weights_by_day):
+    """Split an aggregate metric over daily weights while preserving the total."""
+    total = int(round(float(total or 0)))
+    clean_weights = {
+        str(day): max(0.0, float(value or 0))
+        for day, value in (weights_by_day or {}).items()
+    }
+    if total <= 0:
+        return {day: 0 for day in clean_weights}
+
+    weight_sum = sum(clean_weights.values())
+    if weight_sum <= 0:
+        return {datetime.now(timezone.utc).date().isoformat(): total}
+
+    raw_rows = []
+    for day, weight in clean_weights.items():
+        raw = total * weight / weight_sum
+        base = int(raw)
+        raw_rows.append((day, base, raw - base))
+
+    allocated = {day: base for day, base, _ in raw_rows}
+    remainder = total - sum(allocated.values())
+    for day, _, _ in sorted(raw_rows, key=lambda row: row[2], reverse=True)[:remainder]:
+        allocated[day] += 1
+    return allocated
+
+
+def fetch_profile_analytics_views(session, username):
+    """Fetch profile-level Instagram views from the standard analytics endpoint."""
+    analytics = fetch_analytics(session, username)
+    if not analytics:
+        return None
+
+    reach_by_day = {
+        str(row.get("date")): int(round(float(row.get("reach", 0) or 0)))
+        for row in analytics.get("timeseries", [])
+        if row.get("date")
+    }
+    total_views = int(round(float(analytics.get("total_views", 0) or 0)))
+    total_reach = int(round(float(analytics.get("total_reach", 0) or 0)))
+    total_impressions = int(round(float(analytics.get("total_impressions", total_views) or 0)))
+    return {
+        "source": "profile_analytics",
+        "total_views": total_views,
+        "total_reach": total_reach,
+        "total_impressions": total_impressions,
+        "views_by_day": distribute_total_by_weight(total_views, reach_by_day),
+        "reach_by_day": reach_by_day,
+        "impressions_by_day": distribute_total_by_weight(total_impressions, reach_by_day),
+    }
+
+
+def fetch_total_impressions(session, username):
+    """Fetch profile-level Instagram daily views/reach for the dashboard view totals."""
+    today = datetime.now(timezone.utc).date()
     try:
         r = session.get(
-            f"{ANALYTICS_URL}/{username}",
-            params={"platforms": "instagram"},
-            timeout=30,
+            f"{TOTAL_IMPRESSIONS_URL}/{username}",
+            params={
+                "platform": "instagram",
+                "metrics": "views,reach,impressions",
+                "start_date": (today - timedelta(days=28)).isoformat(),
+                "end_date": today.isoformat(),
+                "breakdown": "true",
+            },
+            timeout=20,
         )
         if r.status_code != 200:
             return None
-        ig = r.json().get("instagram", {})
-        timeseries = ig.get("reach_timeseries", [])
+        data = r.json()
+        if not isinstance(data, dict) or data.get("success") is False:
+            return None
+        metrics = data.get("metrics") if isinstance(data.get("metrics"), dict) else {}
+        per_day = data.get("per_day") if isinstance(data.get("per_day"), dict) else {}
         return {
-            "total_views": ig.get("views", 0) or 0,
-            "total_reach": ig.get("reach", 0) or 0,
-            "total_likes": ig.get("likes", 0) or 0,
-            "followers": ig.get("followers", 0) or 0,
-            "timeseries": [
-                {"date": d["date"], "reach": d["value"]}
-                for d in timeseries
-            ],
+            "total_views": int(metrics.get("views", 0) or 0),
+            "total_reach": int(metrics.get("reach", 0) or 0),
+            "total_impressions": int(metrics.get("impressions", 0) or 0),
+            "views_by_day": {
+                str(k): int(v or 0)
+                for k, v in (per_day.get("views") or {}).items()
+            },
+            "reach_by_day": {
+                str(k): int(v or 0)
+                for k, v in (per_day.get("reach") or {}).items()
+            },
+            "impressions_by_day": {
+                str(k): int(v or 0)
+                for k, v in (per_day.get("impressions") or {}).items()
+            },
+            "source": "profile_total_impressions",
         }
     except Exception:
         return None
+
+
+def compute_profile_view_kpis(session, accounts):
+    """Attach account-level view totals and aggregate daily profile views."""
+    now_utc = datetime.now(timezone.utc)
+    cutoff_24h_date = (now_utc - timedelta(hours=24)).date().isoformat()
+    cutoff_3d_date = (now_utc - timedelta(days=3)).date().isoformat()
+    cutoff_7d_date = (now_utc - timedelta(days=7)).date().isoformat()
+    daily = defaultdict(lambda: {"views": 0, "reach": 0, "impressions": 0, "accounts": 0})
+    available = 0
+
+    def fetch_for_account(account):
+        username = account.get("username", "")
+        data = fetch_profile_analytics_views(session, username)
+        if data:
+            return account, data
+        if USE_TOTAL_IMPRESSIONS_ENDPOINT:
+            return account, fetch_total_impressions(session, username)
+        return account, None
+
+    with ThreadPoolExecutor(max_workers=min(len(accounts), PROFILE_VIEW_MAX_WORKERS) or 1) as pool:
+        futures = [pool.submit(fetch_for_account, account) for account in accounts]
+        for future in as_completed(futures):
+            try:
+                account, data = future.result()
+            except Exception:
+                continue
+            if not data:
+                continue
+            available += 1
+            account["total_views"] = int(data["total_views"])
+            account["total_reach"] = int(data["total_reach"])
+            account["reach_7d"] = int(data["total_reach"])
+            account["reach_28d"] = int(data["total_reach"])
+
+            views_by_day = data.get("views_by_day", {})
+            account["views_24h"] = int(sum(v for d, v in views_by_day.items() if d >= cutoff_24h_date))
+            account["views_3d"] = int(sum(v for d, v in views_by_day.items() if d >= cutoff_3d_date))
+            account["views_7d"] = int(sum(v for d, v in views_by_day.items() if d >= cutoff_7d_date))
+
+            daily_series = []
+            for date_key in sorted(set(views_by_day) | set(data.get("reach_by_day", {}))):
+                views = int(views_by_day.get(date_key, 0) or 0)
+                reach = int(data.get("reach_by_day", {}).get(date_key, 0) or 0)
+                impressions = int(data.get("impressions_by_day", {}).get(date_key, 0) or 0)
+                daily[date_key]["views"] += views
+                daily[date_key]["reach"] += reach
+                daily[date_key]["impressions"] += impressions
+                daily[date_key]["accounts"] += 1
+                daily_series.append({"date": date_key, "views": views, "reach": reach, "impressions": impressions})
+            account["daily_series"] = daily_series
+
+    daily_rows = [
+        {
+            "date": date_key,
+            "views": int(row["views"]),
+            "reach": int(row["reach"]),
+            "impressions": int(row["impressions"]),
+            "accounts": int(row["accounts"]),
+        }
+        for date_key, row in sorted(daily.items())
+    ]
+    return {
+        "profile_view_accounts_checked": len(accounts),
+        "profile_view_accounts_available": available,
+        "profile_views_source": "profile_analytics",
+        "daily_profile_views": daily_rows,
+    }
+
+
+def merge_profile_views_into_reel_kpis(reel_kpis, profile_kpis, tracked_account_count):
+    profile_rows = profile_kpis.get("daily_profile_views") or []
+    if not profile_rows:
+        return reel_kpis
+
+    views_source = profile_kpis.get("profile_views_source", "profile_analytics")
+    rows_by_date = {
+        row["date"]: dict(row)
+        for row in reel_kpis.get("daily_views_series", [])
+        if row.get("date")
+    }
+    for profile_row in profile_rows:
+        date_key = profile_row.get("date")
+        if not date_key:
+            continue
+        row = rows_by_date.setdefault(date_key, {
+            "date": date_key,
+            "reels": 0,
+            "posted_reels": 0,
+            "zero_view_reels": 0,
+            "estimated_no_post_active_accounts": tracked_account_count,
+            "estimated_at_risk_posters": 0,
+            "estimated_unavailable_analytics_posts": 0,
+            "source": views_source,
+        })
+        row["views"] = int(profile_row.get("views", 0) or 0)
+        row["reach"] = int(profile_row.get("reach", 0) or 0)
+        row["impressions"] = int(profile_row.get("impressions", 0) or 0)
+        row["views_source"] = views_source
+        row["estimated_unavailable_analytics_posts"] = 0
+        reels = int(row.get("posted_reels", row.get("reels", 0)) or 0)
+        row["avg_views_per_reel"] = round(row["views"] / reels, 2) if reels else None
+
+    daily_rows = [rows_by_date[k] for k in sorted(rows_by_date)]
+    today = datetime.now(timezone.utc).date()
+    cutoff_24h = (today - timedelta(days=1)).isoformat()
+    cutoff_3d = (today - timedelta(days=3)).isoformat()
+    cutoff_7d = (today - timedelta(days=7)).isoformat()
+    cutoff_14d = (today - timedelta(days=14)).isoformat()
+
+    total_views_24h = int(sum(row.get("views", 0) for row in daily_rows if row["date"] >= cutoff_24h))
+    total_views_3d = int(sum(row.get("views", 0) for row in daily_rows if row["date"] >= cutoff_3d))
+    total_views_7d = int(sum(row.get("views", 0) for row in daily_rows if row["date"] >= cutoff_7d))
+    recent_views = total_views_7d
+    prior_views = int(sum(row.get("views", 0) for row in daily_rows if cutoff_14d <= row["date"] < cutoff_7d))
+    total_reels_7d = int(sum(row.get("posted_reels", row.get("reels", 0)) or 0 for row in daily_rows if row["date"] >= cutoff_7d))
+    avg_views_per_reel_7d = round(total_views_7d / total_reels_7d, 2) if total_reels_7d else None
+    trend = "up" if recent_views > prior_views else ("down" if recent_views < prior_views else "flat")
+    trend_pct = round((recent_views - prior_views) / prior_views * 100, 1) if prior_views > 0 else None
+
+    reference_rows = [row for row in daily_rows if row["date"] >= cutoff_7d]
+    expected_daily_reels = max(1, round(sum(int(row.get("posted_reels", 0) or 0) for row in reference_rows) / max(len(reference_rows), 1)))
+    avg_candidates = [row.get("avg_views_per_reel") for row in reference_rows if isinstance(row.get("avg_views_per_reel"), (int, float))]
+    baseline_avg = float(sum(avg_candidates) / len(avg_candidates)) if avg_candidates else 0.0
+
+    merged = dict(reel_kpis)
+    merged.update({
+        "total_views_24h": total_views_24h,
+        "total_views_3d": total_views_3d,
+        "total_views_7d": total_views_7d,
+        "avg_views_per_reel_7d": avg_views_per_reel_7d,
+        "daily_views_series": daily_rows,
+        "daily_health_insights": {
+            row["date"]: build_daily_insight(row, expected_daily_reels, baseline_avg)
+            for row in daily_rows
+        },
+        "trend": trend,
+        "trend_pct": trend_pct,
+        "views_source": views_source,
+        "profile_view_accounts_checked": profile_kpis.get("profile_view_accounts_checked", 0),
+        "profile_view_accounts_available": profile_kpis.get("profile_view_accounts_available", 0),
+    })
+    return merged
 
 
 def retry_delay(response, attempt, base_delay=5):
@@ -150,11 +405,15 @@ def upload_success(value):
     return False
 
 
-def fetch_instagram_reel_history(session, max_pages=50, page_size=100):
+def fetch_instagram_reel_history(session, max_pages=None, page_size=None):
     """
     Fetch recent successful Instagram video posts from upload history.
     Returns items ordered newest->oldest as provided by the API.
     """
+    if max_pages is None:
+        max_pages = HISTORY_MAX_PAGES
+    if page_size is None:
+        page_size = HISTORY_PAGE_SIZE
     reels = []
     for page in range(1, max_pages + 1):
         data = None
@@ -963,6 +1222,9 @@ def main():
             raise RuntimeError(f"Profile fetch failed ({profile_error}) and no existing dashboard data is available.")
     else:
         print(f"Found {len(profiles)} profiles.")
+        if existing_accounts and not ENABLE_DEEP_STATUS_CHECKS:
+            use_existing_accounts = True
+            print("Deep status checks disabled; reusing existing account status to leave API budget for stats.")
 
     print("Fetching scheduled Instagram Reels queue...")
     scheduled_reels = fetch_scheduled_instagram_reels(session)
@@ -1060,6 +1322,19 @@ def main():
     else:
         reel_kpis = compute_reel_views_kpis(session, linked_accounts, published_reels)
 
+    print(f"Fetching profile-level Instagram view totals for {len(active_accounts)} active accounts...")
+    profile_view_kpis = compute_profile_view_kpis(session, active_accounts)
+    print(
+        "Profile-level view totals available for "
+        f"{profile_view_kpis['profile_view_accounts_available']} accounts."
+    )
+    if profile_view_kpis.get("profile_view_accounts_available"):
+        reel_kpis = merge_profile_views_into_reel_kpis(
+            reel_kpis,
+            profile_view_kpis,
+            len(active_accounts),
+        )
+
     if schedule_unavailable:
         existing_global = existing_data.get("global", {}) if isinstance(existing_data, dict) else {}
         scheduled_kpis = {
@@ -1130,6 +1405,9 @@ def main():
             "published_reels_tracked_total": reel_kpis["published_reels_tracked_total"],
             "post_analytics_lookup_count": reel_kpis["post_analytics_lookup_count"],
             "post_analytics_available_count": reel_kpis["post_analytics_available_count"],
+            "views_source": reel_kpis.get("views_source", "post_analytics"),
+            "profile_view_accounts_checked": reel_kpis.get("profile_view_accounts_checked", 0),
+            "profile_view_accounts_available": reel_kpis.get("profile_view_accounts_available", 0),
         },
         "accounts": all_accounts,
     }
