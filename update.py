@@ -25,6 +25,7 @@ ANALYTICS_URL = f"{API_BASE}/api/analytics"
 HISTORY_URL = f"{API_BASE}/api/uploadposts/history"
 SCHEDULE_URL = f"{API_BASE}/api/uploadposts/schedule"
 POST_ANALYTICS_URL = f"{API_BASE}/api/uploadposts/post-analytics"
+MAX_POST_ANALYTICS_LOOKUPS = int(os.environ.get("MAX_POST_ANALYTICS_LOOKUPS", "50"))
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(BASE_DIR, "data.json")
 AUTH_FILE = os.path.join(BASE_DIR, "auth.json")
@@ -93,38 +94,81 @@ def fetch_analytics(session, username):
         return None
 
 
-def fetch_instagram_reel_history(session, max_pages=20, page_size=100):
+def retry_delay(response, attempt, base_delay=5):
+    retry_after = response.headers.get("Retry-After")
+    if retry_after:
+        try:
+            return min(60, max(1, int(float(retry_after))))
+        except Exception:
+            pass
+    try:
+        body = response.json() or {}
+        seconds = int(body.get("retry_after_seconds") or body.get("retry_after") or 0)
+        if seconds > 0:
+            return min(60, seconds)
+    except Exception:
+        pass
+    return min(60, base_delay * attempt)
+
+
+def upload_success(value):
+    if value is True:
+        return True
+    if isinstance(value, str):
+        return value.strip().lower() == "true"
+    return False
+
+
+def fetch_instagram_reel_history(session, max_pages=50, page_size=100):
     """
     Fetch recent successful Instagram video posts from upload history.
     Returns items ordered newest->oldest as provided by the API.
     """
     reels = []
     for page in range(1, max_pages + 1):
-        try:
-            r = session.get(
-                HISTORY_URL,
-                params={"page": page, "limit": page_size},
-                timeout=30,
-            )
-            if r.status_code != 200:
+        data = None
+        for attempt in range(1, 4):
+            try:
+                r = session.get(
+                    HISTORY_URL,
+                    params={"page": page, "limit": page_size},
+                    timeout=30,
+                )
+            except Exception as e:
+                if attempt == 3:
+                    print(f"History page {page} failed: {e}", file=sys.stderr)
+                    return reels
+                time.sleep(5 * attempt)
+                continue
+
+            if r.status_code == 200:
+                data = r.json()
                 break
-            data = r.json()
-            items = data.get("history", [])
-            if not items:
-                break
-            for item in items:
-                if item.get("platform") != "instagram":
-                    continue
-                if item.get("media_type") != "video":
-                    continue
-                if item.get("success") is not True:
-                    continue
-                if not item.get("request_id"):
-                    continue
-                reels.append(item)
-            if len(items) < page_size:
-                break
-        except Exception:
+
+            if r.status_code in (429, 500, 502, 503, 504) and attempt < 3:
+                time.sleep(retry_delay(r, attempt, base_delay=8))
+                continue
+
+            print(f"History page {page} returned HTTP {r.status_code}; stopping history scan.", file=sys.stderr)
+            return reels
+
+        if not isinstance(data, dict):
+            break
+
+        items = data.get("history", [])
+        if not items:
+            break
+
+        for item in items:
+            if str(item.get("platform") or "").lower() != "instagram":
+                continue
+            if str(item.get("media_type") or "").lower() not in ("video", "reels"):
+                continue
+            if not upload_success(item.get("success")):
+                continue
+            reels.append(item)
+
+        if len(items) < page_size:
             break
     return reels
 
@@ -340,13 +384,13 @@ def fetch_post_views(session, request_id):
         r = session.get(
             f"{POST_ANALYTICS_URL}/{request_id}",
             params={"platform": "instagram"},
-            timeout=30,
+            timeout=5,
         )
-        if r.status_code != 200:
-            return None
-        return extract_post_views(r.json())
+        if r.status_code == 200:
+            return extract_post_views(r.json())
     except Exception:
-        return None
+        pass
+    return None
 
 
 def fetch_scheduled_instagram_reels(session):
@@ -448,7 +492,7 @@ def compute_scheduled_reel_kpis(session, accounts, scheduled=None):
     }
 
 
-def compute_reel_views_kpis(session, active_accounts):
+def compute_reel_views_kpis(session, tracked_accounts, history=None):
     """
     Compute per-account and global views-first KPIs from Upload-Post reel history.
     Risk heuristic:
@@ -457,35 +501,67 @@ def compute_reel_views_kpis(session, active_accounts):
     """
     now_utc = datetime.now(timezone.utc)
     checked_at = now_utc.strftime("%Y-%m-%dT%H:%M:%SZ")
-    history = fetch_instagram_reel_history(session)
-    active_usernames = {a["username"] for a in active_accounts}
+    cutoff_24h = now_utc - timedelta(hours=24)
+    cutoff_3d = now_utc - timedelta(days=3)
+    cutoff_7d = now_utc - timedelta(days=7)
+    cutoff_14d = now_utc - timedelta(days=14)
+    cutoff_28d = now_utc - timedelta(days=28)
+    if history is None:
+        history = fetch_instagram_reel_history(session)
+    account_by_key = {
+        str(a.get("username") or "").lower(): a
+        for a in tracked_accounts
+        if a.get("username")
+    }
+    tracked_usernames = set(account_by_key.keys())
 
     by_profile = defaultdict(list)
-    all_active_posts = []
+    all_tracked_posts = []
     for item in history:
-        profile = item.get("profile_username")
-        if profile in active_usernames:
+        profile = str(item.get("profile_username") or "").lower()
+        if profile in tracked_usernames:
             dt = parse_iso_utc(item.get("upload_timestamp"))
+            canonical_profile = account_by_key[profile]["username"]
             enriched = {
-                "profile_username": profile,
+                "profile_username": canonical_profile,
+                "profile_key": profile,
                 "request_id": item.get("request_id"),
                 "upload_timestamp": item.get("upload_timestamp"),
                 "_dt": dt,
             }
             by_profile[profile].append(enriched)
-            all_active_posts.append(enriched)
+            all_tracked_posts.append(enriched)
 
-    # Cache request_id lookups so each post is only queried once.
+    # Cache request_id lookups so each post is only queried once. Keep this
+    # bounded so the dashboard update does not turn into thousands of API calls.
     views_cache = {}
-    request_ids = list({
-        p["request_id"] for p in all_active_posts
-        if p.get("request_id")
-    })
+    lookup_ids = set()
+    for rows in by_profile.values():
+        for p in rows[:10]:
+            if len(lookup_ids) >= MAX_POST_ANALYTICS_LOOKUPS:
+                break
+            if p.get("request_id"):
+                lookup_ids.add(p["request_id"])
+        if len(lookup_ids) >= MAX_POST_ANALYTICS_LOOKUPS:
+            break
+    recent_posts = sorted(
+        (
+            p for p in all_tracked_posts
+            if p.get("request_id") and p.get("_dt") and p["_dt"] >= cutoff_7d
+        ),
+        key=lambda p: p["_dt"],
+        reverse=True,
+    )
+    for p in recent_posts:
+        if len(lookup_ids) >= MAX_POST_ANALYTICS_LOOKUPS:
+            break
+        lookup_ids.add(p["request_id"])
+    request_ids = list(lookup_ids)
 
     def resolve_views(request_id):
         return request_id, fetch_post_views(session, request_id)
 
-    with ThreadPoolExecutor(max_workers=min(len(request_ids), 25) or 1) as pool:
+    with ThreadPoolExecutor(max_workers=min(len(request_ids), 8) or 1) as pool:
         futures = [pool.submit(resolve_views, rid) for rid in request_ids]
         for future in as_completed(futures):
             try:
@@ -494,11 +570,11 @@ def compute_reel_views_kpis(session, active_accounts):
             except Exception:
                 pass
 
-    for p in all_active_posts:
+    for p in all_tracked_posts:
         p["views"] = views_cache.get(p.get("request_id"))
 
     def health_for_account(account):
-        username = account["username"]
+        username = str(account["username"] or "").lower()
         recent = by_profile.get(username, [])[:10]
         if not recent:
             account["shadowban_health"] = {
@@ -532,9 +608,6 @@ def compute_reel_views_kpis(session, active_accounts):
         else:
             status = "HEALTHY"
 
-        cutoff_24h = now_utc - timedelta(hours=24)
-        cutoff_3d = now_utc - timedelta(days=3)
-        cutoff_7d = now_utc - timedelta(days=7)
         posts_with_dt = [p for p in by_profile.get(username, []) if p.get("_dt")]
 
         reels_7d = [p for p in posts_with_dt if p["_dt"] >= cutoff_7d]
@@ -562,19 +635,13 @@ def compute_reel_views_kpis(session, active_accounts):
         account["avg_views_per_reel_7d"] = avg_views_per_reel_7d
         account["latest_reel_views"] = latest_views
 
-    with ThreadPoolExecutor(max_workers=min(len(active_accounts), 20)) as pool:
-        futures = [pool.submit(health_for_account, account) for account in active_accounts]
+    with ThreadPoolExecutor(max_workers=min(len(tracked_accounts), 20) or 1) as pool:
+        futures = [pool.submit(health_for_account, account) for account in tracked_accounts]
         for future in as_completed(futures):
             try:
                 future.result()
             except Exception:
                 pass
-
-    cutoff_24h = now_utc - timedelta(hours=24)
-    cutoff_3d = now_utc - timedelta(days=3)
-    cutoff_7d = now_utc - timedelta(days=7)
-    cutoff_14d = now_utc - timedelta(days=14)
-    cutoff_28d = now_utc - timedelta(days=28)
 
     daily_views = defaultdict(lambda: {
         "views": 0,
@@ -592,7 +659,7 @@ def compute_reel_views_kpis(session, active_accounts):
     recent_7d_daily = 0
     prior_7d_daily = 0
 
-    for p in all_active_posts:
+    for p in all_tracked_posts:
         dt = p.get("_dt")
         if not dt:
             continue
@@ -637,17 +704,19 @@ def compute_reel_views_kpis(session, active_accounts):
             continue
         reels = daily_views[date_str]["reels"]
         views = daily_views[date_str]["views"]
+        unavailable_posts = int(daily_views[date_str]["unavailable_posts"])
+        reels_with_views = max(reels - unavailable_posts, 0)
         posted_accounts = len(daily_views[date_str]["posters"])
         daily_rows.append({
             "date": date_str,
             "views": views,
             "reels": reels,
             "posted_reels": reels,
-            "avg_views_per_reel": round(views / reels, 2) if reels else None,
+            "avg_views_per_reel": round(views / reels_with_views, 2) if reels_with_views else None,
             "zero_view_reels": int(daily_views[date_str]["zero_view_reels"]),
-            "estimated_no_post_active_accounts": max(len(active_accounts) - posted_accounts, 0),
+            "estimated_no_post_active_accounts": max(len(tracked_accounts) - posted_accounts, 0),
             "estimated_at_risk_posters": int(len(daily_views[date_str]["zero_view_posters"])),
-            "estimated_unavailable_analytics_posts": int(daily_views[date_str]["unavailable_posts"]),
+            "estimated_unavailable_analytics_posts": unavailable_posts,
             "source": "estimated",
         })
 
@@ -675,6 +744,10 @@ def compute_reel_views_kpis(session, active_accounts):
         "avg_views_per_reel_7d": avg_views_per_reel_7d,
         "daily_views_series": daily_views_series,
         "daily_health_insights": daily_health_insights,
+        "published_reels_history_total": int(len(history)),
+        "published_reels_tracked_total": int(len(all_tracked_posts)),
+        "post_analytics_lookup_count": int(len(request_ids)),
+        "post_analytics_available_count": int(sum(1 for v in views_cache.values() if isinstance(v, int))),
         "trend": trend,
         "trend_pct": trend_pct,
     }
@@ -830,11 +903,20 @@ def main():
     print("Fetching profiles...")
     resp = session.get(USERS_URL, timeout=30)
     resp.raise_for_status()
-    profiles = resp.json().get("profiles", [])
+    profile_payload = resp.json()
+    if isinstance(profile_payload, dict):
+        profiles = profile_payload.get("profiles", [])
+    elif isinstance(profile_payload, list):
+        profiles = profile_payload
+    else:
+        profiles = []
     print(f"Found {len(profiles)} profiles.")
     print("Fetching scheduled Instagram Reels queue...")
     scheduled_reels = fetch_scheduled_instagram_reels(session)
     print(f"Found {len(scheduled_reels)} scheduled Instagram video jobs.")
+    print("Fetching published Instagram Reels history...")
+    published_reels = fetch_instagram_reel_history(session)
+    print(f"Found {len(published_reels)} successful Instagram video uploads in history.")
 
     # Phase 1: status checks (deep token) in parallel
     print("Running deep token checks in parallel...")
@@ -865,11 +947,13 @@ def main():
             except Exception as e:
                 print(f"Error enriching account: {e}", file=sys.stderr)
 
-    print("Computing views-first reel KPIs + shadowban health...")
-    reel_kpis = compute_reel_views_kpis(session, active_accounts)
-
     all_accounts = active_accounts + inactive_accounts
     all_accounts.sort(key=lambda a: a["username"])
+    linked_accounts = [a for a in all_accounts if a["status"] not in ("NO_IG", "BLOCKED")]
+
+    print("Computing views-first reel KPIs + shadowban health...")
+    reel_kpis = compute_reel_views_kpis(session, linked_accounts, published_reels)
+
     scheduled_kpis = compute_scheduled_reel_kpis(session, all_accounts, scheduled_reels)
 
     # Global aggregates
@@ -926,6 +1010,10 @@ def main():
             "avg_views_per_reel_7d": reel_kpis["avg_views_per_reel_7d"],
             "daily_views_series": reel_kpis["daily_views_series"],
             "daily_health_insights": reel_kpis["daily_health_insights"],
+            "published_reels_history_total": reel_kpis["published_reels_history_total"],
+            "published_reels_tracked_total": reel_kpis["published_reels_tracked_total"],
+            "post_analytics_lookup_count": reel_kpis["post_analytics_lookup_count"],
+            "post_analytics_available_count": reel_kpis["post_analytics_available_count"],
         },
         "accounts": all_accounts,
     }
