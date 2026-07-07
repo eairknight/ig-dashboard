@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-07-07T14:35:55Z",
+  "updated_at": "2026-07-07T19:56:26Z",
   "days": {
     "2026-06-25": {
       "source": "logged",
@@ -698,24 +698,24 @@
     },
     "2026-07-07": {
       "source": "logged",
-      "logged_at": "2026-07-07T14:35:55Z",
-      "health_score": 84,
+      "logged_at": "2026-07-07T19:56:26Z",
+      "health_score": 82,
       "top_causes": [
         "Many active accounts did not post",
         "Low avg views per reel"
       ],
-      "summary_line": "30 total views across 49 posted reels, 1 avg/reel. Main drag: many active accounts did not post + low avg views per reel.",
+      "summary_line": "37 total views across 76 posted reels, 0 avg/reel. Main drag: many active accounts did not post + low avg views per reel.",
       "reason_details": {
         "Low posting volume": {
           "triggered": false,
-          "posted_reels": 49,
+          "posted_reels": 76,
           "threshold_min_posted_reels": 16,
           "expected_daily_reels": 24
         },
         "Zero-view spike": {
           "triggered": false,
           "zero_view_reels": 0,
-          "posted_reels": 49,
+          "posted_reels": 76,
           "zero_rate_pct": 0.0,
           "threshold_pct": 25,
           "minimum_reels_required": 4
@@ -728,16 +728,16 @@
         "Missing post analytics": {
           "triggered": false,
           "unavailable_posts": 0,
-          "posted_reels": 49,
+          "posted_reels": 76,
           "unavailable_rate_pct": 0.0,
           "threshold_pct": 20,
           "minimum_reels_required": 3
         },
         "Low avg views per reel": {
           "triggered": true,
-          "avg_views_per_reel": 0.61,
-          "baseline_avg_views_per_reel": 1.63,
-          "ratio_pct_of_baseline": 37.4,
+          "avg_views_per_reel": 0.49,
+          "baseline_avg_views_per_reel": 1.76,
+          "ratio_pct_of_baseline": 27.8,
           "threshold_pct_of_baseline": 55
         }
       },
@@ -746,9 +746,9 @@
       "broken_accounts": 31,
       "checkpoint_accounts": 0,
       "reauth_accounts": 0,
-      "posted_reels": 49,
-      "views": 30,
-      "avg_views_per_reel": 0.61,
+      "posted_reels": 76,
+      "views": 37,
+      "avg_views_per_reel": 0.49,
       "zero_view_reels": 0,
       "estimated_no_post_active_accounts": 55,
       "estimated_at_risk_posters": 0,
