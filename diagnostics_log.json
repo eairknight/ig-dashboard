@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-07-09T15:11:26Z",
+  "updated_at": "2026-07-09T19:47:41Z",
   "days": {
     "2026-06-25": {
       "source": "logged",
@@ -813,24 +813,24 @@
     },
     "2026-07-09": {
       "source": "logged",
-      "logged_at": "2026-07-09T15:11:26Z",
+      "logged_at": "2026-07-09T19:47:41Z",
       "health_score": 80,
       "top_causes": [
         "Many active accounts did not post",
         "Low avg views per reel"
       ],
-      "summary_line": "16 total views across 57 posted reels, 0 avg/reel. Main drag: many active accounts did not post + low avg views per reel.",
+      "summary_line": "16 total views across 84 posted reels, 0 avg/reel. Main drag: many active accounts did not post + low avg views per reel.",
       "reason_details": {
         "Low posting volume": {
           "triggered": false,
-          "posted_reels": 57,
+          "posted_reels": 84,
           "threshold_min_posted_reels": 16,
           "expected_daily_reels": 24
         },
         "Zero-view spike": {
           "triggered": false,
           "zero_view_reels": 0,
-          "posted_reels": 57,
+          "posted_reels": 84,
           "zero_rate_pct": 0.0,
           "threshold_pct": 25,
           "minimum_reels_required": 4
@@ -843,16 +843,16 @@
         "Missing post analytics": {
           "triggered": false,
           "unavailable_posts": 0,
-          "posted_reels": 57,
+          "posted_reels": 84,
           "unavailable_rate_pct": 0.0,
           "threshold_pct": 20,
           "minimum_reels_required": 3
         },
         "Low avg views per reel": {
           "triggered": true,
-          "avg_views_per_reel": 0.28,
-          "baseline_avg_views_per_reel": 2.88,
-          "ratio_pct_of_baseline": 9.7,
+          "avg_views_per_reel": 0.19,
+          "baseline_avg_views_per_reel": 1.22,
+          "ratio_pct_of_baseline": 15.6,
           "threshold_pct_of_baseline": 55
         }
       },
@@ -861,9 +861,9 @@
       "broken_accounts": 31,
       "checkpoint_accounts": 0,
       "reauth_accounts": 0,
-      "posted_reels": 57,
+      "posted_reels": 84,
       "views": 16,
-      "avg_views_per_reel": 0.28,
+      "avg_views_per_reel": 0.19,
       "zero_view_reels": 0,
       "estimated_no_post_active_accounts": 55,
       "estimated_at_risk_posters": 0,
