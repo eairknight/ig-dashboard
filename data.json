@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-07-18T02:33:37Z",
-  "updated_at_display": "Saturday, Jul 18 at 4:33 AM CEST",
+  "updated_at": "2026-07-18T07:51:21Z",
+  "updated_at_display": "Saturday, Jul 18 at 9:51 AM CEST",
   "summary": {
     "ACTIVE": 41,
     "REAUTH": 0,
@@ -10,19 +10,14 @@
     "BLOCKED": 0
   },
   "global": {
-    "total_views": 8009,
-    "reach_7d": 1711,
-    "reach_28d": 6548,
+    "total_views": 8220,
+    "reach_7d": 1883,
+    "reach_28d": 6720,
     "trend": "up",
-    "trend_pct": 77.0,
+    "trend_pct": 94.4,
     "reach_trend": "up",
-    "reach_trend_pct": 75.1,
+    "reach_trend_pct": 92.7,
     "series": [
-      {
-        "date": "2026-06-19",
-        "reach": 0,
-        "avg": 0.0
-      },
       {
         "date": "2026-06-20",
         "reach": 0,
@@ -160,36 +155,26 @@
       },
       {
         "date": "2026-07-17",
-        "reach": 135,
-        "avg": 3.29
+        "reach": 304,
+        "avg": 7.41
+      },
+      {
+        "date": "2026-07-18",
+        "reach": 3,
+        "avg": 0.07
       }
     ],
-    "total_reels_7d": 188,
-    "scheduled_reels_total": 1121,
-    "scheduled_reels_24h": 859,
-    "scheduled_reels_7d": 1121,
-    "scheduled_reels_30d": 1121,
-    "next_scheduled_at": "2026-07-18T02:34:00Z",
-    "total_views_24h": 165,
-    "total_views_3d": 903,
-    "total_views_7d": 2099,
-    "avg_views_per_reel_7d": 11.16,
+    "total_reels_7d": 187,
+    "scheduled_reels_total": 933,
+    "scheduled_reels_24h": 867,
+    "scheduled_reels_7d": 933,
+    "scheduled_reels_30d": 933,
+    "next_scheduled_at": "2026-07-18T07:51:00Z",
+    "total_views_24h": 373,
+    "total_views_3d": 1110,
+    "total_views_7d": 2306,
+    "avg_views_per_reel_7d": 12.33,
     "daily_views_series": [
-      {
-        "date": "2026-06-19",
-        "reels": 0,
-        "posted_reels": 0,
-        "zero_view_reels": 0,
-        "estimated_no_post_active_accounts": 41,
-        "estimated_at_risk_posters": 0,
-        "estimated_unavailable_analytics_posts": 0,
-        "source": "profile_analytics",
-        "views": 0,
-        "reach": 0,
-        "impressions": 0,
-        "views_source": "profile_analytics",
-        "avg_views_per_reel": null
-      },
       {
         "date": "2026-06-20",
         "reels": 0,
@@ -289,9 +274,9 @@
         "estimated_at_risk_posters": 0,
         "estimated_unavailable_analytics_posts": 0,
         "source": "logged",
-        "views": 233,
+        "views": 234,
         "reach": 189,
-        "impressions": 233,
+        "impressions": 234,
         "views_source": "profile_analytics",
         "avg_views_per_reel": null
       },
@@ -304,9 +289,9 @@
         "estimated_at_risk_posters": 0,
         "estimated_unavailable_analytics_posts": 0,
         "source": "logged",
-        "views": 329,
+        "views": 328,
         "reach": 273,
-        "impressions": 329,
+        "impressions": 328,
         "views_source": "profile_analytics",
         "avg_views_per_reel": null
       },
@@ -334,9 +319,9 @@
         "estimated_at_risk_posters": 0,
         "estimated_unavailable_analytics_posts": 0,
         "source": "logged",
-        "views": 1222,
+        "views": 1226,
         "reach": 1001,
-        "impressions": 1222,
+        "impressions": 1226,
         "views_source": "profile_analytics",
         "avg_views_per_reel": null
       },
@@ -582,81 +567,51 @@
       },
       {
         "date": "2026-07-16",
-        "views": 204,
-        "reels": 5,
-        "posted_reels": 5,
-        "avg_views_per_reel": 40.8,
+        "reels": 0,
+        "posted_reels": 0,
         "zero_view_reels": 0,
-        "estimated_no_post_active_accounts": 67,
+        "estimated_no_post_active_accounts": 41,
         "estimated_at_risk_posters": 0,
         "estimated_unavailable_analytics_posts": 0,
         "source": "logged",
+        "views": 203,
         "reach": 172,
-        "impressions": 204,
-        "views_source": "profile_analytics"
+        "impressions": 203,
+        "views_source": "profile_analytics",
+        "avg_views_per_reel": null
       },
       {
         "date": "2026-07-17",
-        "views": 165,
-        "reels": 183,
-        "posted_reels": 183,
-        "avg_views_per_reel": 0.9,
+        "views": 369,
+        "reels": 163,
+        "posted_reels": 163,
+        "avg_views_per_reel": 2.26,
         "zero_view_reels": 0,
         "estimated_no_post_active_accounts": 55,
         "estimated_at_risk_posters": 0,
         "estimated_unavailable_analytics_posts": 0,
         "source": "logged",
-        "reach": 135,
-        "impressions": 165,
+        "reach": 304,
+        "impressions": 369,
+        "views_source": "profile_analytics"
+      },
+      {
+        "date": "2026-07-18",
+        "views": 4,
+        "reels": 24,
+        "posted_reels": 24,
+        "avg_views_per_reel": 0.17,
+        "zero_view_reels": 0,
+        "estimated_no_post_active_accounts": 55,
+        "estimated_at_risk_posters": 0,
+        "estimated_unavailable_analytics_posts": 0,
+        "source": "logged",
+        "reach": 3,
+        "impressions": 4,
         "views_source": "profile_analytics"
       }
     ],
     "daily_health_insights": {
-      "2026-06-19": {
-        "top_causes": [
-          "Low posting volume",
-          "Many active accounts did not post"
-        ],
-        "health_score": 65,
-        "summary_line": "0 total views across 0 posted reels, — avg/reel. Main drag: low posting volume + many active accounts did not post.",
-        "reason_details": {
-          "Low posting volume": {
-            "triggered": true,
-            "posted_reels": 0,
-            "threshold_min_posted_reels": 18,
-            "expected_daily_reels": 27
-          },
-          "Zero-view spike": {
-            "triggered": false,
-            "zero_view_reels": 0,
-            "posted_reels": 0,
-            "zero_rate_pct": 0.0,
-            "threshold_pct": 25,
-            "minimum_reels_required": 4
-          },
-          "Many active accounts did not post": {
-            "triggered": true,
-            "no_post_active_accounts": 41,
-            "threshold_accounts": 3
-          },
-          "Missing post analytics": {
-            "triggered": false,
-            "unavailable_posts": 0,
-            "posted_reels": 0,
-            "unavailable_rate_pct": 0.0,
-            "threshold_pct": 20,
-            "minimum_reels_required": 3
-          },
-          "Low avg views per reel": {
-            "triggered": false,
-            "avg_views_per_reel": null,
-            "baseline_avg_views_per_reel": 20.85,
-            "ratio_pct_of_baseline": null,
-            "threshold_pct_of_baseline": 55
-          }
-        },
-        "source": "profile_analytics"
-      },
       "2026-06-20": {
         "top_causes": [
           "Low posting volume",
@@ -668,8 +623,8 @@
           "Low posting volume": {
             "triggered": true,
             "posted_reels": 0,
-            "threshold_min_posted_reels": 18,
-            "expected_daily_reels": 27
+            "threshold_min_posted_reels": 15,
+            "expected_daily_reels": 23
           },
           "Zero-view spike": {
             "triggered": false,
@@ -695,7 +650,7 @@
           "Low avg views per reel": {
             "triggered": false,
             "avg_views_per_reel": null,
-            "baseline_avg_views_per_reel": 20.85,
+            "baseline_avg_views_per_reel": 1.21,
             "ratio_pct_of_baseline": null,
             "threshold_pct_of_baseline": 55
           }
@@ -713,8 +668,8 @@
           "Low posting volume": {
             "triggered": true,
             "posted_reels": 0,
-            "threshold_min_posted_reels": 18,
-            "expected_daily_reels": 27
+            "threshold_min_posted_reels": 15,
+            "expected_daily_reels": 23
           },
           "Zero-view spike": {
             "triggered": false,
@@ -740,7 +695,7 @@
           "Low avg views per reel": {
             "triggered": false,
             "avg_views_per_reel": null,
-            "baseline_avg_views_per_reel": 20.85,
+            "baseline_avg_views_per_reel": 1.21,
             "ratio_pct_of_baseline": null,
             "threshold_pct_of_baseline": 55
           }
@@ -758,8 +713,8 @@
           "Low posting volume": {
             "triggered": true,
             "posted_reels": 0,
-            "threshold_min_posted_reels": 18,
-            "expected_daily_reels": 27
+            "threshold_min_posted_reels": 15,
+            "expected_daily_reels": 23
           },
           "Zero-view spike": {
             "triggered": false,
@@ -785,7 +740,7 @@
           "Low avg views per reel": {
             "triggered": false,
             "avg_views_per_reel": null,
-            "baseline_avg_views_per_reel": 20.85,
+            "baseline_avg_views_per_reel": 1.21,
             "ratio_pct_of_baseline": null,
             "threshold_pct_of_baseline": 55
           }
@@ -803,8 +758,8 @@
           "Low posting volume": {
             "triggered": true,
             "posted_reels": 0,
-            "threshold_min_posted_reels": 18,
-            "expected_daily_reels": 27
+            "threshold_min_posted_reels": 15,
+            "expected_daily_reels": 23
           },
           "Zero-view spike": {
             "triggered": false,
@@ -830,7 +785,7 @@
           "Low avg views per reel": {
             "triggered": false,
             "avg_views_per_reel": null,
-            "baseline_avg_views_per_reel": 20.85,
+            "baseline_avg_views_per_reel": 1.21,
             "ratio_pct_of_baseline": null,
             "threshold_pct_of_baseline": 55
           }
@@ -848,8 +803,8 @@
           "Low posting volume": {
             "triggered": true,
             "posted_reels": 0,
-            "threshold_min_posted_reels": 18,
-            "expected_daily_reels": 27
+            "threshold_min_posted_reels": 15,
+            "expected_daily_reels": 23
           },
           "Zero-view spike": {
             "triggered": false,
@@ -875,7 +830,7 @@
           "Low avg views per reel": {
             "triggered": false,
             "avg_views_per_reel": null,
-            "baseline_avg_views_per_reel": 20.85,
+            "baseline_avg_views_per_reel": 1.21,
             "ratio_pct_of_baseline": null,
             "threshold_pct_of_baseline": 55
           }
@@ -1910,10 +1865,55 @@
           }
         },
         "source": "logged"
+      },
+      "2026-07-18": {
+        "top_causes": [
+          "Many active accounts did not post",
+          "Low avg views per reel"
+        ],
+        "health_score": 80,
+        "summary_line": "4 total views across 24 posted reels, 0 avg/reel. Main drag: many active accounts did not post + low avg views per reel.",
+        "reason_details": {
+          "Low posting volume": {
+            "triggered": false,
+            "posted_reels": 24,
+            "threshold_min_posted_reels": 15,
+            "expected_daily_reels": 23
+          },
+          "Zero-view spike": {
+            "triggered": false,
+            "zero_view_reels": 0,
+            "posted_reels": 24,
+            "zero_rate_pct": 0.0,
+            "threshold_pct": 25,
+            "minimum_reels_required": 4
+          },
+          "Many active accounts did not post": {
+            "triggered": true,
+            "no_post_active_accounts": 55,
+            "threshold_accounts": 3
+          },
+          "Missing post analytics": {
+            "triggered": false,
+            "unavailable_posts": 0,
+            "posted_reels": 24,
+            "unavailable_rate_pct": 0.0,
+            "threshold_pct": 20,
+            "minimum_reels_required": 3
+          },
+          "Low avg views per reel": {
+            "triggered": true,
+            "avg_views_per_reel": 0.17,
+            "baseline_avg_views_per_reel": 1.21,
+            "ratio_pct_of_baseline": 14.0,
+            "threshold_pct_of_baseline": 55
+          }
+        },
+        "source": "logged"
       }
     },
-    "published_reels_history_total": 188,
-    "published_reels_tracked_total": 188,
+    "published_reels_history_total": 187,
+    "published_reels_tracked_total": 187,
     "post_analytics_lookup_count": 0,
     "post_analytics_available_count": 0,
     "views_source": "profile_analytics",
@@ -1943,17 +1943,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 15,
-      "scheduled_reels_24h": 11,
-      "scheduled_reels_7d": 15,
-      "next_scheduled_at": "2026-07-18T04:56:00Z",
+      "scheduled_reels_total": 13,
+      "scheduled_reels_24h": 12,
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:13:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -1975,20 +1975,20 @@
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 11,
+      "reels_7d_count": 12,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:53:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T08:49:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "UNAVAILABLE",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -2013,17 +2013,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 15,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 15,
-      "next_scheduled_at": "2026-07-18T04:19:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T08:43:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -2048,17 +2048,17 @@
       "reels_7d_count": 11,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
-      "scheduled_reels_24h": 13,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:30:00Z",
+      "scheduled_reels_total": 13,
+      "scheduled_reels_24h": 12,
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T08:34:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "UNAVAILABLE",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -2083,17 +2083,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:14:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:19:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -2115,20 +2115,14 @@
       "views_24h": 7,
       "views_3d": 7,
       "views_7d": 131,
-      "reels_7d_count": 12,
+      "reels_7d_count": 11,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 14,
-      "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 14,
-      "next_scheduled_at": "2026-07-18T04:16:00Z",
+      "scheduled_reels_total": 12,
+      "scheduled_reels_24h": 11,
+      "scheduled_reels_7d": 12,
+      "next_scheduled_at": "2026-07-18T08:05:00Z",
       "daily_series": [
-        {
-          "date": "2026-06-19",
-          "views": 0,
-          "reach": 0,
-          "impressions": 0
-        },
         {
           "date": "2026-06-20",
           "views": 0,
@@ -2296,6 +2290,12 @@
           "views": 7,
           "reach": 6,
           "impressions": 7
+        },
+        {
+          "date": "2026-07-18",
+          "views": 0,
+          "reach": 0,
+          "impressions": 0
         }
       ],
       "shadowban_health": {
@@ -2303,7 +2303,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -2328,17 +2328,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
-      "scheduled_reels_24h": 13,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T02:39:00Z",
+      "scheduled_reels_total": 13,
+      "scheduled_reels_24h": 12,
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T08:12:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -2363,17 +2363,17 @@
       "reels_7d_count": 11,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 15,
-      "scheduled_reels_24h": 11,
-      "scheduled_reels_7d": 15,
-      "next_scheduled_at": "2026-07-18T04:57:00Z",
+      "scheduled_reels_total": 13,
+      "scheduled_reels_24h": 12,
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T08:47:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "UNAVAILABLE",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -2398,17 +2398,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:49:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T08:33:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -2433,17 +2433,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 15,
-      "scheduled_reels_24h": 11,
-      "scheduled_reels_7d": 15,
-      "next_scheduled_at": "2026-07-18T05:44:00Z",
+      "scheduled_reels_total": 13,
+      "scheduled_reels_24h": 12,
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:10:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -2468,17 +2468,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:58:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:34:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -2503,17 +2503,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 15,
-      "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 15,
-      "next_scheduled_at": "2026-07-18T03:57:00Z",
+      "scheduled_reels_total": 12,
+      "scheduled_reels_24h": 11,
+      "scheduled_reels_7d": 12,
+      "next_scheduled_at": "2026-07-18T09:25:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -2538,17 +2538,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 15,
-      "scheduled_reels_24h": 11,
-      "scheduled_reels_7d": 15,
-      "next_scheduled_at": "2026-07-18T05:11:00Z",
+      "scheduled_reels_total": 13,
+      "scheduled_reels_24h": 12,
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:06:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -2573,17 +2573,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
-      "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T02:56:00Z",
+      "scheduled_reels_total": 13,
+      "scheduled_reels_24h": 11,
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T08:37:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -2608,17 +2608,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T02:47:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:33:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -2643,17 +2643,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:30:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:03:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -2678,17 +2678,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
-      "scheduled_reels_24h": 13,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:13:00Z",
+      "scheduled_reels_total": 13,
+      "scheduled_reels_24h": 12,
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T08:18:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -2713,17 +2713,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 15,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 15,
-      "next_scheduled_at": "2026-07-18T04:01:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T08:33:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -2748,17 +2748,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 15,
+      "scheduled_reels_total": 12,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 15,
-      "next_scheduled_at": "2026-07-18T02:50:00Z",
+      "scheduled_reels_7d": 12,
+      "next_scheduled_at": "2026-07-18T08:35:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -2783,17 +2783,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 15,
+      "scheduled_reels_total": 12,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 15,
-      "next_scheduled_at": "2026-07-18T03:44:00Z",
+      "scheduled_reels_7d": 12,
+      "next_scheduled_at": "2026-07-18T09:42:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -2806,29 +2806,23 @@
       "blocked": false,
       "error_msg": null,
       "assigned_url": "",
-      "total_views": 1118,
-      "total_reach": 952,
+      "total_views": 1192,
+      "total_reach": 1016,
       "total_likes": 0,
       "followers": 0,
-      "reach_7d": 952,
-      "reach_28d": 952,
-      "views_24h": 0,
-      "views_3d": 159,
-      "views_7d": 276,
-      "reels_7d_count": 11,
+      "reach_7d": 1016,
+      "reach_28d": 1016,
+      "views_24h": 75,
+      "views_3d": 233,
+      "views_7d": 350,
+      "reels_7d_count": 10,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
-      "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T02:58:00Z",
+      "scheduled_reels_total": 14,
+      "scheduled_reels_24h": 13,
+      "scheduled_reels_7d": 14,
+      "next_scheduled_at": "2026-07-18T07:52:00Z",
       "daily_series": [
-        {
-          "date": "2026-06-19",
-          "views": 0,
-          "reach": 0,
-          "impressions": 0
-        },
         {
           "date": "2026-06-20",
           "views": 0,
@@ -2873,9 +2867,9 @@
         },
         {
           "date": "2026-06-27",
-          "views": 125,
+          "views": 124,
           "reach": 106,
-          "impressions": 125
+          "impressions": 124
         },
         {
           "date": "2026-06-28",
@@ -2885,9 +2879,9 @@
         },
         {
           "date": "2026-06-29",
-          "views": 16,
+          "views": 17,
           "reach": 14,
-          "impressions": 16
+          "impressions": 17
         },
         {
           "date": "2026-06-30",
@@ -2987,12 +2981,18 @@
         },
         {
           "date": "2026-07-16",
-          "views": 159,
+          "views": 158,
           "reach": 135,
-          "impressions": 159
+          "impressions": 158
         },
         {
           "date": "2026-07-17",
+          "views": 75,
+          "reach": 64,
+          "impressions": 75
+        },
+        {
+          "date": "2026-07-18",
           "views": 0,
           "reach": 0,
           "impressions": 0
@@ -3003,7 +3003,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -3028,17 +3028,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 15,
-      "scheduled_reels_24h": 11,
-      "scheduled_reels_7d": 15,
-      "next_scheduled_at": "2026-07-18T04:50:00Z",
+      "scheduled_reels_total": 13,
+      "scheduled_reels_24h": 12,
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:13:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -3063,17 +3063,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:44:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T08:30:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -3098,17 +3098,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:20:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T08:57:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -3133,17 +3133,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
-      "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:43:00Z",
+      "scheduled_reels_total": 14,
+      "scheduled_reels_24h": 13,
+      "scheduled_reels_7d": 14,
+      "next_scheduled_at": "2026-07-18T08:26:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -3168,17 +3168,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
-      "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:27:00Z",
+      "scheduled_reels_total": 14,
+      "scheduled_reels_24h": 13,
+      "scheduled_reels_7d": 14,
+      "next_scheduled_at": "2026-07-18T08:02:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -3203,17 +3203,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 15,
-      "scheduled_reels_24h": 11,
-      "scheduled_reels_7d": 15,
-      "next_scheduled_at": "2026-07-18T04:16:00Z",
+      "scheduled_reels_total": 13,
+      "scheduled_reels_24h": 12,
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T08:47:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -3238,17 +3238,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:36:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:29:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -3273,17 +3273,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 15,
-      "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 15,
-      "next_scheduled_at": "2026-07-18T03:34:00Z",
+      "scheduled_reels_total": 12,
+      "scheduled_reels_24h": 11,
+      "scheduled_reels_7d": 12,
+      "next_scheduled_at": "2026-07-18T09:45:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -3308,17 +3308,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
-      "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:45:00Z",
+      "scheduled_reels_total": 14,
+      "scheduled_reels_24h": 13,
+      "scheduled_reels_7d": 14,
+      "next_scheduled_at": "2026-07-18T07:51:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -3331,29 +3331,23 @@
       "blocked": false,
       "error_msg": null,
       "assigned_url": "",
-      "total_views": 1278,
-      "total_reach": 1040,
+      "total_views": 1410,
+      "total_reach": 1144,
       "total_likes": 0,
       "followers": 0,
-      "reach_7d": 1040,
-      "reach_28d": 1040,
-      "views_24h": 6,
-      "views_3d": 13,
-      "views_7d": 142,
+      "reach_7d": 1144,
+      "reach_28d": 1144,
+      "views_24h": 134,
+      "views_3d": 141,
+      "views_7d": 270,
       "reels_7d_count": 11,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 15,
-      "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 15,
-      "next_scheduled_at": "2026-07-18T03:31:00Z",
+      "scheduled_reels_total": 12,
+      "scheduled_reels_24h": 11,
+      "scheduled_reels_7d": 12,
+      "next_scheduled_at": "2026-07-18T09:41:00Z",
       "daily_series": [
-        {
-          "date": "2026-06-19",
-          "views": 0,
-          "reach": 0,
-          "impressions": 0
-        },
         {
           "date": "2026-06-20",
           "views": 0,
@@ -3392,9 +3386,9 @@
         },
         {
           "date": "2026-06-26",
-          "views": 179,
+          "views": 180,
           "reach": 146,
-          "impressions": 179
+          "impressions": 180
         },
         {
           "date": "2026-06-27",
@@ -3410,9 +3404,9 @@
         },
         {
           "date": "2026-06-29",
-          "views": 367,
+          "views": 369,
           "reach": 299,
-          "impressions": 367
+          "impressions": 369
         },
         {
           "date": "2026-06-30",
@@ -3422,9 +3416,9 @@
         },
         {
           "date": "2026-07-01",
-          "views": 178,
+          "views": 179,
           "reach": 145,
-          "impressions": 178
+          "impressions": 179
         },
         {
           "date": "2026-07-02",
@@ -3518,9 +3512,15 @@
         },
         {
           "date": "2026-07-17",
-          "views": 6,
-          "reach": 5,
-          "impressions": 6
+          "views": 134,
+          "reach": 109,
+          "impressions": 134
+        },
+        {
+          "date": "2026-07-18",
+          "views": 0,
+          "reach": 0,
+          "impressions": 0
         }
       ],
       "shadowban_health": {
@@ -3528,7 +3528,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -3553,17 +3553,17 @@
       "reels_7d_count": 11,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:29:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T08:52:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "UNAVAILABLE",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -3588,17 +3588,11 @@
       "reels_7d_count": 11,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 15,
+      "scheduled_reels_total": 12,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 15,
-      "next_scheduled_at": "2026-07-18T02:50:00Z",
+      "scheduled_reels_7d": 12,
+      "next_scheduled_at": "2026-07-18T09:30:00Z",
       "daily_series": [
-        {
-          "date": "2026-06-19",
-          "views": 0,
-          "reach": 0,
-          "impressions": 0
-        },
         {
           "date": "2026-06-20",
           "views": 0,
@@ -3766,6 +3760,12 @@
           "views": 1,
           "reach": 1,
           "impressions": 1
+        },
+        {
+          "date": "2026-07-18",
+          "views": 0,
+          "reach": 0,
+          "impressions": 0
         }
       ],
       "shadowban_health": {
@@ -3773,7 +3773,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -3798,17 +3798,17 @@
       "reels_7d_count": 11,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 15,
-      "scheduled_reels_24h": 11,
-      "scheduled_reels_7d": 15,
-      "next_scheduled_at": "2026-07-18T05:42:00Z",
+      "scheduled_reels_total": 13,
+      "scheduled_reels_24h": 12,
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:49:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "UNAVAILABLE",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -3821,29 +3821,23 @@
       "blocked": false,
       "error_msg": null,
       "assigned_url": "",
-      "total_views": 1459,
-      "total_reach": 1191,
+      "total_views": 1462,
+      "total_reach": 1194,
       "total_likes": 0,
       "followers": 0,
-      "reach_7d": 1191,
-      "reach_28d": 1191,
-      "views_24h": 137,
-      "views_3d": 167,
-      "views_7d": 374,
+      "reach_7d": 1194,
+      "reach_28d": 1194,
+      "views_24h": 141,
+      "views_3d": 171,
+      "views_7d": 378,
       "reels_7d_count": 11,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:11:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:19:00Z",
       "daily_series": [
-        {
-          "date": "2026-06-19",
-          "views": 0,
-          "reach": 0,
-          "impressions": 0
-        },
         {
           "date": "2026-06-20",
           "views": 0,
@@ -3912,9 +3906,9 @@
         },
         {
           "date": "2026-07-01",
-          "views": 58,
+          "views": 57,
           "reach": 47,
-          "impressions": 58
+          "impressions": 57
         },
         {
           "date": "2026-07-02",
@@ -4011,6 +4005,12 @@
           "views": 137,
           "reach": 112,
           "impressions": 137
+        },
+        {
+          "date": "2026-07-18",
+          "views": 4,
+          "reach": 3,
+          "impressions": 4
         }
       ],
       "shadowban_health": {
@@ -4018,7 +4018,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4040,20 +4040,20 @@
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 12,
+      "reels_7d_count": 10,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 15,
-      "scheduled_reels_24h": 11,
-      "scheduled_reels_7d": 15,
-      "next_scheduled_at": "2026-07-18T05:33:00Z",
+      "scheduled_reels_total": 14,
+      "scheduled_reels_24h": 13,
+      "scheduled_reels_7d": 14,
+      "next_scheduled_at": "2026-07-18T08:02:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "UNAVAILABLE",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4075,20 +4075,20 @@
       "views_24h": 0,
       "views_3d": 0,
       "views_7d": 0,
-      "reels_7d_count": 11,
+      "reels_7d_count": 12,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:47:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:22:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "UNAVAILABLE",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4113,17 +4113,17 @@
       "reels_7d_count": 11,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 15,
-      "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 15,
-      "next_scheduled_at": "2026-07-18T03:27:00Z",
+      "scheduled_reels_total": 12,
+      "scheduled_reels_24h": 11,
+      "scheduled_reels_7d": 12,
+      "next_scheduled_at": "2026-07-18T08:38:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "UNAVAILABLE",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4148,17 +4148,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
-      "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T02:47:00Z",
+      "scheduled_reels_total": 14,
+      "scheduled_reels_24h": 13,
+      "scheduled_reels_7d": 14,
+      "next_scheduled_at": "2026-07-18T08:08:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4183,17 +4183,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 14,
-      "scheduled_reels_24h": 11,
-      "scheduled_reels_7d": 14,
-      "next_scheduled_at": "2026-07-18T04:25:00Z",
+      "scheduled_reels_total": 12,
+      "scheduled_reels_24h": 12,
+      "scheduled_reels_7d": 12,
+      "next_scheduled_at": "2026-07-18T08:35:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4218,17 +4218,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
-      "scheduled_reels_24h": 13,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:42:00Z",
+      "scheduled_reels_total": 12,
+      "scheduled_reels_24h": 11,
+      "scheduled_reels_7d": 12,
+      "next_scheduled_at": "2026-07-18T09:29:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4253,17 +4253,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:15:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T08:32:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4288,17 +4288,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
-      "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:51:00Z",
+      "scheduled_reels_total": 14,
+      "scheduled_reels_24h": 13,
+      "scheduled_reels_7d": 14,
+      "next_scheduled_at": "2026-07-18T08:05:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4323,17 +4323,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 15,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 15,
-      "next_scheduled_at": "2026-07-18T03:40:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T08:04:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4358,17 +4358,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T02:35:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T10:07:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4393,17 +4393,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:07:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:56:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4428,17 +4428,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 14,
-      "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 14,
-      "next_scheduled_at": "2026-07-18T04:19:00Z",
+      "scheduled_reels_total": 11,
+      "scheduled_reels_24h": 11,
+      "scheduled_reels_7d": 11,
+      "next_scheduled_at": "2026-07-18T10:13:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4463,17 +4463,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
-      "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:21:00Z",
+      "scheduled_reels_total": 13,
+      "scheduled_reels_24h": 13,
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:54:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4498,17 +4498,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
-      "scheduled_reels_24h": 13,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:35:00Z",
+      "scheduled_reels_total": 13,
+      "scheduled_reels_24h": 12,
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T08:00:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4568,17 +4568,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 15,
-      "scheduled_reels_24h": 11,
-      "scheduled_reels_7d": 15,
-      "next_scheduled_at": "2026-07-18T04:43:00Z",
+      "scheduled_reels_total": 13,
+      "scheduled_reels_24h": 12,
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T08:47:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4603,17 +4603,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
-      "scheduled_reels_24h": 13,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T02:45:00Z",
+      "scheduled_reels_total": 13,
+      "scheduled_reels_24h": 12,
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T08:16:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4638,17 +4638,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:01:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:32:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4673,17 +4673,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 15,
-      "scheduled_reels_24h": 11,
-      "scheduled_reels_7d": 15,
-      "next_scheduled_at": "2026-07-18T05:11:00Z",
+      "scheduled_reels_total": 13,
+      "scheduled_reels_24h": 12,
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:15:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4708,17 +4708,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
-      "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:20:00Z",
+      "scheduled_reels_total": 14,
+      "scheduled_reels_24h": 13,
+      "scheduled_reels_7d": 14,
+      "next_scheduled_at": "2026-07-18T07:53:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4743,17 +4743,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 15,
-      "scheduled_reels_24h": 13,
-      "scheduled_reels_7d": 15,
-      "next_scheduled_at": "2026-07-18T02:34:00Z",
+      "scheduled_reels_total": 12,
+      "scheduled_reels_24h": 12,
+      "scheduled_reels_7d": 12,
+      "next_scheduled_at": "2026-07-18T08:16:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4778,17 +4778,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:20:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:08:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4813,17 +4813,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:57:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:15:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4848,17 +4848,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
-      "scheduled_reels_24h": 13,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:27:00Z",
+      "scheduled_reels_total": 13,
+      "scheduled_reels_24h": 12,
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T08:25:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4883,17 +4883,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 14,
-      "scheduled_reels_24h": 11,
-      "scheduled_reels_7d": 14,
-      "next_scheduled_at": "2026-07-18T05:15:00Z",
+      "scheduled_reels_total": 12,
+      "scheduled_reels_24h": 12,
+      "scheduled_reels_7d": 12,
+      "next_scheduled_at": "2026-07-18T08:46:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4918,17 +4918,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T02:39:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:32:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4953,17 +4953,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
-      "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:34:00Z",
+      "scheduled_reels_total": 13,
+      "scheduled_reels_24h": 11,
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T08:31:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -4988,17 +4988,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
-      "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:47:00Z",
+      "scheduled_reels_total": 14,
+      "scheduled_reels_24h": 13,
+      "scheduled_reels_7d": 14,
+      "next_scheduled_at": "2026-07-18T07:54:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -5023,17 +5023,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:46:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:05:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -5058,17 +5058,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:10:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:19:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -5093,17 +5093,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
-      "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T02:58:00Z",
+      "scheduled_reels_total": 14,
+      "scheduled_reels_24h": 13,
+      "scheduled_reels_7d": 14,
+      "next_scheduled_at": "2026-07-18T08:04:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -5128,17 +5128,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 15,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 15,
-      "next_scheduled_at": "2026-07-18T04:19:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T08:32:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -5163,17 +5163,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:30:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:14:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -5195,20 +5195,14 @@
       "views_24h": 5,
       "views_3d": 107,
       "views_7d": 542,
-      "reels_7d_count": 11,
+      "reels_7d_count": 10,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
-      "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:39:00Z",
+      "scheduled_reels_total": 14,
+      "scheduled_reels_24h": 13,
+      "scheduled_reels_7d": 14,
+      "next_scheduled_at": "2026-07-18T08:15:00Z",
       "daily_series": [
-        {
-          "date": "2026-06-19",
-          "views": 0,
-          "reach": 0,
-          "impressions": 0
-        },
         {
           "date": "2026-06-20",
           "views": 0,
@@ -5376,6 +5370,12 @@
           "views": 5,
           "reach": 4,
           "impressions": 5
+        },
+        {
+          "date": "2026-07-18",
+          "views": 0,
+          "reach": 0,
+          "impressions": 0
         }
       ],
       "shadowban_health": {
@@ -5383,7 +5383,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -5408,17 +5408,11 @@
       "reels_7d_count": 11,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 15,
-      "scheduled_reels_24h": 11,
-      "scheduled_reels_7d": 15,
-      "next_scheduled_at": "2026-07-18T05:04:00Z",
+      "scheduled_reels_total": 13,
+      "scheduled_reels_24h": 12,
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:21:00Z",
       "daily_series": [
-        {
-          "date": "2026-06-19",
-          "views": 0,
-          "reach": 0,
-          "impressions": 0
-        },
         {
           "date": "2026-06-20",
           "views": 0,
@@ -5586,6 +5580,12 @@
           "views": 0,
           "reach": 0,
           "impressions": 0
+        },
+        {
+          "date": "2026-07-18",
+          "views": 0,
+          "reach": 0,
+          "impressions": 0
         }
       ],
       "shadowban_health": {
@@ -5593,7 +5593,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -5606,29 +5606,23 @@
       "blocked": false,
       "error_msg": null,
       "assigned_url": "",
-      "total_views": 1186,
-      "total_reach": 964,
+      "total_views": 1188,
+      "total_reach": 965,
       "total_likes": 0,
       "followers": 0,
-      "reach_7d": 964,
-      "reach_28d": 964,
-      "views_24h": 0,
-      "views_3d": 197,
-      "views_7d": 274,
-      "reels_7d_count": 10,
+      "reach_7d": 965,
+      "reach_28d": 965,
+      "views_24h": 1,
+      "views_3d": 198,
+      "views_7d": 275,
+      "reels_7d_count": 11,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:30:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:52:00Z",
       "daily_series": [
-        {
-          "date": "2026-06-19",
-          "views": 0,
-          "reach": 0,
-          "impressions": 0
-        },
         {
           "date": "2026-06-20",
           "views": 0,
@@ -5685,9 +5679,9 @@
         },
         {
           "date": "2026-06-29",
-          "views": 66,
+          "views": 67,
           "reach": 54,
-          "impressions": 66
+          "impressions": 67
         },
         {
           "date": "2026-06-30",
@@ -5793,6 +5787,12 @@
         },
         {
           "date": "2026-07-17",
+          "views": 1,
+          "reach": 1,
+          "impressions": 1
+        },
+        {
+          "date": "2026-07-18",
           "views": 0,
           "reach": 0,
           "impressions": 0
@@ -5803,7 +5803,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -5863,17 +5863,17 @@
       "reels_7d_count": 0,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:54:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:30:00Z",
       "daily_series": [],
       "shadowban_health": {
         "status": "INSUFFICIENT_DATA",
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     },
     {
@@ -5895,20 +5895,14 @@
       "views_24h": 9,
       "views_3d": 37,
       "views_7d": 137,
-      "reels_7d_count": 11,
+      "reels_7d_count": 12,
       "avg_views_per_reel_7d": null,
       "latest_reel_views": null,
-      "scheduled_reels_total": 16,
+      "scheduled_reels_total": 13,
       "scheduled_reels_24h": 12,
-      "scheduled_reels_7d": 16,
-      "next_scheduled_at": "2026-07-18T03:19:00Z",
+      "scheduled_reels_7d": 13,
+      "next_scheduled_at": "2026-07-18T09:05:00Z",
       "daily_series": [
-        {
-          "date": "2026-06-19",
-          "views": 0,
-          "reach": 0,
-          "impressions": 0
-        },
         {
           "date": "2026-06-20",
           "views": 0,
@@ -6076,6 +6070,12 @@
           "views": 9,
           "reach": 7,
           "impressions": 9
+        },
+        {
+          "date": "2026-07-18",
+          "views": 0,
+          "reach": 0,
+          "impressions": 0
         }
       ],
       "shadowban_health": {
@@ -6083,7 +6083,7 @@
         "zero_views_count": 0,
         "sample_size": 0,
         "latest_views": null,
-        "checked_at": "2026-07-18T02:33:09Z"
+        "checked_at": "2026-07-18T07:50:55Z"
       }
     }
   ]
