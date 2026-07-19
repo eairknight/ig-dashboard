@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-07-19T13:19:00Z",
+  "updated_at": "2026-07-19T19:07:43Z",
   "days": {
     "2026-06-25": {
       "source": "logged",
@@ -1390,12 +1390,12 @@
     },
     "2026-07-19": {
       "source": "logged",
-      "logged_at": "2026-07-19T13:19:00Z",
-      "health_score": 90,
+      "logged_at": "2026-07-19T19:07:43Z",
+      "health_score": 91,
       "top_causes": [
         "Many active accounts did not post"
       ],
-      "summary_line": "12 total views across 25 posted reels, 0 avg/reel. Main drag: many active accounts did not post.",
+      "summary_line": "13 total views across 25 posted reels, 1 avg/reel. Main drag: many active accounts did not post.",
       "reason_details": {
         "Low posting volume": {
           "triggered": false,
@@ -1426,9 +1426,9 @@
         },
         "Low avg views per reel": {
           "triggered": false,
-          "avg_views_per_reel": 0.48,
-          "baseline_avg_views_per_reel": 0.81,
-          "ratio_pct_of_baseline": 59.3,
+          "avg_views_per_reel": 0.52,
+          "baseline_avg_views_per_reel": 0.83,
+          "ratio_pct_of_baseline": 62.7,
           "threshold_pct_of_baseline": 55
         }
       },
@@ -1438,8 +1438,8 @@
       "checkpoint_accounts": 0,
       "reauth_accounts": 0,
       "posted_reels": 25,
-      "views": 12,
-      "avg_views_per_reel": 0.48,
+      "views": 13,
+      "avg_views_per_reel": 0.52,
       "zero_view_reels": 0,
       "estimated_no_post_active_accounts": 55,
       "estimated_at_risk_posters": 0,
