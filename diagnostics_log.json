@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-07-24T02:43:45Z",
+  "updated_at": "2026-07-24T08:28:01Z",
   "days": {
     "2026-06-25": {
       "source": "logged",
@@ -1679,7 +1679,7 @@
     },
     "2026-07-24": {
       "source": "logged",
-      "logged_at": "2026-07-24T02:43:45Z",
+      "logged_at": "2026-07-24T08:28:01Z",
       "health_score": 65,
       "top_causes": [
         "Low posting volume",
@@ -1690,8 +1690,8 @@
         "Low posting volume": {
           "triggered": true,
           "posted_reels": 0,
-          "threshold_min_posted_reels": 1,
-          "expected_daily_reels": 1
+          "threshold_min_posted_reels": 14,
+          "expected_daily_reels": 22
         },
         "Zero-view spike": {
           "triggered": false,
