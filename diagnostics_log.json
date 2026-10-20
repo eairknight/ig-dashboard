@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-20T03:46:57Z",
+  "updated_at": "2026-10-20T11:01:29Z",
   "days": {
     "2026-06-25": {
       "source": "logged",
@@ -6783,13 +6783,13 @@
     },
     "2026-10-20": {
       "source": "logged",
-      "logged_at": "2026-10-20T03:46:57Z",
+      "logged_at": "2026-10-20T11:01:29Z",
       "health_score": 65,
       "top_causes": [
         "Low posting volume",
         "Many active accounts did not post"
       ],
-      "summary_line": "0 total views across 0 posted reels, — avg/reel. Main drag: low posting volume + many active accounts did not post.",
+      "summary_line": "4 total views across 0 posted reels, — avg/reel. Main drag: low posting volume + many active accounts did not post.",
       "reason_details": {
         "Low posting volume": {
           "triggered": true,
@@ -6832,7 +6832,7 @@
       "checkpoint_accounts": 0,
       "reauth_accounts": 0,
       "posted_reels": 0,
-      "views": 0,
+      "views": 4,
       "avg_views_per_reel": null,
       "zero_view_reels": 0,
       "estimated_no_post_active_accounts": 41,
